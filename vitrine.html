@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#030a12">
-<title>LowticketPay - Vitrine</title>
+<title>LOWTICKETPAY - Vitrine</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -37,14 +37,9 @@ body {
     background: #030a12;
 }
 
-.toolbar-left,
-.toolbar-right {
+.toolbar-left {
     display: flex;
     align-items: center;
-}
-
-.toolbar-right {
-    gap: 35px;
 }
 
 .toolbar-button {
@@ -69,7 +64,7 @@ body {
     stroke-linejoin: round;
 }
 
-/* MENU */
+/* MENU LATERAL */
 
 .menu-overlay {
     position: fixed;
@@ -109,10 +104,18 @@ body {
 
 .menu-header {
     display: flex;
-    justify-content: flex-end;
+    align-items: center;
+    justify-content: space-between;
     padding: 5px 0 20px;
     margin-bottom: 20px;
     border-bottom: 1px solid #242a32;
+}
+
+.menu-logo {
+    width: 145px;
+    max-height: 45px;
+    object-fit: contain;
+    object-position: left center;
 }
 
 .menu-close {
@@ -482,6 +485,12 @@ h1 {
 <aside class="side-menu" id="sideMenu" aria-label="Menu principal">
 
     <div class="menu-header">
+        <img
+            src="assets/lowticketpay.png"
+            alt="LOWTICKETPAY"
+            class="menu-logo"
+        >
+
         <button class="menu-close"
                 id="menuClose"
                 aria-label="Fechar menu"
@@ -511,7 +520,7 @@ h1 {
             Produtos
         </a>
 
-        <a href="vitrine.html" class="active">
+        <a href="vitrine.html" class="active" aria-current="page">
             <svg viewBox="0 0 24 24">
                 <path d="M3 10h18l-2-6H5l-2 6Z"/>
                 <path d="M4 10v10h16V10"/>
@@ -557,31 +566,25 @@ h1 {
     </div>
 
     <div class="categories">
-
         <button class="category active" data-category="Todos">Todos</button>
         <button class="category" data-category="E-books">E-books</button>
         <button class="category" data-category="Cursos">Cursos</button>
         <button class="category" data-category="Mentorias">Mentorias</button>
         <button class="category" data-category="Outros">Outros</button>
-
     </div>
 
     <section>
-
         <div class="section-title">
             <h3>Todos os produtos</h3>
             <span id="contador">0 produtos</span>
         </div>
 
         <div class="grid" id="produtos">
-
             <div class="empty">
                 <span class="material-icons-outlined">inventory_2</span>
                 <p>A carregar produtos...</p>
             </div>
-
         </div>
-
     </section>
 
 </main>
@@ -593,7 +596,6 @@ h1 {
 import { auth, db } from "./js/firebase.js";
 
 import {
-    onAuthStateChanged,
     signOut
 } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js";
 
