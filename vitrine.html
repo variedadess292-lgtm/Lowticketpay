@@ -35,6 +35,12 @@ body {
     min-height:100vh;
 }
 
+body.menu-open {
+    overflow:hidden;
+}
+
+/* CABEÇALHO */
+
 header {
     height:72px;
     border-bottom:1px solid var(--border);
@@ -42,10 +48,18 @@ header {
     display:flex;
     align-items:center;
     justify-content:space-between;
+    gap:15px;
     padding:0 6%;
     position:sticky;
     top:0;
     z-index:10;
+}
+
+.header-left {
+    display:flex;
+    align-items:center;
+    gap:13px;
+    min-width:0;
 }
 
 .logo {
@@ -55,16 +69,20 @@ header {
     font-size:20px;
     font-weight:800;
     letter-spacing:-.7px;
+    white-space:nowrap;
 }
 
 .logo-icon {
     width:36px;
+    min-width:36px;
     height:36px;
     border-radius:9px;
     display:grid;
     place-items:center;
     background:var(--green);
     color:#061108;
+    font-weight:800;
+    flex-shrink:0;
 }
 
 .logo span {
@@ -75,7 +93,148 @@ header {
     color:var(--muted);
     font-size:11px;
     font-weight:700;
+    white-space:nowrap;
 }
+
+/* BOTÃO DE MENU */
+
+.mobile-menu {
+    display:none;
+    width:42px;
+    min-width:42px;
+    height:42px;
+    flex:0 0 42px;
+    border:1px solid var(--border);
+    border-radius:8px;
+    background:#102333;
+    color:white;
+    font-size:23px;
+    align-items:center;
+    justify-content:center;
+    padding:0;
+    line-height:1;
+    cursor:pointer;
+}
+
+/* MENU LATERAL */
+
+.sidebar {
+    position:fixed;
+    top:72px;
+    left:0;
+    bottom:0;
+    width:245px;
+    background:#07111c;
+    border-right:1px solid var(--border);
+    padding:25px 17px;
+    z-index:30;
+    display:flex;
+    flex-direction:column;
+    overflow-y:auto;
+    transform:translateX(-100%);
+    transition:transform .25s ease;
+}
+
+.sidebar.open {
+    transform:translateX(0);
+}
+
+.sidebar-logo {
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:0 10px;
+    margin-bottom:35px;
+}
+
+.sidebar-logo .logo-icon {
+    width:37px;
+    min-width:37px;
+    height:37px;
+}
+
+.sidebar-logo .logo-name {
+    font-size:19px;
+    font-weight:800;
+    white-space:nowrap;
+}
+
+.sidebar-logo .logo-name span {
+    color:var(--green);
+}
+
+.menu-label {
+    color:#657587;
+    font-size:10px;
+    font-weight:800;
+    letter-spacing:1.3px;
+    padding:0 12px;
+    margin-bottom:13px;
+}
+
+.menu {
+    display:flex;
+    flex-direction:column;
+    gap:7px;
+}
+
+.menu a,
+.sidebar-bottom a {
+    text-decoration:none;
+    color:#9aabba;
+    padding:13px 12px;
+    border-radius:9px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    font-size:13px;
+    font-weight:600;
+    transition:background .2s,color .2s;
+    min-width:0;
+}
+
+.menu a:hover,
+.menu a.active,
+.sidebar-bottom a:hover {
+    color:var(--blue);
+    background:#102333;
+}
+
+.menu-icon {
+    width:20px;
+    min-width:20px;
+    height:20px;
+    flex:0 0 20px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    font-size:17px;
+    line-height:1;
+}
+
+.sidebar-bottom {
+    margin-top:auto;
+    display:flex;
+    flex-direction:column;
+    gap:7px;
+    padding-top:25px;
+}
+
+/* FUNDO DO MENU */
+
+.sidebar-backdrop {
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.68);
+    z-index:25;
+}
+
+.sidebar-backdrop.show {
+    display:block;
+}
+
+/* CONTEÚDO */
 
 main {
     max-width:1200px;
@@ -110,6 +269,8 @@ main {
     margin-top:12px;
     max-width:550px;
 }
+
+/* PESQUISA E CATEGORIAS */
 
 .toolbar {
     display:flex;
@@ -149,10 +310,13 @@ main {
     font-size:12px;
 }
 
+/* PRODUTOS */
+
 .products-heading {
     display:flex;
     align-items:center;
     justify-content:space-between;
+    gap:10px;
     margin-bottom:18px;
 }
 
@@ -178,7 +342,7 @@ main {
     border-radius:12px;
     overflow:hidden;
     min-width:0;
-    transition:.2s;
+    transition:border-color .2s,transform .2s;
 }
 
 .product-card:hover {
@@ -244,6 +408,8 @@ main {
     margin-top:14px;
 }
 
+/* ESTADO VAZIO */
+
 .empty-state {
     grid-column:1/-1;
     padding:55px 20px;
@@ -269,6 +435,8 @@ main {
     line-height:1.6;
 }
 
+/* RODAPÉ */
+
 footer {
     border-top:1px solid var(--border);
     padding:25px;
@@ -277,14 +445,36 @@ footer {
     font-size:10px;
 }
 
+/* MOBILE */
+
+@media(max-width:850px) {
+    header {
+        padding:0 17px;
+    }
+
+    .mobile-menu {
+        display:flex;
+    }
+}
+
 @media(max-width:550px) {
     header {
         height:62px;
-        padding:0 17px;
+        padding:0 12px;
+    }
+
+    .sidebar {
+        top:62px;
     }
 
     .logo {
         font-size:17px;
+    }
+
+    .logo-icon {
+        width:32px;
+        min-width:32px;
+        height:32px;
     }
 
     .header-label {
@@ -324,23 +514,108 @@ footer {
         min-width:125px;
     }
 }
+
+@media(max-width:350px) {
+    .header-label {
+        font-size:8px;
+    }
+
+    .mobile-menu {
+        width:38px;
+        min-width:38px;
+        flex-basis:38px;
+        height:38px;
+    }
+
+    .logo {
+        font-size:15px;
+    }
+}
 </style>
 </head>
 
 <body>
 
 <header>
-    <div class="logo">
-        <div class="logo-icon">L</div>
-        <div>Lowticket<span>Pay</span></div>
+
+    <div class="header-left">
+
+        <button
+            class="mobile-menu"
+            id="mobileMenu"
+            type="button"
+            aria-label="Abrir menu"
+            aria-expanded="false"
+        >☰</button>
+
+        <div class="logo">
+            <div class="logo-icon">L</div>
+            <div>Lowticket<span>Pay</span></div>
+        </div>
+
     </div>
 
     <div class="header-label">VITRINE PÚBLICA</div>
+
 </header>
+
+<!-- MENU LATERAL -->
+
+<aside class="sidebar" id="sidebar">
+
+    <div class="sidebar-logo">
+        <div class="logo-icon">L</div>
+        <div class="logo-name">Lowticket<span>Pay</span></div>
+    </div>
+
+    <div class="menu-label">MENU PRINCIPAL</div>
+
+    <nav class="menu">
+
+        <a href="dashboard.html">
+            <span class="menu-icon">▦</span>
+            <span>Dashboard</span>
+        </a>
+
+        <a href="produtos.html">
+            <span class="menu-icon">▣</span>
+            <span>Produtos</span>
+        </a>
+
+        <a href="vitrine.html" class="active">
+            <span class="menu-icon">◫</span>
+            <span>Vitrine</span>
+        </a>
+
+        <a href="financeiro.html">
+            <span class="menu-icon">◷</span>
+            <span>Financeiro</span>
+        </a>
+
+    </nav>
+
+    <div class="sidebar-bottom">
+
+        <a href="#" id="supportLink">
+            <span class="menu-icon">◉</span>
+            <span>Suporte</span>
+        </a>
+
+        <a href="index.html" id="logoutLink">
+            <span class="menu-icon">⇥</span>
+            <span>Sair</span>
+        </a>
+
+    </div>
+
+</aside>
+
+<div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 
 <main>
 
     <section class="hero">
+
         <div class="hero-label">LOWTICKETPAY MARKETPLACE</div>
 
         <h1>Descubra produtos digitais.</h1>
@@ -349,6 +624,7 @@ footer {
             Explore ebooks, cursos, templates e outros produtos
             digitais disponíveis na nossa vitrine.
         </p>
+
     </section>
 
     <section class="toolbar">
@@ -409,14 +685,62 @@ import {
     onSnapshot
 } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-firestore.js";
 
+/* ELEMENTOS */
 
 const container = document.getElementById("productsContainer");
 const searchInput = document.getElementById("searchInput");
 const categoryFilter = document.getElementById("categoryFilter");
 const productCount = document.getElementById("productCount");
 
+const sidebar = document.getElementById("sidebar");
+const mobileMenu = document.getElementById("mobileMenu");
+const backdrop = document.getElementById("sidebarBackdrop");
+
 let products = [];
 
+/* MENU MOBILE */
+
+function openSidebar() {
+    sidebar.classList.add("open");
+    backdrop.classList.add("show");
+    document.body.classList.add("menu-open");
+    mobileMenu.setAttribute("aria-expanded", "true");
+}
+
+function closeSidebar() {
+    sidebar.classList.remove("open");
+    backdrop.classList.remove("show");
+    document.body.classList.remove("menu-open");
+    mobileMenu.setAttribute("aria-expanded", "false");
+}
+
+mobileMenu.addEventListener("click", () => {
+    if (sidebar.classList.contains("open")) {
+        closeSidebar();
+    } else {
+        openSidebar();
+    }
+});
+
+backdrop.addEventListener("click", closeSidebar);
+
+sidebar.querySelectorAll(".menu a").forEach(link => {
+    link.addEventListener("click", closeSidebar);
+});
+
+document.addEventListener("keydown", event => {
+    if (event.key === "Escape") {
+        closeSidebar();
+    }
+});
+
+window.addEventListener("resize", () => {
+    if (window.innerWidth > 850) {
+        closeSidebar();
+    }
+});
+
+/* AUXILIARES */
 
 function escapeHTML(value) {
     return String(value ?? "").replace(/[&<>"']/g, character => ({
@@ -428,7 +752,6 @@ function escapeHTML(value) {
     })[character]);
 }
 
-
 function formatPrice(price) {
     return Number(price || 0).toLocaleString("pt-MZ", {
         minimumFractionDigits: 2,
@@ -436,6 +759,7 @@ function formatPrice(price) {
     }) + " MT";
 }
 
+/* MOSTRAR PRODUTOS */
 
 function renderProducts() {
 
@@ -531,10 +855,18 @@ function renderProducts() {
     }).join("");
 }
 
+/* PESQUISA */
 
 searchInput.addEventListener("input", renderProducts);
 categoryFilter.addEventListener("change", renderProducts);
 
+/* SUPORTE */
+
+document.getElementById("supportLink").addEventListener("click", event => {
+    event.preventDefault();
+    closeSidebar();
+    alert("O suporte será configurado nesta página.");
+});
 
 /* CARREGAR PRODUTOS PUBLICAMENTE */
 
@@ -583,4 +915,3 @@ onSnapshot(
 
 </body>
 </html>
-
