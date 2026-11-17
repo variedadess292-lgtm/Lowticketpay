@@ -36,6 +36,10 @@ body {
     min-height:100vh;
 }
 
+body.menu-open {
+    overflow:hidden;
+}
+
 button,input,textarea,select {
     font:inherit;
 }
@@ -49,8 +53,11 @@ button {
     min-height:100vh;
 }
 
+/* SIDEBAR */
+
 .sidebar {
     width:245px;
+    min-width:245px;
     background:#07111c;
     border-right:1px solid var(--border);
     padding:25px 17px;
@@ -58,8 +65,10 @@ button {
     flex-direction:column;
     position:fixed;
     inset:0 auto 0 0;
-    z-index:20;
+    z-index:100;
     transition:transform .25s ease;
+    overflow-y:auto;
+    overscroll-behavior:contain;
 }
 
 .logo {
@@ -68,10 +77,12 @@ button {
     gap:10px;
     padding:0 10px;
     margin-bottom:42px;
+    flex-shrink:0;
 }
 
 .logo-icon {
     width:37px;
+    min-width:37px;
     height:37px;
     background:var(--green);
     color:#06110a;
@@ -80,12 +91,14 @@ button {
     place-items:center;
     font-size:21px;
     font-weight:800;
+    flex-shrink:0;
 }
 
 .logo-name {
     font-size:19px;
     font-weight:800;
     letter-spacing:-.7px;
+    white-space:nowrap;
 }
 
 .logo-name span {
@@ -107,7 +120,8 @@ button {
     gap:7px;
 }
 
-.menu a,.sidebar-bottom a {
+.menu a,
+.sidebar-bottom a {
     text-decoration:none;
     color:#9aabba;
     padding:13px 12px;
@@ -117,18 +131,28 @@ button {
     gap:12px;
     font-size:13px;
     font-weight:600;
-    transition:.2s;
+    transition:background .2s,color .2s;
+    min-width:0;
 }
 
-.menu a:hover,.menu a.active,.sidebar-bottom a:hover {
+.menu a:hover,
+.menu a.active,
+.sidebar-bottom a:hover {
     color:var(--blue);
     background:#102333;
 }
 
 .menu-icon {
     width:19px;
+    min-width:19px;
+    flex:0 0 19px;
+    height:20px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
     text-align:center;
     font-size:17px;
+    line-height:1;
 }
 
 .sidebar-bottom {
@@ -136,6 +160,7 @@ button {
     display:flex;
     flex-direction:column;
     gap:7px;
+    padding-top:25px;
 }
 
 .sidebar-bottom a {
@@ -143,8 +168,11 @@ button {
     font-size:13px;
 }
 
+/* ÁREA PRINCIPAL */
+
 .main {
     width:calc(100% - 245px);
+    min-width:0;
     margin-left:245px;
     padding:30px 35px 50px;
 }
@@ -153,6 +181,7 @@ button {
     display:flex;
     align-items:center;
     justify-content:space-between;
+    gap:15px;
     margin-bottom:34px;
 }
 
@@ -160,6 +189,11 @@ button {
     display:flex;
     align-items:center;
     gap:12px;
+    min-width:0;
+}
+
+.topbar-left > div {
+    min-width:0;
 }
 
 .page-title {
@@ -174,8 +208,13 @@ button {
     margin-top:6px;
 }
 
+.topbar-right {
+    flex-shrink:0;
+}
+
 .user-circle {
     width:37px;
+    min-width:37px;
     height:37px;
     border-radius:50%;
     background:#142638;
@@ -186,13 +225,45 @@ button {
     font-size:13px;
 }
 
+/* BOTÃO MENU MOBILE */
+
 .mobile-menu {
     display:none;
+    flex:0 0 42px;
+    width:42px;
+    min-width:42px;
+    height:42px;
     border:0;
-    background:transparent;
+    border-radius:8px;
+    background:#102333;
     color:white;
     font-size:23px;
+    align-items:center;
+    justify-content:center;
+    line-height:1;
+    padding:0;
+    flex-shrink:0;
 }
+
+.mobile-menu:active {
+    background:#18364b;
+}
+
+/* FUNDO DO MENU MOBILE */
+
+.sidebar-backdrop {
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.65);
+    z-index:90;
+}
+
+.sidebar-backdrop.show {
+    display:block;
+}
+
+/* CABEÇALHO DOS PRODUTOS */
 
 .content-header {
     display:flex;
@@ -223,12 +294,16 @@ button {
     font-weight:800;
     display:flex;
     align-items:center;
+    justify-content:center;
     gap:7px;
+    flex-shrink:0;
 }
 
 .primary-btn:hover {
     filter:brightness(1.08);
 }
+
+/* PESQUISA */
 
 .search-box {
     width:100%;
@@ -259,7 +334,10 @@ button {
     top:12px;
     color:var(--muted);
     font-size:15px;
+    pointer-events:none;
 }
+
+/* GRELHA */
 
 .products-grid {
     display:grid;
@@ -338,6 +416,7 @@ button {
 
 .action-btn {
     flex:1;
+    min-width:0;
     padding:9px 5px;
     border-radius:7px;
     border:1px solid var(--border);
@@ -356,6 +435,8 @@ button {
     border-color:var(--red);
     color:var(--red);
 }
+
+/* ESTADO VAZIO */
 
 .empty-state {
     grid-column:1/-1;
@@ -381,11 +462,13 @@ button {
     font-size:11px;
 }
 
+/* MODAL */
+
 .modal-overlay {
     position:fixed;
     inset:0;
     background:rgba(0,0,0,.76);
-    z-index:100;
+    z-index:200;
     display:none;
     align-items:center;
     justify-content:center;
@@ -405,6 +488,7 @@ button {
     border:1px solid var(--border);
     border-radius:13px;
     padding:23px;
+    overscroll-behavior:contain;
 }
 
 .modal-header {
@@ -494,7 +578,8 @@ button {
     margin-top:22px;
 }
 
-.cancel-btn,.save-btn {
+.cancel-btn,
+.save-btn {
     flex:1;
     padding:13px;
     border-radius:8px;
@@ -518,6 +603,8 @@ button {
     opacity:.55;
     cursor:not-allowed;
 }
+
+/* MENSAGENS */
 
 .status-message {
     display:none;
@@ -544,8 +631,13 @@ button {
     border:1px solid #285334;
 }
 
+/* TABLET E TELEMÓVEL */
+
 @media(max-width:850px) {
+
     .sidebar {
+        width:245px;
+        min-width:245px;
         transform:translateX(-100%);
     }
 
@@ -560,7 +652,7 @@ button {
     }
 
     .mobile-menu {
-        display:block;
+        display:flex;
     }
 
     .topbar {
@@ -568,9 +660,16 @@ button {
     }
 }
 
+/* TELEMÓVEIS */
+
 @media(max-width:520px) {
+
     .page-title {
         font-size:19px;
+    }
+
+    .page-subtitle {
+        font-size:11px;
     }
 
     .content-header {
@@ -579,6 +678,11 @@ button {
 
     .content-header h2 {
         font-size:15px;
+    }
+
+    .content-header p {
+        max-width:220px;
+        line-height:1.5;
     }
 
     .primary-btn {
@@ -625,6 +729,22 @@ button {
         padding:18px;
     }
 }
+
+@media(max-width:350px) {
+
+    .main {
+        padding-left:12px;
+        padding-right:12px;
+    }
+
+    .products-grid {
+        grid-template-columns:1fr;
+    }
+
+    .content-header p {
+        max-width:170px;
+    }
+}
 </style>
 </head>
 
@@ -642,47 +762,66 @@ button {
     <div class="menu-label">MENU PRINCIPAL</div>
 
     <nav class="menu">
+
         <a href="dashboard.html">
-            <span class="menu-icon">▦</span>Dashboard
+            <span class="menu-icon">▦</span>
+            <span>Dashboard</span>
         </a>
 
         <a href="produtos.html" class="active">
-            <span class="menu-icon">▣</span>Produtos
+            <span class="menu-icon">▣</span>
+            <span>Produtos</span>
         </a>
 
         <a href="vitrine.html">
-            <span class="menu-icon">◫</span>Vitrine
+            <span class="menu-icon">◫</span>
+            <span>Vitrine</span>
         </a>
 
         <a href="financeiro.html">
-            <span class="menu-icon">◷</span>Financeiro
+            <span class="menu-icon">◷</span>
+            <span>Financeiro</span>
         </a>
+
     </nav>
 
     <div class="sidebar-bottom">
+
         <a href="#" id="supportLink">
-            <span class="menu-icon">◉</span>Suporte
+            <span class="menu-icon">◉</span>
+            <span>Suporte</span>
         </a>
 
         <a href="#" id="logoutLink">
-            <span class="menu-icon">⇥</span>Sair
+            <span class="menu-icon">⇥</span>
+            <span>Sair</span>
         </a>
+
     </div>
 
 </aside>
 
+<div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 
 <main class="main">
 
     <header class="topbar">
 
         <div class="topbar-left">
-            <button class="mobile-menu" id="mobileMenu">☰</button>
+
+            <button
+                class="mobile-menu"
+                id="mobileMenu"
+                type="button"
+                aria-label="Abrir menu"
+                aria-expanded="false"
+            >☰</button>
 
             <div>
                 <h1 class="page-title">Produtos</h1>
                 <p class="page-subtitle">Gerencie os seus infoprodutos.</p>
             </div>
+
         </div>
 
         <div class="topbar-right">
@@ -690,7 +829,6 @@ button {
         </div>
 
     </header>
-
 
     <section>
 
@@ -701,12 +839,11 @@ button {
                 <p>Cadastre e organize os seus produtos digitais.</p>
             </div>
 
-            <button class="primary-btn" id="openModal">
+            <button class="primary-btn" id="openModal" type="button">
                 <span>＋</span>Adicionar
             </button>
 
         </div>
-
 
         <div class="search-box">
             <span class="search-icon">⌕</span>
@@ -716,7 +853,6 @@ button {
                 placeholder="Pesquisar produto..."
             >
         </div>
-
 
         <div id="productsContainer" class="products-grid">
 
@@ -732,7 +868,6 @@ button {
 </main>
 </div>
 
-
 <!-- MODAL DE PRODUTO -->
 
 <div class="modal-overlay" id="productModal">
@@ -741,7 +876,7 @@ button {
 
         <div class="modal-header">
             <h2 id="modalTitle">Adicionar produto</h2>
-            <button class="close-btn" id="closeModal">×</button>
+            <button class="close-btn" id="closeModal" type="button">×</button>
         </div>
 
         <div id="statusMessage" class="status-message"></div>
@@ -750,7 +885,6 @@ button {
 
             <div class="form-group">
                 <label for="productName">Nome do produto</label>
-
                 <input
                     type="text"
                     id="productName"
@@ -760,10 +894,8 @@ button {
                 >
             </div>
 
-
             <div class="form-group">
                 <label for="productDescription">Descrição</label>
-
                 <textarea
                     id="productDescription"
                     placeholder="Escreva uma descrição para o produto..."
@@ -772,10 +904,8 @@ button {
                 ></textarea>
             </div>
 
-
             <div class="form-group">
                 <label for="productPrice">Preço (MT)</label>
-
                 <input
                     type="number"
                     id="productPrice"
@@ -786,10 +916,8 @@ button {
                 >
             </div>
 
-
             <div class="form-group">
                 <label for="productCategory">Categoria</label>
-
                 <select id="productCategory" required>
                     <option value="">Selecionar categoria</option>
                     <option value="Ebook">Ebook</option>
@@ -802,44 +930,35 @@ button {
                 </select>
             </div>
 
-
             <div class="form-group">
                 <label for="productImage">Imagem de capa</label>
-
                 <input
                     class="file-input"
                     type="file"
                     id="productImage"
                     accept="image/jpeg,image/png,image/webp"
                 >
-
                 <span class="file-help">
                     JPG, PNG ou WEBP. Máximo de 3 MB.
                     Obrigatória no cadastro.
                 </span>
-
                 <span class="file-name" id="imageFileName"></span>
             </div>
 
-
             <div class="form-group">
                 <label for="productPDF">PDF do produto</label>
-
                 <input
                     class="file-input"
                     type="file"
                     id="productPDF"
                     accept="application/pdf,.pdf"
                 >
-
                 <span class="file-help">
                     Apenas PDF. Máximo de 3 MB.
                     Obrigatório no cadastro.
                 </span>
-
                 <span class="file-name" id="pdfFileName"></span>
             </div>
-
 
             <div class="modal-actions">
 
@@ -865,7 +984,6 @@ button {
 
     </div>
 </div>
-
 
 <script type="module">
 
@@ -893,7 +1011,6 @@ import {
     deleteField
 } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-firestore.js";
 
-
 /* ELEMENTOS */
 
 const modal = document.getElementById("productModal");
@@ -905,12 +1022,15 @@ const imageInput = document.getElementById("productImage");
 const pdfInput = document.getElementById("productPDF");
 const statusMessage = document.getElementById("statusMessage");
 
+const sidebar = document.getElementById("sidebar");
+const mobileMenu = document.getElementById("mobileMenu");
+const sidebarBackdrop = document.getElementById("sidebarBackdrop");
+
 let currentUser = null;
 let editingProductId = null;
 let products = [];
 let unsubscribeProducts = null;
 let submitting = false;
-
 
 /* AUXILIARES */
 
@@ -924,18 +1044,15 @@ function escapeHTML(value) {
     })[character]);
 }
 
-
 function showMessage(message, type = "error") {
     statusMessage.textContent = message;
     statusMessage.className = `status-message show ${type}`;
 }
 
-
 function hideMessage() {
     statusMessage.textContent = "";
     statusMessage.className = "status-message";
 }
-
 
 function formatPrice(price) {
     return Number(price || 0).toLocaleString("pt-MZ", {
@@ -944,11 +1061,53 @@ function formatPrice(price) {
     }) + " MT";
 }
 
+/* MENU MOBILE */
+
+function openSidebar() {
+    sidebar.classList.add("open");
+    sidebarBackdrop.classList.add("show");
+    document.body.classList.add("menu-open");
+    mobileMenu.setAttribute("aria-expanded", "true");
+}
+
+function closeSidebar() {
+    sidebar.classList.remove("open");
+    sidebarBackdrop.classList.remove("show");
+    document.body.classList.remove("menu-open");
+    mobileMenu.setAttribute("aria-expanded", "false");
+}
+
+mobileMenu.addEventListener("click", () => {
+    if (sidebar.classList.contains("open")) {
+        closeSidebar();
+    } else {
+        openSidebar();
+    }
+});
+
+sidebarBackdrop.addEventListener("click", closeSidebar);
+
+sidebar.querySelectorAll(".menu a").forEach(link => {
+    link.addEventListener("click", closeSidebar);
+});
+
+document.addEventListener("keydown", event => {
+    if (event.key === "Escape") {
+        closeSidebar();
+    }
+});
+
+window.addEventListener("resize", () => {
+    if (window.innerWidth > 850) {
+        closeSidebar();
+    }
+});
+
+/* MODAL */
 
 function openModal() {
     modal.classList.add("show");
 }
-
 
 function resetForm() {
     form.reset();
@@ -966,14 +1125,12 @@ function resetForm() {
     hideMessage();
 }
 
-
 function closeModal() {
     if (submitting) return;
 
     modal.classList.remove("show");
     resetForm();
 }
-
 
 /* VALIDAR FICHEIROS */
 
@@ -995,7 +1152,6 @@ function validateFile(file, kind) {
         throw new Error("Selecciona um ficheiro PDF válido.");
     }
 }
-
 
 /* UPLOAD PARA O MEGA */
 
@@ -1039,7 +1195,6 @@ async function uploadFile(file, kind) {
     return data.fileId;
 }
 
-
 /* DADOS DO FORMULÁRIO */
 
 function getProductData() {
@@ -1067,7 +1222,6 @@ function getProductData() {
         category
     };
 }
-
 
 /* CRIAR PRODUTO */
 
@@ -1132,7 +1286,6 @@ async function createProduct(productData) {
         throw error;
     }
 }
-
 
 /* EDITAR PRODUTO */
 
@@ -1206,7 +1359,6 @@ async function updateProduct(product) {
     });
 }
 
-
 /* CARREGAR PRODUTOS */
 
 function listenToProducts(user) {
@@ -1242,7 +1394,6 @@ function listenToProducts(user) {
         `;
     });
 }
-
 
 /* MOSTRAR PRODUTOS */
 
@@ -1324,6 +1475,7 @@ function renderProducts() {
                         class="action-btn"
                         data-action="edit"
                         data-id="${escapeHTML(product.id)}"
+                        type="button"
                     >
                         Editar
                     </button>
@@ -1332,6 +1484,7 @@ function renderProducts() {
                         class="action-btn delete"
                         data-action="delete"
                         data-id="${escapeHTML(product.id)}"
+                        type="button"
                     >
                         Excluir
                     </button>
@@ -1344,7 +1497,6 @@ function renderProducts() {
 
     `).join("");
 }
-
 
 /* PREPARAR EDIÇÃO */
 
@@ -1386,7 +1538,6 @@ function editProduct(productId) {
     openModal();
 }
 
-
 /* EXCLUIR PRODUTO */
 
 async function deleteProduct(productId) {
@@ -1417,7 +1568,6 @@ async function deleteProduct(productId) {
         );
     }
 }
-
 
 /* GUARDAR PRODUTO */
 
@@ -1489,7 +1639,6 @@ form.addEventListener("submit", async event => {
     }
 });
 
-
 /* ACÇÕES DOS CARTÕES */
 
 container.addEventListener("click", event => {
@@ -1510,7 +1659,6 @@ container.addEventListener("click", event => {
         deleteProduct(productId);
     }
 });
-
 
 /* AUTENTICAÇÃO */
 
@@ -1540,7 +1688,6 @@ onAuthStateChanged(auth, user => {
     listenToProducts(user);
 });
 
-
 /* MODAL */
 
 document.getElementById("openModal").addEventListener("click", () => {
@@ -1550,11 +1697,9 @@ document.getElementById("openModal").addEventListener("click", () => {
     openModal();
 });
 
-
 document.getElementById("closeModal").addEventListener("click", closeModal);
 
 document.getElementById("cancelModal").addEventListener("click", closeModal);
-
 
 modal.addEventListener("click", event => {
 
@@ -1563,9 +1708,7 @@ modal.addEventListener("click", event => {
     }
 });
 
-
 searchInput.addEventListener("input", renderProducts);
-
 
 /* NOMES DOS FICHEIROS */
 
@@ -1577,7 +1720,6 @@ imageInput.addEventListener("change", () => {
         file ? file.name : "";
 });
 
-
 pdfInput.addEventListener("change", () => {
 
     const file = pdfInput.files[0];
@@ -1585,15 +1727,6 @@ pdfInput.addEventListener("change", () => {
     document.getElementById("pdfFileName").textContent =
         file ? file.name : "";
 });
-
-
-/* MENU MOBILE */
-
-document.getElementById("mobileMenu").addEventListener("click", () => {
-
-    document.getElementById("sidebar").classList.toggle("open");
-});
-
 
 /* TERMINAR SESSÃO */
 
@@ -1615,12 +1748,13 @@ document.getElementById("logoutLink").addEventListener("click", async event => {
     }
 });
 
-
 /* SUPORTE */
 
 document.getElementById("supportLink").addEventListener("click", event => {
 
     event.preventDefault();
+
+    closeSidebar();
 
     alert("O suporte será configurado nesta página.");
 });
