@@ -5,530 +5,448 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#030a12">
-<title>Vitrine | LowticketPay</title>
+<title>LowticketPay - Vitrine</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
 
 <style>
-:root {
-    --bg:#030a12;
-    --card:#0b1420;
-    --card2:#101c2a;
-    --border:#202d3b;
-    --text:#f4f7fb;
-    --muted:#8b9aaa;
-    --blue:#20baf0;
-    --green:#70df39;
-}
-
 * {
-    box-sizing:border-box;
-    margin:0;
-    padding:0;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 body {
-    font-family:'Plus Jakarta Sans',sans-serif;
-    background:var(--bg);
-    color:var(--text);
-    min-height:100vh;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: #030a12;
+    color: #fff;
+    min-height: 100vh;
 }
 
-body.menu-open {
-    overflow:hidden;
+/* BARRA SUPERIOR */
+
+.top-toolbar {
+    width: 100%;
+    height: 85px;
+    padding: 0 7.5%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #030a12;
 }
 
-/* CABEÇALHO */
-
-header {
-    height:72px;
-    border-bottom:1px solid var(--border);
-    background:#07111c;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:15px;
-    padding:0 6%;
-    position:sticky;
-    top:0;
-    z-index:10;
+.toolbar-left,
+.toolbar-right {
+    display: flex;
+    align-items: center;
 }
 
-.header-left {
-    display:flex;
-    align-items:center;
-    gap:13px;
-    min-width:0;
+.toolbar-right {
+    gap: 35px;
 }
 
-.logo {
-    display:flex;
-    align-items:center;
-    gap:10px;
-    font-size:20px;
-    font-weight:800;
-    letter-spacing:-.7px;
-    white-space:nowrap;
+.toolbar-button {
+    width: 40px;
+    height: 40px;
+    background: transparent;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
 }
 
-.logo-icon {
-    width:36px;
-    min-width:36px;
-    height:36px;
-    border-radius:9px;
-    display:grid;
-    place-items:center;
-    background:var(--green);
-    color:#061108;
-    font-weight:800;
-    flex-shrink:0;
+.toolbar-button svg {
+    width: 40px;
+    height: 40px;
+    fill: none;
+    stroke: #858585;
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
 }
 
-.logo span {
-    color:var(--green);
+/* MENU */
+
+.menu-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.72);
+    opacity: 0;
+    visibility: hidden;
+    transition: .3s ease;
+    z-index: 998;
 }
 
-.header-label {
-    color:var(--muted);
-    font-size:11px;
-    font-weight:700;
-    white-space:nowrap;
+.menu-overlay.active {
+    opacity: 1;
+    visibility: visible;
 }
 
-/* BOTÃO DE MENU */
-
-.mobile-menu {
-    display:none;
-    width:42px;
-    min-width:42px;
-    height:42px;
-    flex:0 0 42px;
-    border:1px solid var(--border);
-    border-radius:8px;
-    background:#102333;
-    color:white;
-    font-size:23px;
-    align-items:center;
-    justify-content:center;
-    padding:0;
-    line-height:1;
-    cursor:pointer;
+.side-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 240px;
+    max-width: 85%;
+    height: 100vh;
+    height: 100dvh;
+    background: #030a12;
+    border-right: 1px solid #292929;
+    padding: 25px 18px;
+    transform: translateX(-100%);
+    transition: transform .3s ease;
+    z-index: 999;
+    overflow-y: auto;
 }
 
-/* MENU LATERAL */
-
-.sidebar {
-    position:fixed;
-    top:72px;
-    left:0;
-    bottom:0;
-    width:245px;
-    background:#07111c;
-    border-right:1px solid var(--border);
-    padding:25px 17px;
-    z-index:30;
-    display:flex;
-    flex-direction:column;
-    overflow-y:auto;
-    transform:translateX(-100%);
-    transition:transform .25s ease;
+.side-menu.active {
+    transform: translateX(0);
 }
 
-.sidebar.open {
-    transform:translateX(0);
+.menu-header {
+    display: flex;
+    justify-content: flex-end;
+    padding: 5px 0 20px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #242a32;
 }
 
-.sidebar-logo {
-    display:flex;
-    align-items:center;
-    gap:10px;
-    padding:0 10px;
-    margin-bottom:35px;
+.menu-close {
+    background: transparent;
+    border: none;
+    color: #969eaa;
+    font-size: 30px;
+    cursor: pointer;
+    line-height: 1;
 }
 
-.sidebar-logo .logo-icon {
-    width:37px;
-    min-width:37px;
-    height:37px;
+.menu-links {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
 }
 
-.sidebar-logo .logo-name {
-    font-size:19px;
-    font-weight:800;
-    white-space:nowrap;
+.menu-links a {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 15px 13px;
+    border-radius: 9px;
+    color: #969eaa;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 700;
+    transition: .2s ease;
 }
 
-.sidebar-logo .logo-name span {
-    color:var(--green);
+.menu-links a svg {
+    width: 21px;
+    height: 21px;
+    min-width: 21px;
+    flex-shrink: 0;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
 }
 
-.menu-label {
-    color:#657587;
-    font-size:10px;
-    font-weight:800;
-    letter-spacing:1.3px;
-    padding:0 12px;
-    margin-bottom:13px;
-}
-
-.menu {
-    display:flex;
-    flex-direction:column;
-    gap:7px;
-}
-
-.menu a,
-.sidebar-bottom a {
-    text-decoration:none;
-    color:#9aabba;
-    padding:13px 12px;
-    border-radius:9px;
-    display:flex;
-    align-items:center;
-    gap:12px;
-    font-size:13px;
-    font-weight:600;
-    transition:background .2s,color .2s;
-    min-width:0;
-}
-
-.menu a:hover,
-.menu a.active,
-.sidebar-bottom a:hover {
-    color:var(--blue);
-    background:#102333;
-}
-
-.menu-icon {
-    width:20px;
-    min-width:20px;
-    height:20px;
-    flex:0 0 20px;
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    font-size:17px;
-    line-height:1;
-}
-
-.sidebar-bottom {
-    margin-top:auto;
-    display:flex;
-    flex-direction:column;
-    gap:7px;
-    padding-top:25px;
-}
-
-/* FUNDO DO MENU */
-
-.sidebar-backdrop {
-    display:none;
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,.68);
-    z-index:25;
-}
-
-.sidebar-backdrop.show {
-    display:block;
+.menu-links a:hover,
+.menu-links a.active {
+    background: #102237;
+    color: #20baf0;
 }
 
 /* CONTEÚDO */
 
-main {
-    max-width:1200px;
-    margin:auto;
-    padding:45px 25px 60px;
+.main {
+    width: 100%;
+    max-width: 1250px;
+    margin: auto;
+    padding: 30px;
 }
 
-.hero {
-    margin-bottom:35px;
+.topbar {
+    margin-bottom: 30px;
 }
 
-.hero-label {
-    color:var(--green);
-    font-size:10px;
-    font-weight:800;
-    letter-spacing:1.5px;
-    margin-bottom:13px;
+h1 {
+    font-size: 23px;
+    font-weight: 800;
 }
 
-.hero h1 {
-    font-size:clamp(25px,4vw,38px);
-    font-weight:800;
-    letter-spacing:-1.4px;
-    line-height:1.2;
-    max-width:650px;
+.subtitle {
+    color: #969eaa;
+    font-size: 12px;
+    margin-top: 7px;
 }
 
-.hero p {
-    color:var(--muted);
-    font-size:13px;
-    line-height:1.7;
-    margin-top:12px;
-    max-width:550px;
+/* PESQUISA */
+
+.search-box {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #091522;
+    border: 1px solid #292929;
+    border-radius: 8px;
+    padding: 0 15px;
+    height: 46px;
+    margin-bottom: 20px;
 }
 
-/* PESQUISA E CATEGORIAS */
-
-.toolbar {
-    display:flex;
-    gap:12px;
-    margin-bottom:25px;
-    flex-wrap:wrap;
+.search-box span {
+    color: #969eaa;
+    font-size: 21px;
 }
 
-.search {
-    flex:1;
-    min-width:200px;
-    height:46px;
-    background:var(--card);
-    border:1px solid var(--border);
-    border-radius:9px;
-    color:white;
-    padding:0 15px;
-    outline:none;
-    font:inherit;
-    font-size:12px;
+.search-box input {
+    width: 100%;
+    background: transparent;
+    border: 0;
+    outline: none;
+    color: #fff;
+    font-family: inherit;
+    font-size: 12px;
 }
 
-.search:focus {
-    border-color:var(--blue);
+.search-box input::placeholder {
+    color: #777;
 }
 
-.category-filter {
-    height:46px;
-    min-width:155px;
-    background:var(--card);
-    border:1px solid var(--border);
-    border-radius:9px;
-    color:white;
-    padding:0 12px;
-    outline:none;
-    font:inherit;
-    font-size:12px;
+/* CATEGORIAS */
+
+.categories {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    overflow-x: auto;
+    padding-bottom: 5px;
+    margin-bottom: 27px;
+    scrollbar-width: none;
+}
+
+.categories::-webkit-scrollbar {
+    display: none;
+}
+
+.category {
+    flex-shrink: 0;
+    padding: 9px 16px;
+    border: 1px solid #292929;
+    border-radius: 7px;
+    background: #091522;
+    color: #969eaa;
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.category:hover {
+    border-color: #20baf0;
+}
+
+.category.active {
+    background: #102237;
+    color: #20baf0;
+    border-color: #20baf0;
 }
 
 /* PRODUTOS */
 
-.products-heading {
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:10px;
-    margin-bottom:18px;
+.section-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 17px;
 }
 
-.products-heading h2 {
-    font-size:17px;
-    font-weight:800;
+.section-title h3 {
+    font-size: 15px;
 }
 
-.product-count {
-    color:var(--muted);
-    font-size:11px;
+.section-title span {
+    font-size: 11px;
+    color: #969eaa;
 }
 
-.products-grid {
-    display:grid;
-    grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
-    gap:18px;
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0,1fr));
+    gap: 16px;
 }
 
-.product-card {
-    background:var(--card);
-    border:1px solid var(--border);
-    border-radius:12px;
-    overflow:hidden;
-    min-width:0;
-    transition:border-color .2s,transform .2s;
+.product {
+    background: #091522;
+    border: 1px solid #292929;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: .2s;
+    min-width: 0;
 }
 
-.product-card:hover {
-    border-color:#36536a;
-    transform:translateY(-3px);
+.product:hover {
+    border-color: #34485b;
+    transform: translateY(-2px);
 }
 
 .product-image {
-    height:175px;
-    background:#101d2a;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    overflow:hidden;
+    width: 100%;
+    aspect-ratio: 1/1;
+    background: #102030;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
 }
 
 .product-image img {
-    width:100%;
-    height:100%;
-    object-fit:cover;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
-.image-placeholder {
-    color:#52677a;
-    font-size:34px;
+.product-image .material-icons-outlined {
+    font-size: 40px;
+    color: #526174;
 }
 
 .product-info {
-    padding:15px;
+    padding: 15px;
 }
 
-.category {
-    display:inline-block;
-    padding:5px 8px;
-    border-radius:5px;
-    background:#102536;
-    color:var(--blue);
-    font-size:9px;
-    font-weight:800;
-    margin-bottom:11px;
-}
-
-.product-name {
-    font-size:14px;
-    font-weight:800;
-    line-height:1.45;
-    overflow-wrap:anywhere;
-    margin-bottom:7px;
+.product-info h4 {
+    font-size: 13px;
+    margin-bottom: 7px;
+    line-height: 1.5;
 }
 
 .description {
-    font-size:11px;
-    color:var(--muted);
-    line-height:1.6;
-    overflow-wrap:anywhere;
-    min-height:35px;
+    font-size: 11px;
+    color: #969eaa;
+    line-height: 1.6;
+    margin-bottom: 15px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.product-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
 }
 
 .price {
-    color:var(--green);
-    font-size:18px;
-    font-weight:800;
-    margin-top:14px;
+    font-size: 14px;
+    font-weight: 800;
+    white-space: nowrap;
 }
 
-/* ESTADO VAZIO */
-
-.empty-state {
-    grid-column:1/-1;
-    padding:55px 20px;
-    text-align:center;
-    background:var(--card);
-    border:1px dashed var(--border);
-    border-radius:12px;
+.buy {
+    background: #20baf0;
+    color: #030a12;
+    border: 0;
+    padding: 9px 12px;
+    border-radius: 6px;
+    font-size: 10px;
+    font-weight: 800;
+    cursor: pointer;
+    text-decoration: none;
+    white-space: nowrap;
 }
 
-.empty-icon {
-    font-size:35px;
-    margin-bottom:12px;
+/* VAZIO */
+
+.empty {
+    grid-column: 1/-1;
+    text-align: center;
+    padding: 55px 15px;
+    background: #091522;
+    border: 1px solid #292929;
+    border-radius: 10px;
+    color: #969eaa;
 }
 
-.empty-state h3 {
-    font-size:14px;
-    margin-bottom:8px;
+.empty span {
+    display: block;
+    font-size: 35px;
+    margin-bottom: 12px;
 }
 
-.empty-state p {
-    color:var(--muted);
-    font-size:11px;
-    line-height:1.6;
+.empty p {
+    font-size: 12px;
 }
 
-/* RODAPÉ */
+/* RESPONSIVIDADE */
 
-footer {
-    border-top:1px solid var(--border);
-    padding:25px;
-    text-align:center;
-    color:var(--muted);
-    font-size:10px;
-}
-
-/* MOBILE */
-
-@media(max-width:850px) {
-    header {
-        padding:0 17px;
-    }
-
-    .mobile-menu {
-        display:flex;
+@media(max-width: 900px) {
+    .grid {
+        grid-template-columns: repeat(2,minmax(0,1fr));
     }
 }
 
-@media(max-width:550px) {
-    header {
-        height:62px;
-        padding:0 12px;
+@media(max-width: 700px) {
+    .top-toolbar {
+        height: 75px;
+        padding: 0 20px;
     }
 
-    .sidebar {
-        top:62px;
+    .toolbar-button svg {
+        width: 27px;
+        height: 35px;
     }
 
-    .logo {
-        font-size:17px;
+    .main {
+        padding: 22px 15px;
     }
 
-    .logo-icon {
-        width:32px;
-        min-width:32px;
-        height:32px;
-    }
-
-    .header-label {
-        font-size:9px;
-    }
-
-    main {
-        padding:32px 15px 45px;
-    }
-
-    .products-grid {
-        grid-template-columns:repeat(2,minmax(0,1fr));
-        gap:10px;
-    }
-
-    .product-image {
-        height:120px;
+    .grid {
+        grid-template-columns: repeat(2,minmax(0,1fr));
+        gap: 10px;
     }
 
     .product-info {
-        padding:11px;
+        padding: 11px;
     }
 
-    .product-name {
-        font-size:12px;
-    }
-
-    .description {
-        font-size:10px;
+    .product-info h4 {
+        font-size: 11px;
     }
 
     .price {
-        font-size:15px;
+        font-size: 12px;
     }
 
-    .category-filter {
-        min-width:125px;
+    .buy {
+        padding: 8px;
+        font-size: 9px;
+    }
+
+    h1 {
+        font-size: 20px;
+    }
+
+    .search-box {
+        height: 44px;
+    }
+
+    .category {
+        padding: 9px 14px;
     }
 }
 
-@media(max-width:350px) {
-    .header-label {
-        font-size:8px;
-    }
-
-    .mobile-menu {
-        width:38px;
-        min-width:38px;
-        flex-basis:38px;
-        height:38px;
-    }
-
-    .logo {
-        font-size:15px;
+@media(max-width: 350px) {
+    .product-bottom {
+        flex-wrap: wrap;
     }
 }
 </style>
@@ -536,134 +454,130 @@ footer {
 
 <body>
 
-<header>
+<!-- BARRA SUPERIOR -->
 
-    <div class="header-left">
-
-        <button
-            class="mobile-menu"
-            id="mobileMenu"
-            type="button"
-            aria-label="Abrir menu"
-            aria-expanded="false"
-        >☰</button>
-
-        <div class="logo">
-            <div class="logo-icon">L</div>
-            <div>Lowticket<span>Pay</span></div>
-        </div>
-
+<nav class="top-toolbar">
+    <div class="toolbar-left">
+        <button class="toolbar-button"
+                id="menuButton"
+                aria-label="Abrir menu"
+                aria-expanded="false"
+                aria-controls="sideMenu"
+                type="button">
+            <svg viewBox="0 0 24 24">
+                <path d="M3 5h18"/>
+                <path d="M3 12h18"/>
+                <path d="M3 19h18"/>
+            </svg>
+        </button>
     </div>
+</nav>
 
-    <div class="header-label">VITRINE PÚBLICA</div>
+<!-- FUNDO DO MENU -->
 
-</header>
+<div class="menu-overlay" id="menuOverlay"></div>
 
 <!-- MENU LATERAL -->
 
-<aside class="sidebar" id="sidebar">
+<aside class="side-menu" id="sideMenu" aria-label="Menu principal">
 
-    <div class="sidebar-logo">
-        <div class="logo-icon">L</div>
-        <div class="logo-name">Lowticket<span>Pay</span></div>
+    <div class="menu-header">
+        <button class="menu-close"
+                id="menuClose"
+                aria-label="Fechar menu"
+                type="button">
+            &times;
+        </button>
     </div>
 
-    <div class="menu-label">MENU PRINCIPAL</div>
-
-    <nav class="menu">
+    <nav class="menu-links">
 
         <a href="dashboard.html">
-            <span class="menu-icon">▦</span>
-            <span>Dashboard</span>
+            <svg viewBox="0 0 24 24">
+                <rect x="3" y="3" width="8" height="8" rx="1"/>
+                <rect x="13" y="3" width="8" height="5" rx="1"/>
+                <rect x="13" y="10" width="8" height="11" rx="1"/>
+                <rect x="3" y="13" width="8" height="8" rx="1"/>
+            </svg>
+            Dashboard
         </a>
 
         <a href="produtos.html">
-            <span class="menu-icon">▣</span>
-            <span>Produtos</span>
+            <svg viewBox="0 0 24 24">
+                <path d="m3 7 9-4 9 4-9 4-9-4Z"/>
+                <path d="M3 7v10l9 4 9-4V7"/>
+                <path d="M12 11v10"/>
+            </svg>
+            Produtos
         </a>
 
         <a href="vitrine.html" class="active">
-            <span class="menu-icon">◫</span>
-            <span>Vitrine</span>
+            <svg viewBox="0 0 24 24">
+                <path d="M3 10h18l-2-6H5l-2 6Z"/>
+                <path d="M4 10v10h16V10"/>
+                <path d="M9 20v-6h6v6"/>
+            </svg>
+            Vitrine
         </a>
 
         <a href="financeiro.html">
-            <span class="menu-icon">◷</span>
-            <span>Financeiro</span>
+            <svg viewBox="0 0 24 24">
+                <rect x="3" y="5" width="18" height="15" rx="2"/>
+                <path d="M3 10h18"/>
+                <path d="M16 15h2"/>
+            </svg>
+            Financeiro
+        </a>
+
+        <a href="#" id="logoutButton">
+            <svg viewBox="0 0 24 24">
+                <path d="M10 17l5-5-5-5"/>
+                <path d="M15 12H3"/>
+                <path d="M12 3h7a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-7"/>
+            </svg>
+            Sair
         </a>
 
     </nav>
+</aside>
 
-    <div class="sidebar-bottom">
+<!-- CONTEÚDO -->
 
-        <a href="#" id="supportLink">
-            <span class="menu-icon">◉</span>
-            <span>Suporte</span>
-        </a>
+<main class="main">
 
-        <a href="index.html" id="logoutLink">
-            <span class="menu-icon">⇥</span>
-            <span>Sair</span>
-        </a>
+    <header class="topbar">
+        <h1>Vitrine</h1>
+        <p class="subtitle">Encontra os nossos produtos</p>
+    </header>
+
+    <div class="search-box">
+        <span class="material-icons-outlined">search</span>
+        <input type="text" id="pesquisa"
+               placeholder="Pesquisar produtos...">
+    </div>
+
+    <div class="categories">
+
+        <button class="category active" data-category="Todos">Todos</button>
+        <button class="category" data-category="E-books">E-books</button>
+        <button class="category" data-category="Cursos">Cursos</button>
+        <button class="category" data-category="Mentorias">Mentorias</button>
+        <button class="category" data-category="Outros">Outros</button>
 
     </div>
 
-</aside>
-
-<div class="sidebar-backdrop" id="sidebarBackdrop"></div>
-
-<main>
-
-    <section class="hero">
-
-        <div class="hero-label">LOWTICKETPAY MARKETPLACE</div>
-
-        <h1>Descubra produtos digitais.</h1>
-
-        <p>
-            Explore ebooks, cursos, templates e outros produtos
-            digitais disponíveis na nossa vitrine.
-        </p>
-
-    </section>
-
-    <section class="toolbar">
-
-        <input
-            type="search"
-            class="search"
-            id="searchInput"
-            placeholder="Pesquisar produtos..."
-        >
-
-        <select class="category-filter" id="categoryFilter">
-            <option value="">Todas categorias</option>
-            <option value="Ebook">Ebook</option>
-            <option value="Curso online">Curso online</option>
-            <option value="Software">Software</option>
-            <option value="Templates">Templates</option>
-            <option value="Áudio">Áudio</option>
-            <option value="Vídeo aula">Vídeo aula</option>
-            <option value="Outros">Outros</option>
-        </select>
-
-    </section>
-
     <section>
 
-        <div class="products-heading">
-            <h2>Todos os produtos</h2>
-            <span class="product-count" id="productCount">
-                A carregar...
-            </span>
+        <div class="section-title">
+            <h3>Todos os produtos</h3>
+            <span id="contador">0 produtos</span>
         </div>
 
-        <div class="products-grid" id="productsContainer">
+        <div class="grid" id="produtos">
 
-            <div class="empty-state">
-                <div class="empty-icon">▣</div>
-                <h3>A carregar produtos...</h3>
-                <p>Aguarda um momento.</p>
+            <div class="empty">
+                <span class="material-icons-outlined">inventory_2</span>
+                <p>A carregar produtos...</p>
             </div>
 
         </div>
@@ -672,244 +586,296 @@ footer {
 
 </main>
 
-<footer>
-    © 2026 LowticketPay. Todos os direitos reservados.
-</footer>
+<!-- FIREBASE -->
 
 <script type="module">
 
-import { db } from "./js/firebase.js";
+import { auth, db } from "./js/firebase.js";
+
+import {
+    onAuthStateChanged,
+    signOut
+} from "https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js";
 
 import {
     collection,
     onSnapshot
 } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-firestore.js";
 
+/* MENU */
+
+const menuButton = document.getElementById("menuButton");
+const menuClose = document.getElementById("menuClose");
+const sideMenu = document.getElementById("sideMenu");
+const menuOverlay = document.getElementById("menuOverlay");
+
+function abrirMenu() {
+    sideMenu.classList.add("active");
+    menuOverlay.classList.add("active");
+    menuButton.setAttribute("aria-expanded", "true");
+    document.body.style.overflow = "hidden";
+}
+
+function fecharMenu() {
+    sideMenu.classList.remove("active");
+    menuOverlay.classList.remove("active");
+    menuButton.setAttribute("aria-expanded", "false");
+    document.body.style.overflow = "";
+}
+
+menuButton.addEventListener("click", abrirMenu);
+menuClose.addEventListener("click", fecharMenu);
+menuOverlay.addEventListener("click", fecharMenu);
+
+document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") fecharMenu();
+});
+
+document.querySelectorAll(".menu-links a").forEach(link => {
+    link.addEventListener("click", fecharMenu);
+});
+
+/* SAIR */
+
+document.getElementById("logoutButton").addEventListener("click", async (event) => {
+    event.preventDefault();
+
+    try {
+        await signOut(auth);
+        window.location.replace("index.html");
+    } catch (error) {
+        console.error("Erro ao sair:", error);
+        alert("Não foi possível terminar a sessão.");
+    }
+});
+
 /* ELEMENTOS */
 
-const container = document.getElementById("productsContainer");
-const searchInput = document.getElementById("searchInput");
-const categoryFilter = document.getElementById("categoryFilter");
-const productCount = document.getElementById("productCount");
+const produtosContainer = document.getElementById("produtos");
+const pesquisa = document.getElementById("pesquisa");
+const contador = document.getElementById("contador");
+const botoesCategoria = document.querySelectorAll(".category");
 
-const sidebar = document.getElementById("sidebar");
-const mobileMenu = document.getElementById("mobileMenu");
-const backdrop = document.getElementById("sidebarBackdrop");
+let todosProdutos = [];
+let categoriaAtual = "Todos";
 
-let products = [];
+/* MOEDA */
 
-/* MENU MOBILE */
-
-function openSidebar() {
-    sidebar.classList.add("open");
-    backdrop.classList.add("show");
-    document.body.classList.add("menu-open");
-    mobileMenu.setAttribute("aria-expanded", "true");
-}
-
-function closeSidebar() {
-    sidebar.classList.remove("open");
-    backdrop.classList.remove("show");
-    document.body.classList.remove("menu-open");
-    mobileMenu.setAttribute("aria-expanded", "false");
-}
-
-mobileMenu.addEventListener("click", () => {
-    if (sidebar.classList.contains("open")) {
-        closeSidebar();
-    } else {
-        openSidebar();
-    }
-});
-
-backdrop.addEventListener("click", closeSidebar);
-
-sidebar.querySelectorAll(".menu a").forEach(link => {
-    link.addEventListener("click", closeSidebar);
-});
-
-document.addEventListener("keydown", event => {
-    if (event.key === "Escape") {
-        closeSidebar();
-    }
-});
-
-window.addEventListener("resize", () => {
-    if (window.innerWidth > 850) {
-        closeSidebar();
-    }
-});
-
-/* AUXILIARES */
-
-function escapeHTML(value) {
-    return String(value ?? "").replace(/[&<>"']/g, character => ({
-        "&": "&amp;",
-        "<": "&lt;",
-        ">": "&gt;",
-        '"': "&quot;",
-        "'": "&#039;"
-    })[character]);
-}
-
-function formatPrice(price) {
-    return Number(price || 0).toLocaleString("pt-MZ", {
+function formatarMoeda(valor) {
+    return Number(valor || 0).toLocaleString("pt-MZ", {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
     }) + " MT";
 }
 
-/* MOSTRAR PRODUTOS */
+/* NORMALIZAR TEXTO */
 
-function renderProducts() {
+function normalizar(texto) {
+    return String(texto || "")
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase()
+        .trim();
+}
 
-    const search = searchInput.value.trim().toLowerCase();
-    const category = categoryFilter.value;
+/* CATEGORIAS */
 
-    const filtered = products.filter(product => {
+function categoriaCompativel(produtoCategoria, filtro) {
 
-        const name = String(product.name || "").toLowerCase();
-        const description = String(product.description || "").toLowerCase();
-        const productCategory = String(product.category || "");
+    if (filtro === "Todos") return true;
 
-        const matchesSearch =
-            name.includes(search) ||
-            description.includes(search) ||
-            productCategory.toLowerCase().includes(search);
+    const categoria = normalizar(produtoCategoria);
 
-        const matchesCategory =
-            !category || productCategory === category;
+    if (filtro === "E-books") {
+        return categoria.includes("ebook") ||
+               categoria.includes("e-book");
+    }
 
-        return matchesSearch && matchesCategory;
+    if (filtro === "Cursos") {
+        return categoria.includes("curso");
+    }
+
+    if (filtro === "Mentorias") {
+        return categoria.includes("mentoria");
+    }
+
+    if (filtro === "Outros") {
+        return !categoria.includes("ebook") &&
+               !categoria.includes("e-book") &&
+               !categoria.includes("curso") &&
+               !categoria.includes("mentoria");
+    }
+
+    return true;
+}
+
+/* RENDERIZAR PRODUTOS */
+
+function renderizarProdutos() {
+
+    const termo = normalizar(pesquisa.value);
+
+    const filtrados = todosProdutos.filter(produto => {
+
+        const nome = normalizar(produto.nome);
+        const descricao = normalizar(produto.descricao);
+
+        const correspondePesquisa =
+            nome.includes(termo) || descricao.includes(termo);
+
+        const correspondeCategoria =
+            categoriaCompativel(produto.categoria, categoriaAtual);
+
+        return correspondePesquisa && correspondeCategoria;
     });
 
-    productCount.textContent =
-        filtered.length + (filtered.length === 1 ? " produto" : " produtos");
+    contador.textContent =
+        filtrados.length + (filtrados.length === 1 ? " produto" : " produtos");
 
-    if (!filtered.length) {
+    produtosContainer.innerHTML = "";
 
-        container.innerHTML = `
-            <div class="empty-state">
-                <div class="empty-icon">▣</div>
-                <h3>Nenhum produto encontrado</h3>
-                <p>
-                    Ainda não existem produtos nesta categoria
-                    ou a pesquisa não encontrou resultados.
-                </p>
+    if (!filtrados.length) {
+        produtosContainer.innerHTML = `
+            <div class="empty">
+                <span class="material-icons-outlined">inventory_2</span>
+                <p>Nenhum produto encontrado.</p>
             </div>
         `;
-
         return;
     }
 
-    container.innerHTML = filtered.map(product => {
+    filtrados.forEach(produto => {
 
-        const imageUrl = product.imageFileId
-            ? "/api/image?fileId=" + encodeURIComponent(product.imageFileId)
-            : "";
+        const card = document.createElement("article");
+        card.className = "product";
 
-        return `
-            <article class="product-card">
+        const imagem = document.createElement("div");
+        imagem.className = "product-image";
 
-                <div class="product-image">
+        if (produto.imageFileId) {
 
-                    ${
-                        imageUrl
-                        ? `
-                            <img
-                                src="${imageUrl}"
-                                alt="${escapeHTML(product.name)}"
-                                loading="lazy"
-                                onerror="this.style.display='none';this.nextElementSibling.style.display='block';"
-                            >
-                            <div class="image-placeholder" style="display:none;">▣</div>
-                          `
-                        : `<div class="image-placeholder">▣</div>`
-                    }
+            const img = document.createElement("img");
+            img.src = "/api/image?fileId=" +
+                encodeURIComponent(produto.imageFileId);
+            img.alt = produto.nome || "Produto";
+            img.loading = "lazy";
 
-                </div>
+            img.onerror = () => {
+                imagem.innerHTML = `
+                    <span class="material-icons-outlined">image</span>
+                `;
+            };
 
-                <div class="product-info">
+            imagem.appendChild(img);
 
-                    <span class="category">
-                        ${escapeHTML(product.category || "Outros")}
-                    </span>
+        } else {
 
-                    <h3 class="product-name">
-                        ${escapeHTML(product.name || "Produto sem nome")}
-                    </h3>
+            imagem.innerHTML = `
+                <span class="material-icons-outlined">image</span>
+            `;
 
-                    <p class="description">
-                        ${escapeHTML(product.description || "")}
-                    </p>
+        }
 
-                    <div class="price">
-                        ${formatPrice(product.price)}
-                    </div>
+        const info = document.createElement("div");
+        info.className = "product-info";
 
-                </div>
+        const nome = document.createElement("h4");
+        nome.textContent = produto.nome || "Produto sem nome";
 
-            </article>
-        `;
+        const descricao = document.createElement("p");
+        descricao.className = "description";
+        descricao.textContent = produto.descricao || "Sem descrição disponível.";
 
-    }).join("");
+        const bottom = document.createElement("div");
+        bottom.className = "product-bottom";
+
+        const preco = document.createElement("span");
+        preco.className = "price";
+        preco.textContent = formatarMoeda(produto.preco);
+
+        const comprar = document.createElement("a");
+        comprar.className = "buy";
+        comprar.textContent = "Comprar";
+
+        const checkoutUrl =
+            produto.checkoutUrl ||
+            produto.linkCheckout ||
+            produto.checkoutLink ||
+            "";
+
+        if (checkoutUrl) {
+            comprar.href = checkoutUrl;
+            comprar.target = "_blank";
+            comprar.rel = "noopener noreferrer";
+        } else {
+            comprar.href = "#";
+            comprar.addEventListener("click", (event) => {
+                event.preventDefault();
+                alert("O checkout deste produto ainda não está disponível.");
+            });
+        }
+
+        bottom.append(preco, comprar);
+        info.append(nome, descricao, bottom);
+        card.append(imagem, info);
+
+        produtosContainer.appendChild(card);
+
+    });
+
 }
 
-/* PESQUISA */
+/* FILTRO DE PESQUISA */
 
-searchInput.addEventListener("input", renderProducts);
-categoryFilter.addEventListener("change", renderProducts);
+pesquisa.addEventListener("input", renderizarProdutos);
 
-/* SUPORTE */
+/* FILTRO DE CATEGORIA */
 
-document.getElementById("supportLink").addEventListener("click", event => {
-    event.preventDefault();
-    closeSidebar();
-    alert("O suporte será configurado nesta página.");
+botoesCategoria.forEach(botao => {
+
+    botao.addEventListener("click", () => {
+
+        botoesCategoria.forEach(item =>
+            item.classList.remove("active")
+        );
+
+        botao.classList.add("active");
+        categoriaAtual = botao.dataset.category;
+
+        renderizarProdutos();
+
+    });
+
 });
 
-/* CARREGAR PRODUTOS PUBLICAMENTE */
+/* CARREGAR PRODUTOS PÚBLICOS */
 
-onSnapshot(
-    collection(db, "produtos"),
+onSnapshot(collection(db, "produtos"), (snapshot) => {
 
-    snapshot => {
+    todosProdutos = snapshot.docs
+        .map(documento => ({
+            id: documento.id,
+            ...documento.data()
+        }))
+        .filter(produto =>
+            produto.ativo !== false &&
+            produto.status !== "inativo"
+        );
 
-        products = snapshot.docs.map(item => ({
-            id: item.id,
-            ...item.data()
-        }));
+    renderizarProdutos();
 
-        products.sort((a, b) => {
+}, (error) => {
 
-            const dateA = a.createdAt?.toMillis?.() || 0;
-            const dateB = b.createdAt?.toMillis?.() || 0;
+    console.error("Erro ao carregar produtos:", error);
 
-            return dateB - dateA;
-        });
+    produtosContainer.innerHTML = `
+        <div class="empty">
+            <span class="material-icons-outlined">error_outline</span>
+            <p>Não foi possível carregar os produtos.</p>
+        </div>
+    `;
 
-        renderProducts();
-
-    },
-
-    error => {
-
-        console.error("Erro ao carregar vitrine:", error);
-
-        productCount.textContent = "Erro";
-
-        container.innerHTML = `
-            <div class="empty-state">
-                <div class="empty-icon">⚠</div>
-                <h3>Não foi possível carregar os produtos</h3>
-                <p>
-                    Verifica as regras de leitura pública
-                    do Firestore e tenta novamente.
-                </p>
-            </div>
-        `;
-    }
-);
+});
 
 </script>
 
