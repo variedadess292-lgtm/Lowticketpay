@@ -1,0 +1,433 @@
+
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080808">
+
+<title>Entrar | LowticketPay</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    background: #080808;
+    color: #fff;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.container {
+    width: 100%;
+    max-width: 420px;
+}
+
+.logo {
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+.logo-icon {
+    width: 48px;
+    height: 48px;
+    background: #f5c400;
+    color: #080808;
+    border-radius: 13px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 27px;
+    font-weight: 800;
+    margin-bottom: 12px;
+}
+
+.logo h1 {
+    font-size: 25px;
+    font-weight: 800;
+    letter-spacing: -1px;
+}
+
+.logo h1 span {
+    color: #f5c400;
+}
+
+.logo p {
+    color: #777;
+    font-size: 12px;
+    margin-top: 8px;
+}
+
+.card {
+    background: #111;
+    border: 1px solid #252525;
+    border-radius: 18px;
+    padding: 30px 24px;
+}
+
+.card h2 {
+    font-size: 22px;
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    color: #888;
+    font-size: 13px;
+    margin-bottom: 28px;
+    line-height: 1.6;
+}
+
+.field {
+    margin-bottom: 19px;
+}
+
+label {
+    display: block;
+    font-size: 12px;
+    color: #ccc;
+    margin-bottom: 9px;
+    font-weight: 600;
+}
+
+.input-wrap {
+    position: relative;
+}
+
+input {
+    width: 100%;
+    height: 49px;
+    border: 1px solid #303030;
+    background: #090909;
+    border-radius: 9px;
+    padding: 0 14px;
+    color: #fff;
+    font-family: inherit;
+    font-size: 13px;
+    outline: none;
+}
+
+input:focus {
+    border-color: #f5c400;
+}
+
+input::placeholder {
+    color: #555;
+}
+
+.password-input {
+    padding-right: 75px;
+}
+
+.toggle {
+    position: absolute;
+    right: 13px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #999;
+    cursor: pointer;
+    font-size: 11px;
+}
+
+.forgot {
+    display: block;
+    text-align: right;
+    color: #f5c400;
+    font-size: 11px;
+    text-decoration: none;
+    margin-top: -5px;
+    margin-bottom: 22px;
+}
+
+.login-btn {
+    width: 100%;
+    height: 49px;
+    background: #f5c400;
+    color: #080808;
+    border: none;
+    border-radius: 9px;
+    font-family: inherit;
+    font-weight: 800;
+    font-size: 13px;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.login-btn:hover {
+    background: #ffda35;
+}
+
+.login-btn:disabled {
+    opacity: .6;
+    cursor: wait;
+}
+
+.message {
+    display: none;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    margin-bottom: 17px;
+    line-height: 1.5;
+}
+
+.message.error {
+    display: block;
+    background: #351616;
+    color: #ff8585;
+}
+
+.message.success {
+    display: block;
+    background: #16351f;
+    color: #80e69b;
+}
+
+.register {
+    text-align: center;
+    margin-top: 25px;
+    color: #888;
+    font-size: 12px;
+}
+
+.register a {
+    color: #f5c400;
+    text-decoration: none;
+    font-weight: 700;
+}
+
+.footer {
+    text-align: center;
+    color: #555;
+    font-size: 10px;
+    margin-top: 28px;
+}
+
+@media(max-width: 380px) {
+    .card {
+        padding: 25px 18px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="logo">
+        <div class="logo-icon">L</div>
+        <h1>Lowticket<span>Pay</span></h1>
+        <p>Plataforma de pagamentos e produtos digitais</p>
+    </div>
+
+    <div class="card">
+
+        <h2>Bem-vindo de volta</h2>
+
+        <p class="subtitle">
+            Introduza os seus dados para aceder à sua conta.
+        </p>
+
+        <div id="message" class="message" role="alert" aria-live="polite"></div>
+
+        <form id="loginForm">
+
+            <div class="field">
+                <label for="email">E-mail</label>
+
+                <input
+                    type="email"
+                    id="email"
+                    placeholder="seuemail@exemplo.com"
+                    autocomplete="username"
+                    required
+                >
+            </div>
+
+            <div class="field">
+                <label for="password">Palavra-passe</label>
+
+                <div class="input-wrap">
+
+                    <input
+                        type="password"
+                        id="password"
+                        class="password-input"
+                        placeholder="Introduza a sua palavra-passe"
+                        autocomplete="current-password"
+                        required
+                    >
+
+                    <button
+                        type="button"
+                        class="toggle"
+                        id="togglePassword"
+                    >
+                        Mostrar
+                    </button>
+
+                </div>
+            </div>
+
+            <a href="esqueceu-senha.html" class="forgot">
+                Esqueceu a palavra-passe?
+            </a>
+
+            <button type="submit" class="login-btn" id="loginBtn">
+                Entrar na conta
+            </button>
+
+        </form>
+
+        <div class="register">
+            Ainda não tem conta?
+            <a href="criar-conta.html">Criar conta</a>
+        </div>
+
+    </div>
+
+    <div class="footer">
+        © 2026 LowticketPay. Todos os direitos reservados.
+    </div>
+
+</div>
+
+<script type="module">
+
+import { auth } from "./js/firebase.js";
+
+import {
+    signInWithEmailAndPassword
+} from "https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js";
+
+const form = document.getElementById("loginForm");
+const emailInput = document.getElementById("email");
+const passwordInput = document.getElementById("password");
+const loginBtn = document.getElementById("loginBtn");
+const message = document.getElementById("message");
+const togglePassword = document.getElementById("togglePassword");
+
+let submitting = false;
+
+/* MENSAGENS */
+
+function showMessage(text, type = "error") {
+    message.textContent = text;
+    message.className = "message " + type;
+}
+
+function translateError(error) {
+
+    const errors = {
+        "auth/invalid-email":
+            "O endereço de e-mail é inválido.",
+
+        "auth/user-not-found":
+            "Não existe uma conta com este e-mail.",
+
+        "auth/wrong-password":
+            "Palavra-passe incorrecta.",
+
+        "auth/invalid-credential":
+            "E-mail ou palavra-passe incorrectos.",
+
+        "auth/too-many-requests":
+            "Demasiadas tentativas. Tente novamente mais tarde.",
+
+        "auth/network-request-failed":
+            "Erro de ligação. Verifique a internet.",
+
+        "auth/user-disabled":
+            "Esta conta foi desactivada.",
+
+        "auth/operation-not-allowed":
+            "O acesso por e-mail não está activado no Firebase."
+    };
+
+    return errors[error.code] ||
+        "Não foi possível entrar. Tente novamente.";
+}
+
+/* MOSTRAR / OCULTAR PALAVRA-PASSE */
+
+togglePassword.addEventListener("click", () => {
+
+    const visible = passwordInput.type === "text";
+
+    passwordInput.type = visible ? "password" : "text";
+
+    togglePassword.textContent =
+        visible ? "Mostrar" : "Ocultar";
+
+});
+
+/* EFECTUAR LOGIN */
+
+form.addEventListener("submit", async (event) => {
+
+    event.preventDefault();
+
+    if (submitting) return;
+
+    const email = emailInput.value.trim().toLowerCase();
+    const password = passwordInput.value;
+
+    if (!email || !password) {
+        showMessage("Preencha todos os campos.");
+        return;
+    }
+
+    submitting = true;
+
+    loginBtn.disabled = true;
+    loginBtn.textContent = "A entrar...";
+
+    message.className = "message";
+
+    try {
+
+        await signInWithEmailAndPassword(
+            auth,
+            email,
+            password
+        );
+
+        showMessage(
+            "Login realizado com sucesso!",
+            "success"
+        );
+
+        window.location.replace("dashboard.html");
+
+    } catch (error) {
+
+        console.error("Erro de login:", error);
+
+        showMessage(translateError(error));
+
+        submitting = false;
+
+        loginBtn.disabled = false;
+        loginBtn.textContent = "Entrar na conta";
+
+    }
+
+});
+
+</script>
+
+</body>
+</html>
