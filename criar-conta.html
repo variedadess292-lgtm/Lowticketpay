@@ -4,217 +4,295 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#080808">
+<meta name="theme-color" content="#030a12">
 
-<title>Criar conta | LowticketPay</title>
+<title>Criar conta | KILLIKPAY</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
 }
 
-body {
-    min-height: 100vh;
-    background: #080808;
-    color: #fff;
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 25px 20px;
+body{
+    min-height:100vh;
+    background:#030a12;
+    color:#fff;
+    font-family:'Plus Jakarta Sans',sans-serif;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px 16px;
 }
 
-.container {
-    width: 100%;
-    max-width: 430px;
+/* ESTRUTURA PRINCIPAL */
+
+.container{
+    width:100%;
+    max-width:340px;
+    background:#071321;
+    border:9px solid #000;
+    border-radius:30px;
+    overflow:hidden;
+    position:relative;
+    box-shadow:0 25px 65px rgba(0,0,0,.4);
 }
 
-.logo {
-    text-align: center;
-    margin-bottom: 28px;
+.register-screen{
+    min-height:650px;
+    padding:28px 25px 25px;
+    background:#071321;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
 }
 
-.logo-icon {
-    width: 46px;
-    height: 46px;
-    background: #f5c400;
-    color: #080808;
-    border-radius: 13px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 26px;
-    font-weight: 800;
-    margin-bottom: 10px;
+/* LOGOTIPO */
+
+.logo-area{
+    width:100%;
+    min-height:125px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
 }
 
-.logo h1 {
-    font-size: 25px;
-    font-weight: 800;
-    letter-spacing: -1px;
+.logo{
+    width:150px;
+    max-height:75px;
+    object-fit:contain;
 }
 
-.logo h1 span {
-    color: #f5c400;
+.brand-caption{
+    color:#969eaa;
+    font-size:9px;
+    letter-spacing:1.2px;
+    margin-top:9px;
+    text-transform:uppercase;
 }
 
-.logo p {
-    color: #777;
-    font-size: 12px;
-    margin-top: 7px;
+/* FORMULÁRIO */
+
+.form-area{
+    width:100%;
+    margin-top:5px;
 }
 
-.card {
-    background: #111;
-    border: 1px solid #252525;
-    border-radius: 18px;
-    padding: 28px 24px;
+.title{
+    text-align:center;
+    font-size:18px;
+    font-weight:800;
+    margin-bottom:7px;
 }
 
-.card h2 {
-    font-size: 22px;
-    margin-bottom: 8px;
+.subtitle{
+    text-align:center;
+    font-size:10px;
+    color:#969eaa;
+    line-height:1.6;
+    margin-bottom:20px;
 }
 
-.subtitle {
-    color: #888;
-    font-size: 13px;
-    line-height: 1.6;
-    margin-bottom: 24px;
+/* MENSAGENS */
+
+.message{
+    display:none;
+    width:100%;
+    padding:11px 13px;
+    border-radius:10px;
+    font-size:10px;
+    line-height:1.5;
+    margin-bottom:13px;
 }
 
-.field {
-    margin-bottom: 17px;
+.message.error{
+    display:block;
+    background:#351616;
+    color:#ffb0b0;
+    border:1px solid #572323;
 }
 
-label {
-    display: block;
-    font-size: 12px;
-    color: #ccc;
-    margin-bottom: 8px;
-    font-weight: 600;
+.message.success{
+    display:block;
+    background:#102b20;
+    color:#a5f3c0;
+    border:1px solid #205338;
 }
 
-.input-wrap {
-    position: relative;
+/* CAMPOS */
+
+.field{
+    width:100%;
+    margin-bottom:12px;
+    position:relative;
 }
 
-input {
-    width: 100%;
-    height: 48px;
-    border: 1px solid #303030;
-    background: #090909;
-    border-radius: 9px;
-    padding: 0 14px;
-    color: #fff;
-    font-family: inherit;
-    font-size: 13px;
-    outline: none;
+label{
+    display:block;
+    font-size:10px;
+    color:#c6d0da;
+    font-weight:700;
+    margin:0 0 7px 5px;
 }
 
-input:focus {
-    border-color: #f5c400;
+.input-wrap{
+    position:relative;
 }
 
-input::placeholder {
-    color: #555;
+.input-icon{
+    position:absolute;
+    left:16px;
+    top:50%;
+    transform:translateY(-50%);
+    color:#969eaa;
+    width:15px;
+    height:15px;
+    pointer-events:none;
 }
 
-.password-input {
-    padding-right: 75px;
+input{
+    width:100%;
+    height:44px;
+    border:1px solid #292929;
+    outline:none;
+    border-radius:10px;
+    background:#030a12;
+    color:#fff;
+    padding:0 17px 0 43px;
+    font-family:inherit;
+    font-size:10px;
+    transition:.2s;
 }
 
-.toggle {
-    position: absolute;
-    right: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    color: #aaa;
-    cursor: pointer;
-    font-size: 11px;
+input::placeholder{
+    color:#687482;
 }
 
-.help {
-    font-size: 10px;
-    color: #777;
-    margin-top: 7px;
+input:focus{
+    border-color:#20baf0;
+    box-shadow:0 0 0 3px rgba(32,186,240,.1);
 }
 
-.register-btn {
-    width: 100%;
-    height: 49px;
-    background: #f5c400;
-    color: #080808;
-    border: none;
-    border-radius: 9px;
-    font-family: inherit;
-    font-weight: 800;
-    font-size: 13px;
-    cursor: pointer;
-    margin-top: 7px;
-    transition: .2s;
+.password-input{
+    padding-right:70px;
 }
 
-.register-btn:hover {
-    background: #ffda35;
+.toggle{
+    position:absolute;
+    right:17px;
+    top:50%;
+    transform:translateY(-50%);
+    border:none;
+    background:none;
+    color:#20baf0;
+    font-family:inherit;
+    font-size:9px;
+    font-weight:700;
+    cursor:pointer;
 }
 
-.register-btn:disabled {
-    opacity: .6;
-    cursor: wait;
+.help{
+    font-size:9px;
+    color:#657080;
+    margin:6px 0 0 6px;
 }
 
-.message {
-    display: none;
-    padding: 12px;
-    border-radius: 8px;
-    font-size: 12px;
-    margin-bottom: 17px;
-    line-height: 1.5;
+/* BOTÃO */
+
+.register-btn{
+    width:100%;
+    height:46px;
+    border:none;
+    border-radius:30px;
+    background:#20baf0;
+    color:#030a12;
+    font-family:inherit;
+    font-size:10px;
+    font-weight:800;
+    letter-spacing:.4px;
+    cursor:pointer;
+    margin-top:7px;
+    transition:.2s;
 }
 
-.message.error {
-    display: block;
-    background: #351616;
-    color: #ff8585;
+.register-btn:hover{
+    background:#55cbf5;
 }
 
-.message.success {
-    display: block;
-    background: #16351f;
-    color: #80e69b;
+.register-btn:disabled{
+    opacity:.6;
+    cursor:wait;
 }
 
-.login {
-    text-align: center;
-    margin-top: 22px;
-    color: #888;
-    font-size: 12px;
+/* ENTRAR */
+
+.login-link{
+    text-align:center;
+    color:#969eaa;
+    font-size:9px;
+    margin-top:23px;
 }
 
-.login a {
-    color: #f5c400;
-    text-decoration: none;
-    font-weight: 700;
+.login-link a{
+    color:#20baf0;
+    font-weight:800;
+    text-decoration:none;
 }
 
-.footer {
-    text-align: center;
-    color: #555;
-    font-size: 10px;
-    margin-top: 25px;
+/* RODAPÉ */
+
+.footer{
+    text-align:center;
+    color:#657080;
+    font-size:8px;
+    margin-top:auto;
+    padding-top:22px;
 }
 
-@media(max-width: 380px) {
-    .card {
-        padding: 23px 18px;
+/* RESPONSIVIDADE */
+
+@media(max-height:760px){
+
+    body{
+        align-items:flex-start;
+    }
+
+    .register-screen{
+        padding-top:22px;
+        padding-bottom:20px;
+    }
+
+    .logo-area{
+        min-height:105px;
+    }
+
+    .logo{
+        max-height:65px;
+    }
+
+    .subtitle{
+        margin-bottom:15px;
+    }
+
+    .field{
+        margin-bottom:9px;
+    }
+}
+
+@media(max-width:360px){
+
+    .container{
+        max-width:320px;
+    }
+
+    .register-screen{
+        padding-left:20px;
+        padding-right:20px;
     }
 }
 </style>
@@ -224,126 +302,189 @@ input::placeholder {
 
 <div class="container">
 
-    <div class="logo">
-        <div class="logo-icon">L</div>
-        <h1>Lowticket<span>Pay</span></h1>
-        <p>Crie a sua conta e comece a vender</p>
-    </div>
+    <main class="register-screen">
 
-    <div class="card">
+        <!-- LOGOTIPO -->
 
-        <h2>Criar uma conta</h2>
+        <div class="logo-area">
 
-        <p class="subtitle">
-            Preencha os seus dados para começar a utilizar a LowticketPay.
-        </p>
-
-        <div id="message" class="message" role="alert" aria-live="polite"></div>
-
-        <form id="registerForm">
-
-            <div class="field">
-                <label for="name">Nome completo</label>
-
-                <input
-                    type="text"
-                    id="name"
-                    placeholder="O seu nome"
-                    autocomplete="name"
-                    maxlength="100"
-                    required
-                >
-            </div>
-
-            <div class="field">
-                <label for="email">E-mail</label>
-
-                <input
-                    type="email"
-                    id="email"
-                    placeholder="seuemail@exemplo.com"
-                    autocomplete="email"
-                    required
-                >
-            </div>
-
-            <div class="field">
-                <label for="password">Palavra-passe</label>
-
-                <div class="input-wrap">
-
-                    <input
-                        type="password"
-                        id="password"
-                        class="password-input"
-                        placeholder="Crie uma palavra-passe"
-                        autocomplete="new-password"
-                        minlength="6"
-                        required
-                    >
-
-                    <button
-                        type="button"
-                        class="toggle"
-                        id="togglePassword"
-                    >
-                        Mostrar
-                    </button>
-
-                </div>
-
-                <p class="help">
-                    Mínimo de 6 caracteres.
-                </p>
-            </div>
-
-            <div class="field">
-                <label for="confirmPassword">Confirmar palavra-passe</label>
-
-                <div class="input-wrap">
-
-                    <input
-                        type="password"
-                        id="confirmPassword"
-                        class="password-input"
-                        placeholder="Repita a palavra-passe"
-                        autocomplete="new-password"
-                        required
-                    >
-
-                    <button
-                        type="button"
-                        class="toggle"
-                        id="toggleConfirm"
-                    >
-                        Mostrar
-                    </button>
-
-                </div>
-            </div>
-
-            <button
-                type="submit"
-                class="register-btn"
-                id="registerBtn"
+            <img
+                src="assets/lowticketpay.png"
+                alt="KILLIKPAY"
+                class="logo"
             >
-                Criar minha conta
-            </button>
 
-        </form>
+       
 
-        <div class="login">
-            Já tem uma conta?
-            <a href="index.html">Entrar</a>
         </div>
 
-    </div>
+        <!-- FORMULÁRIO -->
 
-    <div class="footer">
-        © 2026 LowticketPay. Todos os direitos reservados.
-    </div>
+        <div class="form-area">
+
+            <h1 class="title">Criar uma conta</h1>
+
+            <p class="subtitle">
+                Preencha os seus dados para começar a utilizar a KILLIKPAY.
+            </p>
+
+            <div
+                id="message"
+                class="message"
+                role="alert"
+                aria-live="polite">
+            </div>
+
+            <form id="registerForm">
+
+                <!-- NOME -->
+
+                <div class="field">
+
+                    <label for="name">Nome completo</label>
+
+                    <div class="input-wrap">
+
+                        <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+                            <circle cx="12" cy="8" r="4"/>
+                            <path d="M5 21v-2a7 7 0 0 1 14 0v2"/>
+                        </svg>
+
+                        <input
+                            type="text"
+                            id="name"
+                            placeholder="O seu nome"
+                            autocomplete="name"
+                            maxlength="100"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+                <!-- EMAIL -->
+
+                <div class="field">
+
+                    <label for="email">E-mail</label>
+
+                    <div class="input-wrap">
+
+                        <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+                            <rect x="3" y="5" width="18" height="14" rx="2"/>
+                            <path d="m3 7 9 6 9-6"/>
+                        </svg>
+
+                        <input
+                            type="email"
+                            id="email"
+                            placeholder="seuemail@exemplo.com"
+                            autocomplete="email"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+                <!-- PALAVRA-PASSE -->
+
+                <div class="field">
+
+                    <label for="password">Palavra-passe</label>
+
+                    <div class="input-wrap">
+
+                        <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+                            <rect x="5" y="10" width="14" height="11" rx="2"/>
+                            <path d="M8 10V7a4 4 0 0 1 8 0v3"/>
+                        </svg>
+
+                        <input
+                            type="password"
+                            id="password"
+                            class="password-input"
+                            placeholder="Crie uma palavra-passe"
+                            autocomplete="new-password"
+                            minlength="6"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            class="toggle"
+                            id="togglePassword">
+                            Mostrar
+                        </button>
+
+                    </div>
+
+                    <p class="help">Mínimo de 6 caracteres.</p>
+
+                </div>
+
+                <!-- CONFIRMAR PALAVRA-PASSE -->
+
+                <div class="field">
+
+                    <label for="confirmPassword">
+                        Confirmar palavra-passe
+                    </label>
+
+                    <div class="input-wrap">
+
+                        <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+                            <rect x="5" y="10" width="14" height="11" rx="2"/>
+                            <path d="M8 10V7a4 4 0 0 1 8 0v3"/>
+                            <path d="m9 15 2 2 4-4"/>
+                        </svg>
+
+                        <input
+                            type="password"
+                            id="confirmPassword"
+                            class="password-input"
+                            placeholder="Repita a palavra-passe"
+                            autocomplete="new-password"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            class="toggle"
+                            id="toggleConfirm">
+                            Mostrar
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <button
+                    type="submit"
+                    class="register-btn"
+                    id="registerBtn">
+                    CRIAR MINHA CONTA
+                </button>
+
+            </form>
+
+            <div class="login-link">
+                Já tem uma conta?
+                <a href="index.html">Entrar</a>
+            </div>
+
+        </div>
+
+        <div class="footer">
+            © 2026 KILLIKPAY. Todos os direitos reservados.
+        </div>
+
+    </main>
 
 </div>
+
+<!-- FIREBASE -->
 
 <script type="module">
 
@@ -360,7 +501,6 @@ import {
     serverTimestamp
 } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-firestore.js";
 
-
 const form = document.getElementById("registerForm");
 
 const nameInput = document.getElementById("name");
@@ -373,16 +513,16 @@ const message = document.getElementById("message");
 
 let submitting = false;
 
-
 /* MENSAGENS */
 
-function showMessage(text, type = "error") {
+function showMessage(text,type="error"){
+
     message.textContent = text;
     message.className = "message " + type;
+
 }
 
-
-function translateError(error) {
+function translateError(error){
 
     const errors = {
 
@@ -403,16 +543,17 @@ function translateError(error) {
 
         "auth/too-many-requests":
             "Demasiadas tentativas. Tente novamente mais tarde."
+
     };
 
     return errors[error.code] ||
         "Não foi possível criar a conta. Tente novamente.";
+
 }
 
+/* MOSTRAR / OCULTAR SENHAS */
 
-/* MOSTRAR / OCULTAR PALAVRAS-PASSE */
-
-document.getElementById("togglePassword").addEventListener("click", () => {
+document.getElementById("togglePassword").addEventListener("click",()=>{
 
     const visible = passwordInput.type === "text";
 
@@ -423,8 +564,7 @@ document.getElementById("togglePassword").addEventListener("click", () => {
 
 });
 
-
-document.getElementById("toggleConfirm").addEventListener("click", () => {
+document.getElementById("toggleConfirm").addEventListener("click",()=>{
 
     const visible = confirmInput.type === "text";
 
@@ -435,56 +575,59 @@ document.getElementById("toggleConfirm").addEventListener("click", () => {
 
 });
 
-
 /* CRIAR CONTA */
 
-form.addEventListener("submit", async (event) => {
+form.addEventListener("submit",async event=>{
 
     event.preventDefault();
 
-    if (submitting) return;
+    if(submitting) return;
 
     const name = nameInput.value.trim();
     const email = emailInput.value.trim().toLowerCase();
     const password = passwordInput.value;
     const confirmPassword = confirmInput.value;
 
-
     /* VALIDAR CAMPOS */
 
-    if (!name || !email || !password || !confirmPassword) {
+    if(!name || !email || !password || !confirmPassword){
+
         showMessage("Preencha todos os campos.");
         return;
+
     }
 
-    if (name.length < 2) {
+    if(name.length < 2){
+
         showMessage("Introduza um nome válido.");
         return;
+
     }
 
-    if (password.length < 6) {
+    if(password.length < 6){
+
         showMessage("A palavra-passe deve ter pelo menos 6 caracteres.");
         return;
+
     }
 
-    if (password !== confirmPassword) {
+    if(password !== confirmPassword){
+
         showMessage("As palavras-passe não coincidem.");
         return;
-    }
 
+    }
 
     submitting = true;
 
     registerBtn.disabled = true;
-    registerBtn.textContent = "A criar conta...";
+    registerBtn.textContent = "A CRIAR CONTA...";
 
     message.className = "message";
 
-
     let createdUser = null;
 
-
-    try {
+    try{
 
         /* 1. CRIAR CONTA NO FIREBASE AUTHENTICATION */
 
@@ -496,26 +639,23 @@ form.addEventListener("submit", async (event) => {
 
         createdUser = credential.user;
 
+        /* 2. ACTUALIZAR NOME */
 
-        /* 2. ACTUALIZAR NOME DO UTILIZADOR */
-
-        await updateProfile(createdUser, {
-            displayName: name
+        await updateProfile(createdUser,{
+            displayName:name
         });
-
 
         /* 3. GUARDAR PERFIL NO FIRESTORE */
 
         await setDoc(
-            doc(db, "usuarios", createdUser.uid),
+            doc(db,"usuarios",createdUser.uid),
             {
-                uid: createdUser.uid,
-                nome: name,
-                email: email,
-                createdAt: serverTimestamp()
+                uid:createdUser.uid,
+                nome:name,
+                email:email,
+                createdAt:serverTimestamp()
             }
         );
-
 
         /* 4. CONFIRMAR REGISTO */
 
@@ -526,20 +666,17 @@ form.addEventListener("submit", async (event) => {
 
         window.location.replace("dashboard.html");
 
+    }catch(error){
 
-    } catch (error) {
+        console.error("Erro no registo:",error);
 
-        console.error("Erro no registo:", error);
-
-
-        if (createdUser) {
+        if(createdUser){
 
             showMessage(
-                "A conta foi criada no Authentication, mas ocorreu um erro ao guardar o perfil no Firestore. Não crie outra conta. Entre com o mesmo e-mail e verifique as regras do Firestore.",
-                "error"
+                "A conta foi criada no Firebase Authentication, mas ocorreu um erro ao guardar o perfil. Não tente criar outra conta. Verifique as regras do Firestore."
             );
 
-        } else {
+        }else{
 
             showMessage(translateError(error));
 
@@ -548,7 +685,7 @@ form.addEventListener("submit", async (event) => {
         submitting = false;
 
         registerBtn.disabled = false;
-        registerBtn.textContent = "Criar minha conta";
+        registerBtn.textContent = "CRIAR MINHA CONTA";
 
     }
 
