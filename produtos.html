@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt">
 <head>
@@ -12,748 +11,162 @@
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-
-:root{
-    --bg:#030a12;
-    --panel:#071321;
-    --field:#030d19;
-    --border:#292929;
-    --blue:#20baf0;
-    --muted:#969eaa;
-    --text:#fff;
-}
-
-body{
-    font-family:'Plus Jakarta Sans',sans-serif;
-    background:var(--bg);
-    color:var(--text);
-}
+:root{--bg:#030a12;--panel:#071321;--field:#030d19;--border:#292929;--blue:#20baf0;--muted:#969eaa;--text:#fff}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text)}
 
 /* MENU PRINCIPAL */
-
-.top-menu{
-    height:85px;
-    display:flex;
-    align-items:center;
-    padding:0 7.5%;
-}
-
-.menu-toggle{
-    width:43px;
-    height:43px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background:var(--panel);
-    border:1px solid var(--border);
-    border-radius:10px;
-    color:var(--muted);
-    cursor:pointer;
-}
-
+.top-menu{height:85px;display:flex;align-items:center;padding:0 7.5%}
+.menu-toggle{width:43px;height:43px;display:flex;align-items:center;justify-content:center;background:var(--panel);border:1px solid var(--border);border-radius:10px;color:var(--muted);cursor:pointer}
 .menu-toggle .material-icons-outlined{font-size:24px}
 
-/* MENU LATERAL PADRÃO */
-
-.sidebar{
-    position:fixed;
-    top:0;
-    left:0;
-    width:240px;
-    max-width:85%;
-    height:100%;
-    background:#030a12;
-    border-right:1px solid #292929;
-    padding:22px 15px;
-    z-index:1001;
-    transform:translateX(-100%);
-    transition:transform .25s ease;
-}
-
+/* MENU LATERAL */
+.sidebar{position:fixed;top:0;left:0;width:240px;max-width:85%;height:100%;background:#030a12;border-right:1px solid #292929;padding:22px 15px;z-index:1001;transform:translateX(-100%);transition:transform .25s ease}
 .sidebar.open{transform:translateX(0)}
-
-.sidebar-header{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:0 5px 25px;
-}
-
-.menu-logo{
-    width:115px;
-    max-height:36px;
-    object-fit:contain;
-    object-position:left center;
-}
-
-.sidebar-close button{
-    width:32px;
-    height:32px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background:transparent;
-    border:0;
-    color:var(--muted);
-    font-size:27px;
-    cursor:pointer;
-}
-
-/* LINHA ABAIXO DA LOGO */
-
-.menu-divider{
-    display:block;
-    width:100%;
-    height:1px;
-    min-height:1px;
-    background:#3b4a5c;
-    margin:0 0 18px;
-    flex-shrink:0;
-}
-
-.menu{
-    display:flex;
-    flex-direction:column;
-    gap:7px;
-}
-
-.menu a{
-    display:flex;
-    align-items:center;
-    gap:13px;
-    padding:13px 12px;
-    color:#969eaa;
-    text-decoration:none;
-    font-size:13px;
-    font-weight:700;
-    border-radius:9px;
-    transition:.2s;
-}
-
-.menu a:hover,
-.menu a.active{
-    background:#102237;
-    color:#20baf0;
-}
-
-.menu-icon{
-    width:21px;
-    height:21px;
-    flex-shrink:0;
-}
-
-.menu-icon svg{
-    width:21px;
-    height:21px;
-    display:block;
-    stroke:currentColor;
-    fill:none;
-    stroke-width:1.8;
-    stroke-linecap:round;
-    stroke-linejoin:round;
-}
-
-.overlay{
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,.72);
-    z-index:1000;
-    display:none;
-}
-
+.sidebar-header{display:flex;align-items:center;justify-content:space-between;padding:0 5px 25px}
+.menu-logo{width:115px;max-height:36px;object-fit:contain;object-position:left center}
+.sidebar-close button{width:32px;height:32px;display:flex;align-items:center;justify-content:center;background:transparent;border:0;color:var(--muted);font-size:27px;cursor:pointer}
+.menu-divider{display:block;width:100%;height:1px;min-height:1px;background:#3b4a5c;margin:0 0 18px;flex-shrink:0}
+.menu{display:flex;flex-direction:column;gap:7px}
+.menu a{display:flex;align-items:center;gap:13px;padding:13px 12px;color:#969eaa;text-decoration:none;font-size:13px;font-weight:700;border-radius:9px;transition:.2s}
+.menu a:hover,.menu a.active{background:#102237;color:#20baf0}
+.menu-icon{width:21px;height:21px;flex-shrink:0}
+.menu-icon svg{width:21px;height:21px;display:block;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:1000;display:none}
 .overlay.show{display:block}
 
 /* PÁGINA */
-
-.main{
-    width:100%;
-    padding:30px;
-}
-
-.topbar{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    margin-bottom:35px;
-    gap:15px;
-}
-
-h1{
-    font-size:23px;
-    font-weight:800;
-}
-
-.subtitle{
-    font-size:12px;
-    color:var(--muted);
-    margin-top:7px;
-}
-
-.add{
-    background:var(--blue);
-    color:#00111b;
-    border:0;
-    border-radius:7px;
-    padding:12px 16px;
-    font-weight:800;
-    font-size:12px;
-    cursor:pointer;
-    display:flex;
-    align-items:center;
-    gap:7px;
-    white-space:nowrap;
-}
-
+.main{width:100%;padding:30px}
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:35px;gap:15px}
+h1{font-size:23px;font-weight:800}
+.subtitle{font-size:12px;color:var(--muted);margin-top:7px}
+.add{background:var(--blue);color:#00111b;border:0;border-radius:7px;padding:12px 16px;font-weight:800;font-size:12px;cursor:pointer;display:flex;align-items:center;gap:7px;white-space:nowrap}
 .add:hover{filter:brightness(1.1)}
-
 .content{max-width:1200px}
-
-.products{
-    background:var(--panel);
-    border:1px solid var(--border);
-    border-radius:10px;
-    overflow:visible;
-}
-
-.products-header{
-    padding:20px;
-    border-bottom:1px solid var(--border);
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:15px;
-    flex-wrap:wrap;
-}
-
+.products{background:var(--panel);border:1px solid var(--border);border-radius:10px;overflow:visible}
+.products-header{padding:20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap}
 .products-header h3{font-size:14px}
-
-.products-header span{
-    font-size:11px;
-    color:var(--muted);
-}
+.products-header span{font-size:11px;color:var(--muted)}
 
 /* PESQUISA */
-
-.search-area{
-    padding:16px 20px;
-    border-bottom:1px solid var(--border);
-    display:flex;
-    align-items:center;
-    gap:12px;
-}
-
-.search-box{
-    height:42px;
-    flex:1;
-    min-width:0;
-    display:flex;
-    align-items:center;
-    background:var(--field);
-    border:1px solid var(--border);
-    border-radius:7px;
-    padding:0 12px;
-    gap:9px;
-}
-
-.search-box .search-icon{
-    font-size:19px;
-    color:var(--muted);
-}
-
-.search-box input{
-    flex:1;
-    min-width:0;
-    background:transparent;
-    border:0;
-    outline:none;
-    color:#fff;
-    font-family:inherit;
-    font-size:12px;
-}
-
+.search-area{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px}
+.search-box{height:42px;flex:1;min-width:0;display:flex;align-items:center;background:var(--field);border:1px solid var(--border);border-radius:7px;padding:0 12px;gap:9px}
+.search-box .search-icon{font-size:19px;color:var(--muted)}
+.search-box input{flex:1;min-width:0;background:transparent;border:0;outline:none;color:#fff;font-family:inherit;font-size:12px}
 .search-box input::placeholder{color:#687586}
-
 .dropdown{position:relative;flex-shrink:0}
-
-.dropdown-btn{
-    height:42px;
-    width:42px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background:var(--field);
-    border:1px solid var(--border);
-    border-radius:7px;
-    color:var(--muted);
-    cursor:pointer;
-}
-
-.dropdown-btn:hover{
-    color:var(--blue);
-    border-color:var(--blue);
-}
-
+.dropdown-btn{height:42px;width:42px;display:flex;align-items:center;justify-content:center;background:var(--field);border:1px solid var(--border);border-radius:7px;color:var(--muted);cursor:pointer}
+.dropdown-btn:hover{color:var(--blue);border-color:var(--blue)}
 .dropdown-btn .material-icons-outlined{font-size:21px}
-
-.dropdown-menu{
-    display:none;
-    position:absolute;
-    top:49px;
-    right:0;
-    width:190px;
-    max-width:calc(100vw - 35px);
-    background:#0a1929;
-    border:1px solid var(--border);
-    border-radius:8px;
-    padding:6px;
-    z-index:20;
-    box-shadow:0 10px 30px rgba(0,0,0,.5);
-}
-
+.dropdown-menu{display:none;position:absolute;top:49px;right:0;width:190px;max-width:calc(100vw - 35px);background:#0a1929;border:1px solid var(--border);border-radius:8px;padding:6px;z-index:20;box-shadow:0 10px 30px rgba(0,0,0,.5)}
 .dropdown-menu.show{display:block}
-
-.dropdown-menu button{
-    width:100%;
-    display:flex;
-    align-items:center;
-    gap:10px;
-    padding:12px 10px;
-    border:0;
-    background:transparent;
-    color:#bbb;
-    font-family:inherit;
-    font-size:12px;
-    text-align:left;
-    border-radius:5px;
-    cursor:pointer;
-}
-
-.dropdown-menu button:hover,
-.dropdown-menu button.active{
-    background:#102237;
-    color:var(--blue);
-}
-
+.dropdown-menu button{width:100%;display:flex;align-items:center;gap:10px;padding:12px 10px;border:0;background:transparent;color:#bbb;font-family:inherit;font-size:12px;text-align:left;border-radius:5px;cursor:pointer}
+.dropdown-menu button:hover,.dropdown-menu button.active{background:#102237;color:var(--blue)}
 .dropdown-menu .material-icons-outlined{font-size:18px}
 
 /* FILTROS */
-
-.filters-area{
-    padding:13px 20px;
-    border-bottom:1px solid var(--border);
-    display:flex;
-    align-items:center;
-    flex-wrap:wrap;
-    gap:18px;
-}
-
-.filter-group{
-    display:flex;
-    align-items:center;
-    gap:10px;
-}
-
-.filter-label{
-    font-size:11px;
-    color:var(--muted);
-}
-
+.filters-area{padding:13px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;flex-wrap:wrap;gap:18px}
+.filter-group{display:flex;align-items:center;gap:10px}
+.filter-label{font-size:11px;color:var(--muted)}
 .filter-dropdown{position:relative}
-
-.filter-btn{
-    display:flex;
-    align-items:center;
-    gap:8px;
-    padding:9px 12px;
-    background:var(--field);
-    border:1px solid var(--border);
-    border-radius:6px;
-    color:#bbb;
-    font-family:inherit;
-    font-size:11px;
-    cursor:pointer;
-}
-
-.filter-btn:hover{
-    border-color:var(--blue);
-    color:#fff;
-}
-
-.filter-btn .material-icons-outlined{
-    font-size:17px;
-    color:var(--muted);
-}
-
-.filter-menu{
-    display:none;
-    position:absolute;
-    top:43px;
-    left:0;
-    width:170px;
-    max-width:calc(100vw - 35px);
-    background:#0a1929;
-    border:1px solid var(--border);
-    border-radius:8px;
-    padding:6px;
-    z-index:30;
-    box-shadow:0 10px 30px rgba(0,0,0,.5);
-}
-
+.filter-btn{display:flex;align-items:center;gap:8px;padding:9px 12px;background:var(--field);border:1px solid var(--border);border-radius:6px;color:#bbb;font-family:inherit;font-size:11px;cursor:pointer}
+.filter-btn:hover{border-color:var(--blue);color:#fff}
+.filter-btn .material-icons-outlined{font-size:17px;color:var(--muted)}
+.filter-menu{display:none;position:absolute;top:43px;left:0;width:170px;max-width:calc(100vw - 35px);background:#0a1929;border:1px solid var(--border);border-radius:8px;padding:6px;z-index:30;box-shadow:0 10px 30px rgba(0,0,0,.5)}
 .filter-menu.show{display:block}
-
-.filter-menu button{
-    width:100%;
-    display:flex;
-    align-items:center;
-    gap:9px;
-    padding:11px 10px;
-    border:0;
-    border-radius:5px;
-    background:transparent;
-    color:#bbb;
-    font-family:inherit;
-    font-size:11px;
-    text-align:left;
-    cursor:pointer;
-}
-
-.filter-menu button:hover,
-.filter-menu button.active{
-    background:#102237;
-    color:#fff;
-}
-
-/* PONTINHOS */
-
-.status-dot{
-    width:7px;
-    height:7px;
-    border-radius:50%;
-    flex-shrink:0;
-}
-
-.green{background:#20c997}
-.red{background:#ff5555}
-.orange{background:#ffad33}
+.filter-menu button{width:100%;display:flex;align-items:center;gap:9px;padding:11px 10px;border:0;border-radius:5px;background:transparent;color:#bbb;font-family:inherit;font-size:11px;text-align:left;cursor:pointer}
+.filter-menu button:hover,.filter-menu button.active{background:#102237;color:#fff}
+.status-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.green{background:#20c997}.red{background:#ff5555}.orange{background:#ffad33}
 
 /* PRODUTOS */
-
-.product{
-    padding:16px 20px;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    border-bottom:1px solid rgba(255,255,255,.06);
-    gap:15px;
-}
-
+.product{padding:16px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.06);gap:15px}
 .product:last-child{border:0}
-
-.info{
-    display:flex;
-    align-items:center;
-    gap:13px;
-    min-width:0;
-    flex:1;
-}
-
-.thumb{
-    width:48px;
-    height:48px;
-    border-radius:7px;
-    background:#102237;
-    border:1px solid var(--border);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    color:var(--muted);
-    flex-shrink:0;
-    overflow:hidden;
-}
-
-.thumb img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-}
-
+.info{display:flex;align-items:center;gap:13px;min-width:0;flex:1}
+.thumb{width:48px;height:48px;border-radius:7px;background:#102237;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--muted);flex-shrink:0;overflow:hidden}
+.thumb img{width:100%;height:100%;object-fit:cover}
 .thumb .material-icons-outlined{font-size:22px}
-
 .details{min-width:0}
-
-.details h4{
-    font-size:12px;
-    margin-bottom:5px;
-    overflow:hidden;
-    text-overflow:ellipsis;
-    white-space:nowrap;
-}
-
-.details p{
-    font-size:11px;
-    color:var(--muted);
-    overflow:hidden;
-    text-overflow:ellipsis;
-    white-space:nowrap;
-}
-
-.price{
-    font-size:12px;
-    font-weight:700;
-    white-space:nowrap;
-}
-
-.status{
-    font-size:10px;
-    padding:6px 9px;
-    border-radius:20px;
-    white-space:nowrap;
-}
-
-.status.ativo{
-    color:#20c997;
-    background:#092b24;
-}
-
-.status.desativado{
-    color:#ff5555;
-    background:#2b111b;
-}
-
-.status.pendente{
-    color:#ffad33;
-    background:#2b2110;
-}
-
-.actions{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    color:var(--muted);
-}
-
-.actions button{
-    background:none;
-    border:0;
-    color:inherit;
-    cursor:pointer;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-}
-
+.details h4{font-size:12px;margin-bottom:5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.details p{font-size:11px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.price{font-size:12px;font-weight:700;white-space:nowrap}
+.status{font-size:10px;padding:6px 9px;border-radius:20px;white-space:nowrap}
+.status.ativo{color:#20c997;background:#092b24}
+.status.desativado{color:#ff5555;background:#2b111b}
+.status.pendente{color:#ffad33;background:#2b2110}
+.actions{display:flex;align-items:center;gap:10px;color:var(--muted)}
+.actions button{background:none;border:0;color:inherit;cursor:pointer;display:flex;align-items:center;justify-content:center}
 .actions button:hover{color:var(--blue)}
-
 .actions .material-icons-outlined{font-size:19px}
-
-.empty{
-    text-align:center;
-    padding:55px 20px;
-    color:var(--muted);
-}
-
-.empty .material-icons-outlined{
-    font-size:35px;
-    margin-bottom:12px;
-}
-
+.empty{text-align:center;padding:55px 20px;color:var(--muted)}
+.empty .material-icons-outlined{font-size:35px;margin-bottom:12px}
 .empty p{font-size:12px}
 
 /* MODAL */
-
-.modal-backdrop{
-    position:fixed;
-    inset:0;
-    z-index:1100;
-    background:rgba(0,0,0,.78);
-    display:none;
-    align-items:center;
-    justify-content:center;
-    padding:15px;
-}
-
+.modal-backdrop{position:fixed;inset:0;z-index:1100;background:rgba(0,0,0,.78);display:none;align-items:center;justify-content:center;padding:15px}
 .modal-backdrop.show{display:flex}
-
-.modal{
-    width:100%;
-    max-width:540px;
-    max-height:92vh;
-    overflow-y:auto;
-    background:#071321;
-    border:1px solid var(--border);
-    border-radius:12px;
-}
-
-.modal-header{
-    padding:19px 20px;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    border-bottom:1px solid var(--border);
-}
-
+.modal{width:100%;max-width:540px;max-height:92vh;overflow-y:auto;background:#071321;border:1px solid var(--border);border-radius:12px}
+.modal-header{padding:19px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
 .modal-header h2{font-size:15px}
-
-.close-modal{
-    border:0;
-    background:none;
-    color:var(--muted);
-    font-size:25px;
-    cursor:pointer;
-}
-
+.close-modal{border:0;background:none;color:var(--muted);font-size:25px;cursor:pointer}
 .modal-body{padding:20px}
-
 .form-group{margin-bottom:15px}
-
-.form-group label{
-    display:block;
-    font-size:11px;
-    font-weight:700;
-    margin-bottom:8px;
-}
-
-.form-control{
-    width:100%;
-    background:var(--field);
-    border:1px solid var(--border);
-    border-radius:7px;
-    color:#fff;
-    padding:12px;
-    outline:none;
-    font-family:inherit;
-    font-size:12px;
-}
-
+.form-group label{display:block;font-size:11px;font-weight:700;margin-bottom:8px}
+.form-control{width:100%;background:var(--field);border:1px solid var(--border);border-radius:7px;color:#fff;padding:12px;outline:none;font-family:inherit;font-size:12px}
 .form-control:focus{border-color:var(--blue)}
-
-textarea.form-control{
-    min-height:85px;
-    resize:vertical;
-}
-
+textarea.form-control{min-height:85px;resize:vertical}
 .form-control option{background:#071321}
-
-.file-note{
-    display:block;
-    margin-top:6px;
-    color:var(--muted);
-    font-size:10px;
-}
-
-.file-name{
-    display:block;
-    color:var(--blue);
-    font-size:10px;
-    margin-top:6px;
-    overflow-wrap:anywhere;
-}
-
-.modal-actions{
-    display:flex;
-    justify-content:flex-end;
-    gap:10px;
-    margin-top:20px;
-}
-
-.cancel-btn,.save-btn{
-    border:0;
-    border-radius:7px;
-    padding:12px 16px;
-    font-family:inherit;
-    font-size:11px;
-    font-weight:800;
-    cursor:pointer;
-}
-
-.cancel-btn{
-    background:#102237;
-    color:#ddd;
-}
-
-.save-btn{
-    background:var(--blue);
-    color:#00111b;
-}
-
+.file-note{display:block;margin-top:6px;color:var(--muted);font-size:10px}
+.file-name{display:block;color:var(--blue);font-size:10px;margin-top:6px;overflow-wrap:anywhere}
+.modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:20px}
+.cancel-btn,.save-btn{border:0;border-radius:7px;padding:12px 16px;font-family:inherit;font-size:11px;font-weight:800;cursor:pointer}
+.cancel-btn{background:#102237;color:#ddd}
+.save-btn{background:var(--blue);color:#00111b}
 .save-btn:disabled{opacity:.5;cursor:not-allowed}
+.toast{position:fixed;left:50%;bottom:22px;transform:translate(-50%,20px);opacity:0;pointer-events:none;background:#102237;border:1px solid #16405b;color:#fff;padding:13px 18px;border-radius:8px;font-size:11px;z-index:1200;transition:.25s;text-align:center;max-width:90%}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.toast.error{background:#32151b;border-color:#71303a}
 
-.toast{
-    position:fixed;
-    left:50%;
-    bottom:22px;
-    transform:translate(-50%,20px);
-    opacity:0;
-    pointer-events:none;
-    background:#102237;
-    border:1px solid #16405b;
-    color:#fff;
-    padding:13px 18px;
-    border-radius:8px;
-    font-size:11px;
-    z-index:1200;
-    transition:.25s;
-    text-align:center;
-    max-width:90%;
-}
-
-.toast.show{
-    opacity:1;
-    transform:translate(-50%,0);
-}
-
-.toast.error{
-    background:#32151b;
-    border-color:#71303a;
-}
+/* ORDER BUMP */
+.order-bump-section{margin-top:22px;padding:16px;background:#030d19;border:1px solid #26394d;border-radius:9px}
+.order-bump-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}
+.order-bump-heading h3{font-size:13px;font-weight:800}
+.order-bump-description{font-size:10px;color:var(--muted);line-height:1.6;margin-bottom:16px}
+.order-bump-toggle{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px;background:#071321;border:1px solid var(--border);border-radius:7px;margin-bottom:15px}
+.order-bump-toggle label{font-size:11px;font-weight:700;margin:0}
+.order-bump-toggle input{width:18px;height:18px;accent-color:var(--blue);cursor:pointer}
+.order-bump-fields{display:none}
+.order-bump-fields.show{display:block}
+.order-bump-preview{background:#071321;border:1px dashed #20506a;border-radius:8px;padding:14px;margin-top:15px}
+.order-bump-preview small{display:block;color:var(--blue);font-size:9px;font-weight:800;margin-bottom:10px}
+.order-bump-preview h4{font-size:13px;margin-bottom:7px}
+.order-bump-preview p{font-size:10px;color:var(--muted);line-height:1.6}
+.order-bump-preview strong{display:block;color:var(--blue);font-size:20px;margin:12px 0}
+.order-bump-preview .preview-check{display:flex;align-items:center;gap:8px;font-size:10px;font-weight:700}
+.order-bump-preview .preview-check span{color:var(--blue)}
 
 /* MOBILE */
-
 @media(max-width:700px){
-    .top-menu{height:75px;padding:0 15px}
-
-    .main{padding:22px 15px}
-
-    h1{font-size:20px}
-
-    .add{padding:10px;font-size:11px}
-
-    .product{
-        padding:14px 12px;
-        flex-wrap:wrap;
-    }
-
-    .products-header{padding:16px}
-
-    .search-area{padding:13px 12px}
-
-    .filters-area{
-        padding:12px;
-        gap:12px;
-    }
-
-    .filter-group{gap:7px}
-
-    .filter-label{font-size:10px}
-
-    .filter-btn{
-        padding:9px 8px;
-        gap:5px;
-    }
-
-    .product .info{flex-basis:100%}
-
-    .product .price{margin-left:61px}
-
-    .actions{margin-left:auto}
+.top-menu{height:75px;padding:0 15px}
+.main{padding:22px 15px}
+h1{font-size:20px}
+.add{padding:10px;font-size:11px}
+.product{padding:14px 12px;flex-wrap:wrap}
+.products-header{padding:16px}
+.search-area{padding:13px 12px}
+.filters-area{padding:12px;gap:12px}
+.filter-group{gap:7px}
+.filter-label{font-size:10px}
+.filter-btn{padding:9px 8px;gap:5px}
+.product .info{flex-basis:100%}
+.product .price{margin-left:61px}
+.actions{margin-left:auto}
 }
-
 @media(max-width:380px){
-    .filters-area{gap:10px}
-    .filter-group{gap:5px}
-    .filter-btn{font-size:10px}
-    .filter-label{font-size:9px}
-    .product .price{margin-left:0}
+.filters-area{gap:10px}
+.filter-group{gap:5px}
+.filter-btn{font-size:10px}
+.filter-label{font-size:9px}
+.product .price{margin-left:0}
 }
 </style>
 </head>
@@ -769,91 +182,43 @@ textarea.form-control{
 <div class="overlay" id="overlay"></div>
 
 <aside class="sidebar" id="sidebar">
-
     <div class="sidebar-header">
         <img src="assets/lowticketpay.png" alt="LOWTICKETPAY" class="menu-logo">
-
         <div class="sidebar-close">
             <button id="closeSidebar" aria-label="Fechar menu">×</button>
         </div>
     </div>
-
-    <!-- LINHA IMEDIATAMENTE ABAIXO DA LOGO -->
     <div class="menu-divider"></div>
-
     <nav class="menu">
-
         <a href="dashboard.html">
-            <span class="menu-icon">
-                <svg viewBox="0 0 24 24">
-                    <rect x="3" y="3" width="7" height="7" rx="1"/>
-                    <rect x="14" y="3" width="7" height="7" rx="1"/>
-                    <rect x="14" y="14" width="7" height="7" rx="1"/>
-                    <rect x="3" y="14" width="7" height="7" rx="1"/>
-                </svg>
-            </span>
+            <span class="menu-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg></span>
             Dashboard
         </a>
-
         <a href="produtos.html" class="active" aria-current="page">
-            <span class="menu-icon">
-                <svg viewBox="0 0 24 24">
-                    <path d="M4 7h16v14H4z"/>
-                    <path d="M8 7V4h8v3"/>
-                    <path d="M4 11h16"/>
-                    <path d="M10 11v3h4v-3"/>
-                </svg>
-            </span>
+            <span class="menu-icon"><svg viewBox="0 0 24 24"><path d="M4 7h16v14H4z"/><path d="M8 7V4h8v3"/><path d="M4 11h16"/><path d="M10 11v3h4v-3"/></svg></span>
             Produtos
         </a>
-
         <a href="vitrine.html">
-            <span class="menu-icon">
-                <svg viewBox="0 0 24 24">
-                    <path d="M3 10h18l-1.5-6h-15z"/>
-                    <path d="M5 10v10h14V10"/>
-                    <path d="M9 20v-6h6v6"/>
-                    <path d="M3 10a3 3 0 0 0 6 0 3 3 0 0 0 6 0 3 3 0 0 0 6 0"/>
-                </svg>
-            </span>
+            <span class="menu-icon"><svg viewBox="0 0 24 24"><path d="M3 10h18l-1.5-6h-15z"/><path d="M5 10v10h14V10"/><path d="M9 20v-6h6v6"/><path d="M3 10a3 3 0 0 0 6 0 3 3 0 0 0 6 0 3 3 0 0 0 6 0"/></svg></span>
             Vitrine
         </a>
-
         <a href="financeiro.html">
-            <span class="menu-icon">
-                <svg viewBox="0 0 24 24">
-                    <rect x="3" y="5" width="18" height="15" rx="2"/>
-                    <path d="M3 10h18"/>
-                    <path d="M7 15h4"/>
-                    <path d="M16 15h1"/>
-                    <path d="M7 5V3h10v2"/>
-                </svg>
-            </span>
+            <span class="menu-icon"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="15" rx="2"/><path d="M3 10h18"/><path d="M7 15h4"/><path d="M16 15h1"/><path d="M7 5V3h10v2"/></svg></span>
             Financeiro
         </a>
-
         <a href="#" id="logoutButton">
-            <span class="menu-icon">
-                <svg viewBox="0 0 24 24">
-                    <path d="M10 17l5-5-5-5"/>
-                    <path d="M15 12H3"/>
-                    <path d="M12 3h6a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-6"/>
-                </svg>
-            </span>
+            <span class="menu-icon"><svg viewBox="0 0 24 24"><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/><path d="M12 3h6a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-6"/></svg></span>
             Sair
         </a>
-
     </nav>
 </aside>
 
 <main class="main">
-
 <div class="topbar">
     <div>
         <h1>Produtos</h1>
         <p class="subtitle">Gira os teus produtos digitais</p>
     </div>
-
     <button class="add" id="addProductBtn">
         <span class="material-icons-outlined">add</span>
         Adicionar
@@ -861,103 +226,60 @@ textarea.form-control{
 </div>
 
 <div class="content">
-
 <section class="products">
-
     <div class="products-header">
         <h3 id="sectionTitle">Todos os produtos</h3>
         <span>Lista de produtos</span>
     </div>
 
     <div class="search-area">
-
         <div class="search-box">
             <span class="material-icons-outlined search-icon">search</span>
             <input type="text" id="searchInput" placeholder="Pesquisar produtos...">
         </div>
-
         <div class="dropdown">
-
             <button class="dropdown-btn" id="dropdownBtn" aria-label="Abrir opções" aria-expanded="false">
                 <span class="material-icons-outlined">unfold_more</span>
             </button>
-
             <div class="dropdown-menu" id="dropdownMenu">
-
-                <button class="active" data-view="produtos">
-                    <span class="material-icons-outlined">inventory_2</span>
-                    Meus produtos
-                </button>
-
-                <button data-view="afiliacoes">
-                    <span class="material-icons-outlined">handshake</span>
-                    Minhas afiliações
-                </button>
-
+                <button class="active" data-view="produtos"><span class="material-icons-outlined">inventory_2</span>Meus produtos</button>
+                <button data-view="afiliacoes"><span class="material-icons-outlined">handshake</span>Minhas afiliações</button>
             </div>
         </div>
-
     </div>
 
     <div class="filters-area">
-
         <div class="filter-group">
-
             <span class="filter-label">Status:</span>
-
             <div class="filter-dropdown">
-
                 <button class="filter-btn" id="statusBtn" aria-expanded="false">
                     <span id="selectedStatus">Todos</span>
                     <span class="material-icons-outlined">keyboard_arrow_down</span>
                 </button>
-
                 <div class="filter-menu" id="statusMenu">
-
                     <button class="active" data-status="Todos">Todos</button>
-
-                    <button data-status="Ativado">
-                        <span class="status-dot green"></span>
-                        Ativado
-                    </button>
-
-                    <button data-status="Desactivado">
-                        <span class="status-dot red"></span>
-                        Desactivado
-                    </button>
-
-                    <button data-status="Pendente">
-                        <span class="status-dot orange"></span>
-                        Pendente
-                    </button>
-
+                    <button data-status="Ativado"><span class="status-dot green"></span>Ativado</button>
+                    <button data-status="Desactivado"><span class="status-dot red"></span>Desactivado</button>
+                    <button data-status="Pendente"><span class="status-dot orange"></span>Pendente</button>
                 </div>
             </div>
         </div>
-
         <div class="filter-group">
-
             <span class="filter-label">Categorias:</span>
-
             <div class="filter-dropdown">
-
                 <button class="filter-btn" id="categoryBtn" aria-expanded="false">
                     <span id="selectedCategory">Todas</span>
                     <span class="material-icons-outlined">keyboard_arrow_down</span>
                 </button>
-
                 <div class="filter-menu" id="categoryMenu">
-
                     <button class="active" data-category="Todas">Todas</button>
                     <button data-category="E-books">E-books</button>
                     <button data-category="Cursos">Cursos</button>
                     <button data-category="Mentorias">Mentorias</button>
                     <button data-category="Outros">Outros</button>
-
                 </div>
             </div>
         </div>
-
     </div>
 
     <div id="lista">
@@ -966,39 +288,32 @@ textarea.form-control{
             <p>A carregar produtos...</p>
         </div>
     </div>
-
 </section>
 </div>
 </main>
 
-<!-- MODAL -->
-
+<!-- MODAL DE PRODUTO -->
 <div class="modal-backdrop" id="productModal">
     <div class="modal">
-
         <div class="modal-header">
             <h2 id="modalTitle">Adicionar produto</h2>
-            <button class="close-modal" id="closeModal">×</button>
+            <button class="close-modal" id="closeModal" type="button">×</button>
         </div>
 
         <form class="modal-body" id="productForm">
-
             <div class="form-group">
                 <label for="productName">Nome do produto</label>
-                <input class="form-control" id="productName" type="text"
-                    placeholder="Nome do produto" required>
+                <input class="form-control" id="productName" type="text" placeholder="Nome do produto" required>
             </div>
 
             <div class="form-group">
                 <label for="productDescription">Descrição</label>
-                <textarea class="form-control" id="productDescription"
-                    placeholder="Descrição do produto" required></textarea>
+                <textarea class="form-control" id="productDescription" placeholder="Descrição do produto" required></textarea>
             </div>
 
             <div class="form-group">
                 <label for="productPrice">Preço (MZN)</label>
-                <input class="form-control" id="productPrice" type="number"
-                    min="1" step="0.01" placeholder="Ex.: 250" required>
+                <input class="form-control" id="productPrice" type="number" min="1" step="0.01" placeholder="Ex.: 250" required>
             </div>
 
             <div class="form-group">
@@ -1014,25 +329,79 @@ textarea.form-control{
 
             <div class="form-group">
                 <label for="productImage">Imagem do produto</label>
-                <input class="form-control" id="productImage" type="file"
-                    accept="image/jpeg,image/png,image/webp">
+                <input class="form-control" id="productImage" type="file" accept="image/jpeg,image/png,image/webp">
                 <span class="file-note">JPG, PNG ou WEBP. Máximo 3 MB.</span>
                 <span class="file-name" id="imageFileName"></span>
             </div>
 
             <div class="form-group">
                 <label for="productPDF">PDF do produto</label>
-                <input class="form-control" id="productPDF" type="file"
-                    accept="application/pdf">
+                <input class="form-control" id="productPDF" type="file" accept="application/pdf">
                 <span class="file-note">PDF até 3 MB.</span>
                 <span class="file-name" id="pdfFileName"></span>
             </div>
+
+            <!-- ORDER BUMP -->
+            <section class="order-bump-section">
+                <div class="order-bump-heading">
+                    <h3>Order Bump</h3>
+                    <span class="material-icons-outlined" style="color:#20baf0">add_shopping_cart</span>
+                </div>
+                <p class="order-bump-description">
+                    Oferece um produto complementar ao comprador durante o checkout.
+                </p>
+
+                <div class="order-bump-toggle">
+                    <label for="orderBumpEnabled">Ativar Order Bump</label>
+                    <input type="checkbox" id="orderBumpEnabled">
+                </div>
+
+                <div class="order-bump-fields" id="orderBumpFields">
+                    <div class="form-group">
+                        <label for="orderBumpProduct">Produto adicional</label>
+                        <select class="form-control" id="orderBumpProduct">
+                            <option value="">Selecionar produto</option>
+                        </select>
+                        <span class="file-note">Escolhe um dos teus produtos ativos, diferente do produto principal.</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="orderBumpPrice">Preço especial (MZN)</label>
+                        <input class="form-control" id="orderBumpPrice" type="number" min="0.01" step="0.01" placeholder="Ex.: 50">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="orderBumpTitle">Título da oferta</label>
+                        <input class="form-control" id="orderBumpTitle" type="text" maxlength="100" value="Aproveita esta oferta especial!">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="orderBumpDescription">Descrição da oferta</label>
+                        <textarea class="form-control" id="orderBumpDescription" maxlength="300" placeholder="Adiciona este material à tua compra por um preço exclusivo."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="orderBumpText">Texto da caixa de aceitação</label>
+                        <input class="form-control" id="orderBumpText" type="text" maxlength="120" value="Sim! Quero adicionar esta oferta.">
+                    </div>
+
+                    <div class="order-bump-preview">
+                        <small>PRÉ-VISUALIZAÇÃO DO CHECKOUT</small>
+                        <h4 id="previewBumpTitle">Aproveita esta oferta especial!</h4>
+                        <p id="previewBumpDescription">Adiciona este material à tua compra por um preço exclusivo.</p>
+                        <strong id="previewBumpPrice">0,00 MT</strong>
+                        <div class="preview-check">
+                            <span class="material-icons-outlined">check_box</span>
+                            <span id="previewBumpText">Sim! Quero adicionar esta oferta.</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
             <div class="modal-actions">
                 <button type="button" class="cancel-btn" id="cancelModal">Cancelar</button>
                 <button type="submit" class="save-btn" id="saveProductBtn">Guardar produto</button>
             </div>
-
         </form>
     </div>
 </div>
@@ -1042,22 +411,11 @@ textarea.form-control{
 <script type="module">
 import { auth, db } from "./js/firebase.js";
 
-import {
-    onAuthStateChanged,
-    signOut
-} from "https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js";
+import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js";
 
 import {
-    collection,
-    addDoc,
-    updateDoc,
-    deleteDoc,
-    doc,
-    setDoc,
-    query,
-    where,
-    onSnapshot,
-    serverTimestamp
+    collection, addDoc, updateDoc, deleteDoc, doc, setDoc,
+    query, where, onSnapshot, serverTimestamp
 } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-firestore.js";
 
 const $ = id => document.getElementById(id);
@@ -1071,17 +429,14 @@ let selectedCategory = "Todas";
 let unsubscribe = null;
 
 /* MENU LATERAL */
-
 function openSidebar(){
     $("sidebar").classList.add("open");
     $("overlay").classList.add("show");
 }
-
 function closeSidebar(){
     $("sidebar").classList.remove("open");
     $("overlay").classList.remove("show");
 }
-
 $("menuToggle").addEventListener("click",openSidebar);
 $("closeSidebar").addEventListener("click",closeSidebar);
 $("overlay").addEventListener("click",closeSidebar);
@@ -1095,7 +450,6 @@ document.addEventListener("keydown",e=>{
 });
 
 /* MENSAGENS */
-
 function toast(message,error=false){
     const el=$("toast");
     el.textContent=message;
@@ -1105,7 +459,6 @@ function toast(message,error=false){
 }
 
 /* MENUS E FILTROS */
-
 const dropdownBtn=$("dropdownBtn");
 const dropdownMenu=$("dropdownMenu");
 const statusBtn=$("statusBtn");
@@ -1114,124 +467,141 @@ const categoryBtn=$("categoryBtn");
 const categoryMenu=$("categoryMenu");
 
 function closeAllMenus(){
-    [dropdownMenu,statusMenu,categoryMenu].forEach(menu=>{
-        menu.classList.remove("show");
-    });
-
-    [dropdownBtn,statusBtn,categoryBtn].forEach(btn=>{
-        btn.setAttribute("aria-expanded","false");
-    });
+    [dropdownMenu,statusMenu,categoryMenu].forEach(menu=>menu.classList.remove("show"));
+    [dropdownBtn,statusBtn,categoryBtn].forEach(btn=>btn.setAttribute("aria-expanded","false"));
 }
-
 function toggleMenu(menu,button){
     const wasOpen=menu.classList.contains("show");
     closeAllMenus();
-
     if(!wasOpen){
         menu.classList.add("show");
         button.setAttribute("aria-expanded","true");
     }
 }
-
-dropdownBtn.addEventListener("click",e=>{
-    e.stopPropagation();
-    toggleMenu(dropdownMenu,dropdownBtn);
-});
-
-statusBtn.addEventListener("click",e=>{
-    e.stopPropagation();
-    toggleMenu(statusMenu,statusBtn);
-});
-
-categoryBtn.addEventListener("click",e=>{
-    e.stopPropagation();
-    toggleMenu(categoryMenu,categoryBtn);
-});
+dropdownBtn.addEventListener("click",e=>{e.stopPropagation();toggleMenu(dropdownMenu,dropdownBtn)});
+statusBtn.addEventListener("click",e=>{e.stopPropagation();toggleMenu(statusMenu,statusBtn)});
+categoryBtn.addEventListener("click",e=>{e.stopPropagation();toggleMenu(categoryMenu,categoryBtn)});
 
 document.addEventListener("click",e=>{
-    if(!e.target.closest(".dropdown") &&
-       !e.target.closest(".filter-dropdown")){
-        closeAllMenus();
-    }
+    if(!e.target.closest(".dropdown")&&!e.target.closest(".filter-dropdown"))closeAllMenus();
 });
 
 /* TROCAR ENTRE PRODUTOS E AFILIAÇÕES */
-
 dropdownMenu.addEventListener("click",e=>{
     const button=e.target.closest("button[data-view]");
     if(!button)return;
-
     currentView=button.dataset.view;
-
-    dropdownMenu.querySelectorAll("button").forEach(btn=>{
-        btn.classList.toggle("active",btn===button);
-    });
-
-    $("sectionTitle").textContent=
-        currentView==="produtos" ? "Todos os produtos" : "Minhas afiliações";
-
-    $("searchInput").placeholder=
-        currentView==="produtos" ? "Pesquisar produtos..." : "Pesquisar afiliações...";
-
+    dropdownMenu.querySelectorAll("button").forEach(btn=>btn.classList.toggle("active",btn===button));
+    $("sectionTitle").textContent=currentView==="produtos"?"Todos os produtos":"Minhas afiliações";
+    $("searchInput").placeholder=currentView==="produtos"?"Pesquisar produtos...":"Pesquisar afiliações...";
     closeAllMenus();
     renderProducts();
 });
 
 /* STATUS */
-
 statusMenu.addEventListener("click",e=>{
     const button=e.target.closest("button[data-status]");
     if(!button)return;
-
     selectedStatus=button.dataset.status;
     $("selectedStatus").textContent=selectedStatus;
-
-    statusMenu.querySelectorAll("button").forEach(btn=>{
-        btn.classList.toggle("active",btn===button);
-    });
-
+    statusMenu.querySelectorAll("button").forEach(btn=>btn.classList.toggle("active",btn===button));
     closeAllMenus();
     renderProducts();
 });
 
 /* CATEGORIAS */
-
 categoryMenu.addEventListener("click",e=>{
     const button=e.target.closest("button[data-category]");
     if(!button)return;
-
     selectedCategory=button.dataset.category;
     $("selectedCategory").textContent=selectedCategory;
-
-    categoryMenu.querySelectorAll("button").forEach(btn=>{
-        btn.classList.toggle("active",btn===button);
-    });
-
+    categoryMenu.querySelectorAll("button").forEach(btn=>btn.classList.toggle("active",btn===button));
     closeAllMenus();
     renderProducts();
 });
 
-/* MODAL */
+/* ESTADO E FORMATAÇÃO */
+function getStatus(product){
+    if(product.status==="pendente")return "Pendente";
+    if(product.ativo===false||product.status==="inativo")return "Desactivado";
+    return "Ativado";
+}
+function formatPrice(value){
+    return Number(value||0).toLocaleString("pt-MZ",{minimumFractionDigits:2,maximumFractionDigits:2})+" MT";
+}
+function escapeHTML(value){
+    return String(value??"").replace(/[&<>"']/g,char=>({
+        "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+    })[char]);
+}
 
+/* ORDER BUMP */
+function renderOrderBumpProducts(selectedId=""){
+    const select=$("orderBumpProduct");
+    const available=products.filter(product=>
+        product.id!==editingId && getStatus(product)==="Ativado"
+    );
+
+    select.innerHTML='<option value="">Selecionar produto</option>'+
+        available.map(product=>
+            `<option value="${escapeHTML(product.id)}">${escapeHTML(product.nome||"Produto sem nome")} - ${formatPrice(product.preco)}</option>`
+        ).join("");
+
+    select.value=available.some(product=>product.id===selectedId)?selectedId:"";
+}
+
+function toggleOrderBumpFields(){
+    $("orderBumpFields").classList.toggle("show",$("orderBumpEnabled").checked);
+}
+
+function updateOrderBumpPreview(){
+    $("previewBumpTitle").textContent=$("orderBumpTitle").value.trim()||"Aproveita esta oferta especial!";
+    $("previewBumpDescription").textContent=$("orderBumpDescription").value.trim()||"Adiciona este material à tua compra por um preço exclusivo.";
+    $("previewBumpPrice").textContent=formatPrice($("orderBumpPrice").value);
+    $("previewBumpText").textContent=$("orderBumpText").value.trim()||"Sim! Quero adicionar esta oferta.";
+}
+
+$("orderBumpEnabled").addEventListener("change",toggleOrderBumpFields);
+["orderBumpTitle","orderBumpDescription","orderBumpPrice","orderBumpText"].forEach(id=>{
+    $(id).addEventListener("input",updateOrderBumpPreview);
+});
+$("orderBumpProduct").addEventListener("change",()=>{
+    const selected=products.find(product=>product.id===$("orderBumpProduct").value);
+    if(selected && !$("orderBumpPrice").value){
+        $("orderBumpPrice").value=selected.preco;
+        updateOrderBumpPreview();
+    }
+});
+
+/* MODAL */
 function openModal(product=null){
-    editingId=product?.id || null;
+    editingId=product?.id||null;
     $("productForm").reset();
 
-    $("modalTitle").textContent=product ? "Editar produto" : "Adicionar produto";
-    $("saveProductBtn").textContent=product ? "Guardar alterações" : "Guardar produto";
+    $("modalTitle").textContent=product?"Editar produto":"Adicionar produto";
+    $("saveProductBtn").textContent=product?"Guardar alterações":"Guardar produto";
 
     $("imageFileName").textContent=product?.imageFileId
-        ? "Imagem atual guardada. Seleciona outra para substituir."
-        : "";
-
+        ?"Imagem atual guardada. Seleciona outra para substituir.":"";
     $("pdfFileName").textContent="";
 
     if(product){
-        $("productName").value=product.nome || "";
-        $("productDescription").value=product.descricao || "";
-        $("productPrice").value=product.preco || "";
-        $("productCategory").value=product.categoria || "";
+        $("productName").value=product.nome||"";
+        $("productDescription").value=product.descricao||"";
+        $("productPrice").value=product.preco||"";
+        $("productCategory").value=product.categoria||"";
     }
+
+    const bump=product?.orderBump||{};
+    $("orderBumpEnabled").checked=bump.enabled===true;
+    $("orderBumpPrice").value=bump.price||"";
+    $("orderBumpTitle").value=bump.title||"Aproveita esta oferta especial!";
+    $("orderBumpDescription").value=bump.description||"";
+    $("orderBumpText").value=bump.checkboxText||"Sim! Quero adicionar esta oferta.";
+
+    renderOrderBumpProducts(bump.productId||"");
+    toggleOrderBumpFields();
+    updateOrderBumpPreview();
 
     $("productModal").classList.add("show");
 }
@@ -1242,62 +612,48 @@ function closeModal(){
     $("productForm").reset();
     $("imageFileName").textContent="";
     $("pdfFileName").textContent="";
+    toggleOrderBumpFields();
+    updateOrderBumpPreview();
 }
 
 $("addProductBtn").addEventListener("click",()=>openModal());
 $("closeModal").addEventListener("click",closeModal);
 $("cancelModal").addEventListener("click",closeModal);
-
 $("productModal").addEventListener("click",e=>{
     if(e.target===$("productModal"))closeModal();
 });
-
 $("productImage").addEventListener("change",()=>{
-    $("imageFileName").textContent=$("productImage").files[0]?.name || "";
+    $("imageFileName").textContent=$("productImage").files[0]?.name||"";
 });
-
 $("productPDF").addEventListener("change",()=>{
-    $("pdfFileName").textContent=$("productPDF").files[0]?.name || "";
+    $("pdfFileName").textContent=$("productPDF").files[0]?.name||"";
 });
 
 /* UPLOAD */
-
 async function uploadFile(file,kind){
     if(!file)return null;
-
-    if(file.size>3*1024*1024){
-        throw new Error("O ficheiro não pode ultrapassar 3 MB.");
-    }
+    if(file.size>3*1024*1024)throw new Error("O ficheiro não pode ultrapassar 3 MB.");
 
     const token=await currentUser.getIdToken();
     const formData=new FormData();
-
     formData.append("file",file);
     formData.append("kind",kind);
 
     const response=await fetch("/api/upload",{
         method:"POST",
-        headers:{
-            Authorization:"Bearer "+token
-        },
+        headers:{Authorization:"Bearer "+token},
         body:formData
     });
 
     const result=await response.json().catch(()=>({}));
-
-    if(!response.ok || result.success===false){
-        throw new Error(result.error || result.message || "Falha no envio do ficheiro.");
+    if(!response.ok||result.success===false){
+        throw new Error(result.error||result.message||"Falha no envio do ficheiro.");
     }
-
-    if(!result.fileId){
-        throw new Error("A API não devolveu o identificador do ficheiro.");
-    }
-
+    if(!result.fileId)throw new Error("A API não devolveu o identificador do ficheiro.");
     return result.fileId;
 }
 
-/* GUARDAR PRODUTO */
-
+/* GUARDAR PRODUTO E ORDER BUMP */
 $("productForm").addEventListener("submit",async e=>{
     e.preventDefault();
 
@@ -1308,9 +664,38 @@ $("productForm").addEventListener("submit",async e=>{
     const image=$("productImage").files[0];
     const pdf=$("productPDF").files[0];
 
-    if(!nome || !descricao || preco<=0 || !categoria){
+    const bumpEnabled=$("orderBumpEnabled").checked;
+    const bumpProductId=$("orderBumpProduct").value;
+    const bumpPrice=Number($("orderBumpPrice").value);
+    const bumpTitle=$("orderBumpTitle").value.trim();
+    const bumpDescription=$("orderBumpDescription").value.trim();
+    const bumpText=$("orderBumpText").value.trim();
+
+    if(!nome||!descricao||!Number.isFinite(preco)||preco<=0||!categoria){
         toast("Preenche todos os campos obrigatórios.",true);
         return;
+    }
+
+    let bumpProduct=null;
+    if(bumpEnabled){
+        bumpProduct=products.find(product=>product.id===bumpProductId);
+
+        if(!bumpProduct||bumpProduct.id===editingId||getStatus(bumpProduct)!=="Ativado"){
+            toast("Seleciona um produto adicional ativo e válido.",true);
+            return;
+        }
+        if(!Number.isFinite(bumpPrice)||bumpPrice<=0){
+            toast("Define um preço válido para o Order Bump.",true);
+            return;
+        }
+        if(bumpPrice>Number(bumpProduct.preco)){
+            toast("O preço especial não pode ser superior ao preço normal do produto adicional.",true);
+            return;
+        }
+        if(!bumpTitle||!bumpDescription||!bumpText){
+            toast("Preenche o título, a descrição e o texto de aceitação do Order Bump.",true);
+            return;
+        }
     }
 
     const save=$("saveProductBtn");
@@ -1318,18 +703,13 @@ $("productForm").addEventListener("submit",async e=>{
     save.textContent="A guardar...";
 
     try{
-        const old=editingId ? products.find(p=>p.id===editingId) : null;
+        const old=editingId?products.find(product=>product.id===editingId):null;
 
-        let imageFileId=old?.imageFileId || null;
+        let imageFileId=old?.imageFileId||null;
         let pdfFileId=null;
 
-        if(image){
-            imageFileId=await uploadFile(image,"image");
-        }
-
-        if(pdf){
-            pdfFileId=await uploadFile(pdf,"pdf");
-        }
+        if(image)imageFileId=await uploadFile(image,"image");
+        if(pdf)pdfFileId=await uploadFile(pdf,"pdf");
 
         const data={
             nome,
@@ -1337,15 +717,22 @@ $("productForm").addEventListener("submit",async e=>{
             preco,
             categoria,
             ownerId:currentUser.uid,
-            ativo:old ? old.ativo!==false : true,
-            status:old?.status || "ativo",
+            ativo:old?old.ativo!==false:true,
+            status:old?.status||"ativo",
+            orderBump:{
+                enabled:bumpEnabled,
+                productId:bumpEnabled?bumpProductId:null,
+                price:bumpEnabled?bumpPrice:0,
+                title:bumpEnabled?bumpTitle:"",
+                description:bumpEnabled?bumpDescription:"",
+                checkboxText:bumpEnabled?bumpText:""
+            },
             updatedAt:serverTimestamp()
         };
 
         if(imageFileId)data.imageFileId=imageFileId;
 
         let productId=editingId;
-
         if(editingId){
             await updateDoc(doc(db,"produtos",editingId),data);
         }else{
@@ -1364,57 +751,22 @@ $("productForm").addEventListener("submit",async e=>{
         }
 
         closeModal();
-        toast(old ? "Produto atualizado!" : "Produto cadastrado com sucesso!");
-
+        toast(old?"Produto atualizado!":"Produto cadastrado com sucesso!");
     }catch(error){
         console.error(error);
-        toast(error.message || "Erro ao guardar produto.",true);
+        toast(error.message||"Erro ao guardar produto.",true);
     }finally{
         save.disabled=false;
-        save.textContent=editingId ? "Guardar alterações" : "Guardar produto";
+        save.textContent="Guardar produto";
     }
 });
 
-/* ESTADO DO PRODUTO */
-
-function getStatus(product){
-    if(product.status==="pendente")return "Pendente";
-
-    if(product.ativo===false || product.status==="inativo"){
-        return "Desactivado";
-    }
-
-    return "Ativado";
-}
-
-function formatPrice(value){
-    return Number(value||0).toLocaleString("pt-MZ",{
-        minimumFractionDigits:2,
-        maximumFractionDigits:2
-    })+" MT";
-}
-
-function escapeHTML(value){
-    return String(value).replace(/[&<>"']/g,char=>({
-        "&":"&amp;",
-        "<":"&lt;",
-        ">":"&gt;",
-        '"':"&quot;",
-        "'":"&#039;"
-    })[char]);
-}
-
-/* RENDERIZAR */
-
+/* RENDERIZAR PRODUTOS */
 function renderProducts(){
     const list=$("lista");
 
     if(currentView==="afiliacoes"){
-        list.innerHTML=`
-            <div class="empty">
-                <span class="material-icons-outlined">handshake</span>
-                <p>A área de afiliações ainda não está disponível.</p>
-            </div>`;
+        list.innerHTML=`<div class="empty"><span class="material-icons-outlined">handshake</span><p>A área de afiliações ainda não está disponível.</p></div>`;
         return;
     }
 
@@ -1422,88 +774,53 @@ function renderProducts(){
 
     const filtered=products.filter(product=>{
         const status=getStatus(product);
-
-        const matchesSearch=
-            (product.nome||"").toLowerCase().includes(search) ||
+        const matchesSearch=(product.nome||"").toLowerCase().includes(search)||
             (product.descricao||"").toLowerCase().includes(search);
-
-        const matchesStatus=
-            selectedStatus==="Todos" || status===selectedStatus;
-
-        const matchesCategory=
-            selectedCategory==="Todas" ||
-            product.categoria===selectedCategory;
-
-        return matchesSearch && matchesStatus && matchesCategory;
+        const matchesStatus=selectedStatus==="Todos"||status===selectedStatus;
+        const matchesCategory=selectedCategory==="Todas"||product.categoria===selectedCategory;
+        return matchesSearch&&matchesStatus&&matchesCategory;
     });
 
     if(filtered.length===0){
-        list.innerHTML=`
-            <div class="empty">
-                <span class="material-icons-outlined">inventory_2</span>
-                <p>${products.length===0
-                    ? "Ainda não tens produtos cadastrados."
-                    : "Nenhum produto encontrado."}</p>
-            </div>`;
+        list.innerHTML=`<div class="empty"><span class="material-icons-outlined">inventory_2</span><p>${products.length===0?"Ainda não tens produtos cadastrados.":"Nenhum produto encontrado."}</p></div>`;
         return;
     }
 
     list.innerHTML=filtered.map(product=>{
         const status=getStatus(product);
-
-        const statusClass={
-            "Ativado":"ativo",
-            "Desactivado":"desativado",
-            "Pendente":"pendente"
-        }[status];
-
+        const statusClass={"Ativado":"ativo","Desactivado":"desativado","Pendente":"pendente"}[status];
         const image=product.imageFileId
-            ? `<img src="/api/image?fileId=${encodeURIComponent(product.imageFileId)}" alt="Imagem do produto">`
-            : `<span class="material-icons-outlined">image</span>`;
+            ?`<img src="/api/image?fileId=${encodeURIComponent(product.imageFileId)}" alt="Imagem do produto">`
+            :`<span class="material-icons-outlined">image</span>`;
 
         return `
         <div class="product">
             <div class="info">
                 <div class="thumb">${image}</div>
-
                 <div class="details">
                     <h4>${escapeHTML(product.nome||"Produto sem nome")}</h4>
                     <p>${escapeHTML(product.categoria||"Sem categoria")} · ${escapeHTML(product.descricao||"")}</p>
                 </div>
             </div>
-
             <div class="price">${formatPrice(product.preco)}</div>
-
             <span class="status ${statusClass}">${status}</span>
-
             <div class="actions">
-                <button title="Editar" data-action="edit" data-id="${product.id}">
-                    <span class="material-icons-outlined">edit</span>
-                </button>
-
-                <button title="${status==="Ativado"?"Desativar":"Ativar"}"
-                    data-action="toggle" data-id="${product.id}">
-                    <span class="material-icons-outlined">${status==="Ativado"?"toggle_on":"toggle_off"}</span>
-                </button>
-
-                <button title="Excluir" data-action="delete" data-id="${product.id}">
-                    <span class="material-icons-outlined">delete</span>
-                </button>
+                <button title="Editar" data-action="edit" data-id="${escapeHTML(product.id)}"><span class="material-icons-outlined">edit</span></button>
+                <button title="${status==="Ativado"?"Desativar":"Ativar"}" data-action="toggle" data-id="${escapeHTML(product.id)}"><span class="material-icons-outlined">${status==="Ativado"?"toggle_on":"toggle_off"}</span></button>
+                <button title="Excluir" data-action="delete" data-id="${escapeHTML(product.id)}"><span class="material-icons-outlined">delete</span></button>
             </div>
         </div>`;
     }).join("");
 }
 
 /* AÇÕES */
-
 $("lista").addEventListener("click",async e=>{
     const button=e.target.closest("button[data-action]");
     if(!button)return;
 
     const id=button.dataset.id;
     const action=button.dataset.action;
-    const product=products.find(p=>p.id===id);
-
+    const product=products.find(item=>item.id===id);
     if(!product)return;
 
     if(action==="edit"){
@@ -1513,15 +830,13 @@ $("lista").addEventListener("click",async e=>{
 
     if(action==="toggle"){
         try{
-            const newStatus=getStatus(product)==="Ativado" ? "inativo" : "ativo";
-
+            const newStatus=getStatus(product)==="Ativado"?"inativo":"ativo";
             await updateDoc(doc(db,"produtos",id),{
                 ativo:newStatus==="ativo",
                 status:newStatus,
                 updatedAt:serverTimestamp()
             });
-
-            toast(newStatus==="ativo" ? "Produto ativado!" : "Produto desactivado!");
+            toast(newStatus==="ativo"?"Produto ativado!":"Produto desactivado!");
         }catch(error){
             console.error(error);
             toast("Não foi possível alterar o estado.",true);
@@ -1531,12 +846,9 @@ $("lista").addEventListener("click",async e=>{
 
     if(action==="delete"){
         if(!confirm("Tens a certeza de que queres excluir este produto?"))return;
-
         try{
             await deleteDoc(doc(db,"produtos",id));
-
             await deleteDoc(doc(db,"privateProductFiles",id)).catch(()=>{});
-
             toast("Produto excluído!");
         }catch(error){
             console.error(error);
@@ -1546,39 +858,29 @@ $("lista").addEventListener("click",async e=>{
 });
 
 /* PESQUISA */
-
 $("searchInput").addEventListener("input",renderProducts);
 
 /* FIRESTORE */
-
 function listenProducts(){
-    const q=query(
-        collection(db,"produtos"),
-        where("ownerId","==",currentUser.uid)
-    );
+    const q=query(collection(db,"produtos"),where("ownerId","==",currentUser.uid));
 
     unsubscribe=onSnapshot(q,snapshot=>{
-        products=snapshot.docs.map(item=>({
-            id:item.id,
-            ...item.data()
-        }));
-
+        products=snapshot.docs.map(item=>({id:item.id,...item.data()}));
         renderProducts();
+
+        if($("productModal").classList.contains("show")){
+            const selected=$("orderBumpProduct").value;
+            renderOrderBumpProducts(selected);
+        }
     },error=>{
         console.error(error);
-        $("lista").innerHTML=`
-            <div class="empty">
-                <span class="material-icons-outlined">error_outline</span>
-                <p>Erro ao carregar os produtos.</p>
-            </div>`;
+        $("lista").innerHTML=`<div class="empty"><span class="material-icons-outlined">error_outline</span><p>Erro ao carregar os produtos.</p></div>`;
     });
 }
 
 /* SAIR */
-
 $("logoutButton").addEventListener("click",async e=>{
     e.preventDefault();
-
     try{
         await signOut(auth);
         location.href="index.html";
@@ -1588,20 +890,15 @@ $("logoutButton").addEventListener("click",async e=>{
 });
 
 /* AUTENTICAÇÃO */
-
 onAuthStateChanged(auth,user=>{
     if(!user){
         location.href="index.html";
         return;
     }
-
     currentUser=user;
-
     if(unsubscribe)unsubscribe();
-
     listenProducts();
 });
 </script>
-
 </body>
 </html>
