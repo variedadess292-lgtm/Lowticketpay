@@ -20,72 +20,141 @@
 
 body{
     min-height:100vh;
-    background:#030a12;
-    color:#fff;
+    background:#e9edf2;
     font-family:'Plus Jakarta Sans',sans-serif;
     display:flex;
-    justify-content:center;
     align-items:center;
-    padding:20px;
+    justify-content:center;
+    padding:25px 16px;
+    color:#111;
 }
 
 .container{
     width:100%;
-    max-width:420px;
+    max-width:360px;
+    background:#fff;
+    border-radius:28px;
+    overflow:hidden;
+    box-shadow:0 20px 55px rgba(3,10,18,.13);
 }
 
-/* LOGOTIPO */
-.logo{
-    text-align:center;
-    margin-bottom:30px;
+/* TOPO DA LOGO */
+
+.brand-cover{
+    height:190px;
+    background:#030a12;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+    overflow:hidden;
 }
 
-.logo img{
-    width:155px;
-    max-width:70%;
-    height:auto;
+/* Decoração do fundo */
+
+.brand-cover::before,
+.brand-cover::after{
+    content:"";
+    position:absolute;
+    border:1px solid rgba(32,186,240,.12);
+    border-radius:50%;
+}
+
+.brand-cover::before{
+    width:260px;
+    height:260px;
+    top:-145px;
+    left:-100px;
+}
+
+.brand-cover::after{
+    width:220px;
+    height:220px;
+    right:-100px;
+    bottom:-130px;
+}
+
+.logo-box{
+    width:82px;
+    height:82px;
+    background:#fff;
+    border-radius:17px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+    z-index:2;
+    padding:12px;
+}
+
+.logo-box img{
+    width:100%;
+    height:100%;
     object-fit:contain;
-    margin-bottom:17px;
 }
 
-.logo p{
-    color:#969eaa;
-    font-size:12px;
-    margin-top:5px;
+/* ÁREA BRANCA */
+
+.content{
+    background:#fff;
+    margin-top:-27px;
+    position:relative;
+    z-index:3;
+    border-radius:35px 0 0;
+    padding:34px 22px 29px;
 }
 
-/* CARTÃO */
-.card{
-    background:#071321;
-    border:2px solid #292929;
-    border-radius:11px;
-    padding:30px 24px;
-}
-
-.card h2{
+.title{
+    text-align:center;
     font-size:21px;
-    font-weight:800;
+    font-weight:600;
     margin-bottom:8px;
+    color:#111;
 }
 
 .subtitle{
-    color:#969eaa;
-    font-size:12px;
+    text-align:center;
+    font-size:11px;
+    color:#888;
+    line-height:1.6;
     margin-bottom:27px;
-    line-height:1.7;
+}
+
+/* MENSAGEM */
+
+.message{
+    display:none;
+    padding:11px 12px;
+    border-radius:9px;
+    font-size:11px;
+    line-height:1.5;
+    margin-bottom:17px;
+}
+
+.message.error{
+    display:block;
+    background:#fff0f0;
+    color:#c83232;
+}
+
+.message.success{
+    display:block;
+    background:#eaf9ef;
+    color:#188343;
 }
 
 /* CAMPOS */
+
 .field{
-    margin-bottom:19px;
+    margin-bottom:17px;
 }
 
 label{
     display:block;
-    font-size:11px;
-    color:#c6d0da;
-    margin-bottom:9px;
+    font-size:10px;
     font-weight:700;
+    color:#333;
+    margin:0 0 7px 2px;
 }
 
 .input-wrap{
@@ -94,28 +163,30 @@ label{
 
 input{
     width:100%;
-    height:47px;
-    border:1px solid #292929;
-    background:#030a12;
-    border-radius:8px;
+    height:48px;
+    background:#fafafa;
+    border:1px solid #eeeeee;
+    border-radius:10px;
     padding:0 13px;
-    color:#fff;
     font-family:inherit;
-    font-size:12px;
+    font-size:11px;
+    color:#111;
     outline:none;
     transition:.2s;
 }
 
-input:focus{
-    border-color:#20baf0;
+input::placeholder{
+    color:#aaa;
 }
 
-input::placeholder{
-    color:#687482;
+input:focus{
+    border-color:#20baf0;
+    background:#fff;
+    box-shadow:0 0 0 3px rgba(32,186,240,.08);
 }
 
 .password-input{
-    padding-right:75px;
+    padding-right:70px;
 }
 
 .toggle{
@@ -123,48 +194,47 @@ input::placeholder{
     right:13px;
     top:50%;
     transform:translateY(-50%);
+    border:0;
     background:none;
-    border:none;
-    color:#20baf0;
-    cursor:pointer;
+    color:#168fbd;
     font-family:inherit;
     font-size:10px;
     font-weight:700;
+    cursor:pointer;
 }
+
+/* RECUPERAÇÃO */
 
 .forgot{
     display:block;
     text-align:right;
-    color:#20baf0;
+    color:#168fbd;
     font-size:10px;
-    text-decoration:none;
-    margin-top:-5px;
-    margin-bottom:22px;
     font-weight:700;
-}
-
-.forgot:hover,
-.register a:hover{
-    text-decoration:underline;
+    text-decoration:none;
+    margin-top:-4px;
+    margin-bottom:21px;
 }
 
 /* BOTÃO */
+
 .login-btn{
     width:100%;
     height:47px;
-    background:#20baf0;
-    color:#030a12;
-    border:none;
-    border-radius:8px;
+    border:0;
+    border-radius:9px;
+    background:#030a12;
+    color:#fff;
     font-family:inherit;
-    font-weight:800;
-    font-size:12px;
+    font-size:11px;
+    font-weight:700;
     cursor:pointer;
     transition:.2s;
+    box-shadow:0 5px 12px rgba(3,10,18,.12);
 }
 
 .login-btn:hover{
-    background:#55cbf5;
+    background:#102237;
 }
 
 .login-btn:disabled{
@@ -172,60 +242,43 @@ input::placeholder{
     cursor:wait;
 }
 
-/* MENSAGENS */
-.message{
-    display:none;
-    padding:12px;
-    border-radius:8px;
-    font-size:11px;
-    margin-bottom:17px;
-    line-height:1.6;
-}
-
-.message.error{
-    display:block;
-    background:#351616;
-    color:#ff8585;
-    border:1px solid #572323;
-}
-
-.message.success{
-    display:block;
-    background:#102b20;
-    color:#70df39;
-    border:1px solid #205338;
-}
-
 /* REGISTO */
+
 .register{
     text-align:center;
-    margin-top:24px;
-    color:#969eaa;
-    font-size:11px;
+    font-size:10px;
+    color:#777;
+    margin-top:28px;
 }
 
 .register a{
-    color:#20baf0;
-    text-decoration:none;
+    color:#168fbd;
     font-weight:800;
+    text-decoration:none;
 }
 
 /* RODAPÉ */
+
 .footer{
     text-align:center;
-    color:#657080;
-    font-size:10px;
-    margin-top:25px;
+    color:#aaa;
+    font-size:9px;
+    padding:0 15px 20px;
+    background:#fff;
 }
 
 @media(max-width:380px){
 
-    .card{
-        padding:25px 18px;
+    .container{
+        max-width:340px;
     }
 
-    .logo img{
-        width:140px;
+    .brand-cover{
+        height:180px;
+    }
+
+    .content{
+        padding:31px 20px 27px;
     }
 }
 </style>
@@ -235,25 +288,20 @@ input::placeholder{
 
 <div class="container">
 
-    <!-- LOGOTIPO -->
-    <div class="logo">
+    <div class="brand-cover">
 
-        <img
-            src="assets/lowticketpay.png"
-            alt="KILLIKPAY"
-        >
-
-      
+        <div class="logo-box">
+            <img src="assets/lowticketpay.png" alt="KILLIKPAY">
+        </div>
 
     </div>
 
-    <!-- LOGIN -->
-    <div class="card">
+    <div class="content">
 
-        <h2>Bem-vindo de volta</h2>
+        <h1 class="title">Entrar</h1>
 
         <p class="subtitle">
-            Introduza os seus dados para aceder à sua conta.
+            Aceda à sua conta KILLIKPAY
         </p>
 
         <div
@@ -331,7 +379,6 @@ input::placeholder{
 
 </div>
 
-<!-- FIREBASE -->
 <script type="module">
 
 import { auth } from "./js/firebase.js";
@@ -349,19 +396,14 @@ const togglePassword = document.getElementById("togglePassword");
 
 let submitting = false;
 
-/* MENSAGENS */
-
 function showMessage(text,type="error"){
-
     message.textContent = text;
     message.className = "message " + type;
-
 }
 
 function translateError(error){
 
     const errors = {
-
         "auth/invalid-email":
             "O endereço de e-mail é inválido.",
 
@@ -385,15 +427,13 @@ function translateError(error){
 
         "auth/operation-not-allowed":
             "O acesso por e-mail não está activado no Firebase."
-
     };
 
     return errors[error.code] ||
         "Não foi possível entrar. Tente novamente.";
-
 }
 
-/* MOSTRAR / OCULTAR PALAVRA-PASSE */
+/* MOSTRAR / OCULTAR SENHA */
 
 togglePassword.addEventListener("click",()=>{
 
@@ -406,7 +446,7 @@ togglePassword.addEventListener("click",()=>{
 
 });
 
-/* LOGIN */
+/* LOGIN FIREBASE */
 
 form.addEventListener("submit",async event=>{
 
@@ -418,10 +458,8 @@ form.addEventListener("submit",async event=>{
     const password = passwordInput.value;
 
     if(!email || !password){
-
         showMessage("Preencha todos os campos.");
         return;
-
     }
 
     submitting = true;
