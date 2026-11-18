@@ -144,6 +144,18 @@ textarea.form-control{min-height:85px;resize:vertical}
 .order-bump-preview .preview-check{display:flex;align-items:center;gap:8px;font-size:10px;font-weight:700}
 .order-bump-preview .preview-check span{color:var(--blue)}
 
+/* AFILIACAO */
+.affiliate-section{margin-top:16px;padding:16px;background:#030d19;border:1px solid #26394d;border-radius:9px}
+.affiliate-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}
+.affiliate-heading h3{font-size:13px;font-weight:800}
+.affiliate-description{font-size:10px;color:var(--muted);line-height:1.6;margin-bottom:16px}
+.affiliate-toggle{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px;background:#071321;border:1px solid var(--border);border-radius:7px;margin-bottom:15px}
+.affiliate-toggle label{font-size:11px;font-weight:700;margin:0}
+.affiliate-toggle input{width:18px;height:18px;accent-color:var(--blue);cursor:pointer}
+.affiliate-fields{display:none}
+.affiliate-fields.show{display:block}
+.affiliate-hint{display:block;margin-top:7px;color:var(--muted);font-size:10px;line-height:1.5}
+
 /* MOBILE */
 @media(max-width:700px){
 .top-menu{height:75px;padding:0 15px}
@@ -398,6 +410,30 @@ h1{font-size:20px}
                 </div>
             </section>
 
+            <!-- PROGRAMA DE AFILIADOS -->
+            <section class="affiliate-section">
+                <div class="affiliate-heading">
+                    <h3>Programa de afiliados</h3>
+                    <span class="material-icons-outlined" style="color:#20baf0">groups</span>
+                </div>
+                <p class="affiliate-description">
+                    Permite que outras pessoas divulguem este produto e recebam uma comissão pelas vendas realizadas através dos seus links.
+                </p>
+
+                <div class="affiliate-toggle">
+                    <label for="affiliateEnabled">Permitir afiliação</label>
+                    <input type="checkbox" id="affiliateEnabled">
+                </div>
+
+                <div class="affiliate-fields" id="affiliateFields">
+                    <div class="form-group">
+                        <label for="affiliateCommission">Comissão do afiliado (%)</label>
+                        <input class="form-control" id="affiliateCommission" type="number" min="1" max="100" step="0.01" placeholder="Ex.: 30">
+                        <span class="affiliate-hint">Qualquer utilizador poderá afiliar-se automaticamente, sem aprovação. Define uma comissão entre 1% e 100% do preço do produto.</span>
+                    </div>
+                </div>
+            </section>
+
             <div class="modal-actions">
                 <button type="button" class="cancel-btn" id="cancelModal">Cancelar</button>
                 <button type="submit" class="save-btn" id="saveProductBtn">Guardar produto</button>
@@ -561,6 +597,13 @@ function updateOrderBumpPreview(){
     $("previewBumpText").textContent=$("orderBumpText").value.trim()||"Sim! Quero adicionar esta oferta.";
 }
 
+/* AFILIACAO */
+function toggleAffiliateFields(){
+    $("affiliateFields").classList.toggle("show",$("affiliateEnabled").checked);
+}
+
+$("affiliateEnabled").addEventListener("change",toggleAffiliateFields);
+
 $("orderBumpEnabled").addEventListener("change",toggleOrderBumpFields);
 ["orderBumpTitle","orderBumpDescription","orderBumpPrice","orderBumpText"].forEach(id=>{
     $(id).addEventListener("input",updateOrderBumpPreview);
@@ -599,6 +642,11 @@ function openModal(product=null){
     $("orderBumpDescription").value=bump.description||"";
     $("orderBumpText").value=bump.checkboxText||"Sim! Quero adicionar esta oferta.";
 
+    const affiliate=product?.affiliate||{};
+    $("affiliateEnabled").checked=affiliate.enabled===true;
+    $("affiliateCommission").value=affiliate.commission??"";
+    toggleAffiliateFields();
+
     renderOrderBumpProducts(bump.productId||"");
     toggleOrderBumpFields();
     updateOrderBumpPreview();
@@ -613,6 +661,7 @@ function closeModal(){
     $("imageFileName").textContent="";
     $("pdfFileName").textContent="";
     toggleOrderBumpFields();
+    toggleAffiliateFields();
     updateOrderBumpPreview();
 }
 
@@ -671,8 +720,16 @@ $("productForm").addEventListener("submit",async e=>{
     const bumpDescription=$("orderBumpDescription").value.trim();
     const bumpText=$("orderBumpText").value.trim();
 
+    const affiliateEnabled=$("affiliateEnabled").checked;
+    const affiliateCommission=Number($("affiliateCommission").value);
+
     if(!nome||!descricao||!Number.isFinite(preco)||preco<=0||!categoria){
         toast("Preenche todos os campos obrigatórios.",true);
+        return;
+    }
+
+    if(affiliateEnabled && (!Number.isFinite(affiliateCommission)||affiliateCommission<1||affiliateCommission>100)){
+        toast("Define uma comissão entre 1% e 100%.",true);
         return;
     }
 
@@ -726,6 +783,10 @@ $("productForm").addEventListener("submit",async e=>{
                 title:bumpEnabled?bumpTitle:"",
                 description:bumpEnabled?bumpDescription:"",
                 checkboxText:bumpEnabled?bumpText:""
+            },
+            affiliate:{
+                enabled:affiliateEnabled,
+                commission:affiliateEnabled?affiliateCommission:0
             },
             updatedAt:serverTimestamp()
         };
