@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt">
 <head>
@@ -143,6 +144,24 @@ textarea.form-control{min-height:85px;resize:vertical}
 .order-bump-preview strong{display:block;color:var(--blue);font-size:20px;margin:12px 0}
 .order-bump-preview .preview-check{display:flex;align-items:center;gap:8px;font-size:10px;font-weight:700}
 .order-bump-preview .preview-check span{color:var(--blue)}
+
+/* UPSELL */
+.upsell-section{margin-top:16px;padding:16px;background:#030d19;border:1px solid #26394d;border-radius:9px}
+.upsell-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}
+.upsell-heading h3{font-size:13px;font-weight:800}
+.upsell-description{font-size:10px;color:var(--muted);line-height:1.6;margin-bottom:16px}
+.upsell-toggle{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px;background:#071321;border:1px solid var(--border);border-radius:7px;margin-bottom:15px}
+.upsell-toggle label{font-size:11px;font-weight:700;margin:0}
+.upsell-toggle input{width:18px;height:18px;accent-color:var(--blue);cursor:pointer}
+.upsell-fields{display:none}
+.upsell-fields.show{display:block}
+.upsell-preview{background:#071321;border:1px dashed #20506a;border-radius:8px;padding:14px;margin-top:15px}
+.upsell-preview small{display:block;color:var(--blue);font-size:9px;font-weight:800;margin-bottom:10px}
+.upsell-preview h4{font-size:13px;margin-bottom:7px}
+.upsell-preview p{font-size:10px;color:var(--muted);line-height:1.6}
+.upsell-preview strong{display:block;color:var(--blue);font-size:20px;margin:12px 0}
+.upsell-preview button{width:100%;padding:11px;border:0;border-radius:6px;background:var(--blue);color:#00111b;font-family:inherit;font-size:10px;font-weight:800;margin-top:7px}
+.upsell-preview .reject{background:transparent;color:var(--muted);border:1px solid var(--border)}
 
 /* AFILIACAO */
 .affiliate-section{margin-top:16px;padding:16px;background:#030d19;border:1px solid #26394d;border-radius:9px}
@@ -410,6 +429,67 @@ h1{font-size:20px}
                 </div>
             </section>
 
+            <!-- UPSELL -->
+            <section class="upsell-section">
+                <div class="upsell-heading">
+                    <h3>Oferta Upsell</h3>
+                    <span class="material-icons-outlined" style="color:#20baf0">trending_up</span>
+                </div>
+
+                <p class="upsell-description">
+                    Apresenta uma oferta especial ao cliente depois de concluir a compra principal.
+                </p>
+
+                <div class="upsell-toggle">
+                    <label for="upsellEnabled">Ativar Upsell</label>
+                    <input type="checkbox" id="upsellEnabled">
+                </div>
+
+                <div class="upsell-fields" id="upsellFields">
+                    <div class="form-group">
+                        <label for="upsellProduct">Produto da oferta</label>
+                        <select class="form-control" id="upsellProduct">
+                            <option value="">Selecionar produto</option>
+                        </select>
+                        <span class="file-note">Escolhe um produto ativo, diferente do produto principal.</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="upsellPrice">Preço especial (MZN)</label>
+                        <input class="form-control" id="upsellPrice" type="number" min="0.01" step="0.01" placeholder="Ex.: 100">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="upsellTitle">Título da oferta</label>
+                        <input class="form-control" id="upsellTitle" type="text" maxlength="100" value="Aproveita esta oferta exclusiva!">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="upsellDescription">Descrição da oferta</label>
+                        <textarea class="form-control" id="upsellDescription" maxlength="300" placeholder="Apresenta os benefícios desta oferta especial."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="upsellAcceptText">Texto do botão de aceitação</label>
+                        <input class="form-control" id="upsellAcceptText" type="text" maxlength="100" value="Sim, quero aproveitar esta oferta">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="upsellRejectText">Texto do botão de recusa</label>
+                        <input class="form-control" id="upsellRejectText" type="text" maxlength="100" value="Não, obrigado">
+                    </div>
+
+                    <div class="upsell-preview">
+                        <small>PRÉ-VISUALIZAÇÃO DA OFERTA</small>
+                        <h4 id="previewUpsellTitle">Aproveita esta oferta exclusiva!</h4>
+                        <p id="previewUpsellDescription">Apresenta os benefícios desta oferta especial.</p>
+                        <strong id="previewUpsellPrice">0,00 MT</strong>
+                        <button type="button" id="previewUpsellAccept">Sim, quero aproveitar esta oferta</button>
+                        <button type="button" class="reject" id="previewUpsellReject">Não, obrigado</button>
+                    </div>
+                </div>
+            </section>
+
             <!-- PROGRAMA DE AFILIADOS -->
             <section class="affiliate-section">
                 <div class="affiliate-heading">
@@ -597,6 +677,52 @@ function updateOrderBumpPreview(){
     $("previewBumpText").textContent=$("orderBumpText").value.trim()||"Sim! Quero adicionar esta oferta.";
 }
 
+/* UPSELL */
+function renderUpsellProducts(selectedId=""){
+    const select=$("upsellProduct");
+
+    const available=products.filter(product=>
+        product.id!==editingId &&
+        getStatus(product)==="Ativado"
+    );
+
+    select.innerHTML='<option value="">Selecionar produto</option>'+
+        available.map(product=>
+            `<option value="${escapeHTML(product.id)}">${escapeHTML(product.nome||"Produto sem nome")} - ${formatPrice(product.preco)}</option>`
+        ).join("");
+
+    select.value=available.some(product=>product.id===selectedId)
+        ?selectedId:"";
+}
+
+function toggleUpsellFields(){
+    $("upsellFields").classList.toggle(
+        "show",
+        $("upsellEnabled").checked
+    );
+}
+
+function updateUpsellPreview(){
+    $("previewUpsellTitle").textContent=
+        $("upsellTitle").value.trim()||
+        "Aproveita esta oferta exclusiva!";
+
+    $("previewUpsellDescription").textContent=
+        $("upsellDescription").value.trim()||
+        "Apresenta os benefícios desta oferta especial.";
+
+    $("previewUpsellPrice").textContent=
+        formatPrice($("upsellPrice").value);
+
+    $("previewUpsellAccept").textContent=
+        $("upsellAcceptText").value.trim()||
+        "Sim, quero aproveitar esta oferta";
+
+    $("previewUpsellReject").textContent=
+        $("upsellRejectText").value.trim()||
+        "Não, obrigado";
+}
+
 /* AFILIACAO */
 function toggleAffiliateFields(){
     $("affiliateFields").classList.toggle("show",$("affiliateEnabled").checked);
@@ -613,6 +739,29 @@ $("orderBumpProduct").addEventListener("change",()=>{
     if(selected && !$("orderBumpPrice").value){
         $("orderBumpPrice").value=selected.preco;
         updateOrderBumpPreview();
+    }
+});
+
+$("upsellEnabled").addEventListener("change",toggleUpsellFields);
+
+[
+    "upsellTitle",
+    "upsellDescription",
+    "upsellPrice",
+    "upsellAcceptText",
+    "upsellRejectText"
+].forEach(id=>{
+    $(id).addEventListener("input",updateUpsellPreview);
+});
+
+$("upsellProduct").addEventListener("change",()=>{
+    const selected=products.find(
+        product=>product.id===$("upsellProduct").value
+    );
+
+    if(selected && !$("upsellPrice").value){
+        $("upsellPrice").value=selected.preco;
+        updateUpsellPreview();
     }
 });
 
@@ -642,14 +791,27 @@ function openModal(product=null){
     $("orderBumpDescription").value=bump.description||"";
     $("orderBumpText").value=bump.checkboxText||"Sim! Quero adicionar esta oferta.";
 
+    const upsell=product?.upsell||{};
+    $("upsellEnabled").checked=upsell.enabled===true;
+    $("upsellPrice").value=upsell.price||"";
+    $("upsellTitle").value=upsell.title||"Aproveita esta oferta exclusiva!";
+    $("upsellDescription").value=upsell.description||"";
+    $("upsellAcceptText").value=upsell.acceptText||"Sim, quero aproveitar esta oferta";
+    $("upsellRejectText").value=upsell.rejectText||"Não, obrigado";
+
     const affiliate=product?.affiliate||{};
     $("affiliateEnabled").checked=affiliate.enabled===true;
     $("affiliateCommission").value=affiliate.commission??"";
     toggleAffiliateFields();
 
     renderOrderBumpProducts(bump.productId||"");
+    renderUpsellProducts(upsell.productId||"");
+
     toggleOrderBumpFields();
+    toggleUpsellFields();
+
     updateOrderBumpPreview();
+    updateUpsellPreview();
 
     $("productModal").classList.add("show");
 }
@@ -661,8 +823,10 @@ function closeModal(){
     $("imageFileName").textContent="";
     $("pdfFileName").textContent="";
     toggleOrderBumpFields();
+    toggleUpsellFields();
     toggleAffiliateFields();
     updateOrderBumpPreview();
+    updateUpsellPreview();
 }
 
 $("addProductBtn").addEventListener("click",()=>openModal());
@@ -702,7 +866,7 @@ async function uploadFile(file,kind){
     return result.fileId;
 }
 
-/* GUARDAR PRODUTO E ORDER BUMP */
+/* GUARDAR PRODUTO, ORDER BUMP, UPSELL E AFILIADOS */
 $("productForm").addEventListener("submit",async e=>{
     e.preventDefault();
 
@@ -719,6 +883,14 @@ $("productForm").addEventListener("submit",async e=>{
     const bumpTitle=$("orderBumpTitle").value.trim();
     const bumpDescription=$("orderBumpDescription").value.trim();
     const bumpText=$("orderBumpText").value.trim();
+
+    const upsellEnabled=$("upsellEnabled").checked;
+    const upsellProductId=$("upsellProduct").value;
+    const upsellPrice=Number($("upsellPrice").value);
+    const upsellTitle=$("upsellTitle").value.trim();
+    const upsellDescription=$("upsellDescription").value.trim();
+    const upsellAcceptText=$("upsellAcceptText").value.trim();
+    const upsellRejectText=$("upsellRejectText").value.trim();
 
     const affiliateEnabled=$("affiliateEnabled").checked;
     const affiliateCommission=Number($("affiliateCommission").value);
@@ -755,6 +927,36 @@ $("productForm").addEventListener("submit",async e=>{
         }
     }
 
+    let upsellProduct=null;
+
+    if(upsellEnabled){
+        upsellProduct=products.find(
+            product=>product.id===upsellProductId
+        );
+
+        if(!upsellProduct ||
+           upsellProduct.id===editingId ||
+           getStatus(upsellProduct)!=="Ativado"){
+            toast("Seleciona um produto Upsell ativo e válido.",true);
+            return;
+        }
+
+        if(!Number.isFinite(upsellPrice)||upsellPrice<=0){
+            toast("Define um preço válido para o Upsell.",true);
+            return;
+        }
+
+        if(upsellPrice>Number(upsellProduct.preco)){
+            toast("O preço especial não pode ultrapassar o preço normal.",true);
+            return;
+        }
+
+        if(!upsellTitle||!upsellDescription||!upsellAcceptText||!upsellRejectText){
+            toast("Preenche todos os campos da oferta Upsell.",true);
+            return;
+        }
+    }
+
     const save=$("saveProductBtn");
     save.disabled=true;
     save.textContent="A guardar...";
@@ -776,6 +978,7 @@ $("productForm").addEventListener("submit",async e=>{
             ownerId:currentUser.uid,
             ativo:old?old.ativo!==false:true,
             status:old?.status||"ativo",
+
             orderBump:{
                 enabled:bumpEnabled,
                 productId:bumpEnabled?bumpProductId:null,
@@ -784,10 +987,22 @@ $("productForm").addEventListener("submit",async e=>{
                 description:bumpEnabled?bumpDescription:"",
                 checkboxText:bumpEnabled?bumpText:""
             },
+
+            upsell:{
+                enabled:upsellEnabled,
+                productId:upsellEnabled?upsellProductId:null,
+                price:upsellEnabled?upsellPrice:0,
+                title:upsellEnabled?upsellTitle:"",
+                description:upsellEnabled?upsellDescription:"",
+                acceptText:upsellEnabled?upsellAcceptText:"",
+                rejectText:upsellEnabled?upsellRejectText:""
+            },
+
             affiliate:{
                 enabled:affiliateEnabled,
                 commission:affiliateEnabled?affiliateCommission:0
             },
+
             updatedAt:serverTimestamp()
         };
 
@@ -813,6 +1028,7 @@ $("productForm").addEventListener("submit",async e=>{
 
         closeModal();
         toast(old?"Produto atualizado!":"Produto cadastrado com sucesso!");
+
     }catch(error){
         console.error(error);
         toast(error.message||"Erro ao guardar produto.",true);
@@ -931,7 +1147,10 @@ function listenProducts(){
 
         if($("productModal").classList.contains("show")){
             const selected=$("orderBumpProduct").value;
+            const selectedUpsell=$("upsellProduct").value;
+
             renderOrderBumpProducts(selected);
+            renderUpsellProducts(selectedUpsell);
         }
     },error=>{
         console.error(error);
