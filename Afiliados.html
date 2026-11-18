@@ -1,0 +1,987 @@
+
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#030a12">
+<title>LOWTICKETPAY - Afiliados</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    background:#030a12;
+    color:#fff;
+    font-family:'Plus Jakarta Sans',sans-serif;
+    min-height:100vh;
+}
+
+/* BARRA SUPERIOR */
+.top-toolbar{
+    width:100%;
+    height:100px;
+    padding:0 7.5%;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    background:#030a12;
+}
+
+.toolbar-button{
+    background:transparent;
+    border:none;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+}
+
+.toolbar-button svg{
+    width:40px;
+    height:40px;
+    fill:none;
+    stroke:#858585;
+    stroke-width:2.5;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+}
+
+/* MENU */
+.menu-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.72);
+    opacity:0;
+    visibility:hidden;
+    transition:.3s;
+    z-index:998;
+}
+
+.menu-overlay.active{
+    opacity:1;
+    visibility:visible;
+}
+
+.side-menu{
+    position:fixed;
+    top:0;
+    left:0;
+    width:240px;
+    max-width:85%;
+    height:100vh;
+    height:100dvh;
+    background:#030a12;
+    border-right:1px solid #292929;
+    padding:25px 18px;
+    transform:translateX(-100%);
+    transition:transform .3s;
+    z-index:999;
+    overflow-y:auto;
+}
+
+.side-menu.active{
+    transform:translateX(0);
+}
+
+.menu-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    padding:8px 0 25px;
+    margin-bottom:25px;
+    border-bottom:1px solid #242a32;
+}
+
+.menu-logo{
+    width:115px;
+    max-width:calc(100% - 35px);
+    height:auto;
+    object-fit:contain;
+}
+
+.menu-close{
+    background:transparent;
+    border:none;
+    color:#969eaa;
+    font-size:30px;
+    cursor:pointer;
+}
+
+.menu-links{
+    display:flex;
+    flex-direction:column;
+    gap:9px;
+}
+
+.menu-links a{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    padding:15px 13px;
+    border-radius:9px;
+    color:#969eaa;
+    text-decoration:none;
+    font-size:14px;
+    font-weight:700;
+    transition:.2s;
+}
+
+.menu-links a svg{
+    width:21px;
+    height:21px;
+    min-width:21px;
+    fill:none;
+    stroke:currentColor;
+    stroke-width:1.8;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+}
+
+.menu-links a:hover,
+.menu-links a.active{
+    background:#102237;
+    color:#20baf0;
+}
+
+/* CONTEÚDO */
+main{
+    width:calc(100% - 40px);
+    max-width:900px;
+    margin:20px auto 40px;
+}
+
+/* CABEÇALHO */
+.page-heading{
+    padding:20px;
+    border:2px solid #292929;
+    border-radius:11px;
+    margin-bottom:20px;
+}
+
+.page-heading h2{
+    font-size:22px;
+    font-weight:800;
+}
+
+.page-heading p{
+    color:#969eaa;
+    font-size:12px;
+    margin-top:7px;
+}
+
+/* INDICADORES */
+.stats-section{
+    border:2px solid #292929;
+    border-radius:11px;
+    padding:22px 18px;
+    margin-bottom:20px;
+}
+
+.stats-grid{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:25px 15px;
+}
+
+.stat-item{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    min-width:0;
+}
+
+.stat-icon{
+    width:38px;
+    height:38px;
+    min-width:38px;
+    fill:none;
+    stroke:#20baf0;
+    stroke-width:1.8;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+}
+
+.stat-label{
+    font-size:11px;
+    font-weight:700;
+    color:#969eaa;
+    margin-bottom:7px;
+}
+
+.stat-value{
+    font-size:21px;
+    font-weight:800;
+    white-space:nowrap;
+}
+
+.stat-value.blue{color:#20baf0;}
+.stat-value.green{color:#70df39;}
+.stat-value.orange{color:#ffad42;}
+
+/* LISTA */
+.affiliates-section{
+    border:2px solid #292929;
+    border-radius:11px;
+    padding:20px;
+}
+
+.section-heading{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    margin-bottom:18px;
+}
+
+.section-heading h3{
+    font-size:18px;
+    font-weight:800;
+}
+
+.total-count{
+    background:#102237;
+    color:#20baf0;
+    padding:6px 11px;
+    border-radius:20px;
+    font-size:11px;
+    font-weight:800;
+}
+
+/* PESQUISA E FILTRO */
+.filters{
+    display:grid;
+    grid-template-columns:1fr 180px;
+    gap:10px;
+    margin-bottom:20px;
+}
+
+.search-box,
+.filter-select{
+    width:100%;
+    height:45px;
+    background:#071321;
+    border:1px solid #292929;
+    border-radius:8px;
+    color:#fff;
+    padding:0 12px;
+    outline:none;
+    font-family:inherit;
+    font-size:12px;
+}
+
+.search-box::placeholder{
+    color:#687482;
+}
+
+.filter-select option{
+    background:#071321;
+}
+
+/* CABEÇALHO DA TABELA */
+.table-header{
+    display:grid;
+    grid-template-columns:1.5fr 1fr .8fr .9fr;
+    gap:8px;
+    padding:12px 8px;
+    color:#969eaa;
+    font-size:10px;
+    font-weight:800;
+    border-bottom:1px solid #292929;
+}
+
+.table-header div:not(:first-child){
+    text-align:center;
+}
+
+/* LINHAS */
+.affiliate-list{
+    display:flex;
+    flex-direction:column;
+}
+
+.affiliate-row{
+    display:grid;
+    grid-template-columns:1.5fr 1fr .8fr .9fr;
+    gap:8px;
+    align-items:center;
+    padding:16px 8px;
+    border-bottom:1px solid #202832;
+    font-size:11px;
+}
+
+.affiliate-user{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    min-width:0;
+}
+
+.avatar{
+    width:34px;
+    height:34px;
+    min-width:34px;
+    border-radius:50%;
+    background:#102237;
+    color:#20baf0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:13px;
+    font-weight:800;
+}
+
+.affiliate-name{
+    font-weight:800;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+
+.affiliate-email{
+    font-size:9px;
+    color:#969eaa;
+    margin-top:4px;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.product-name{
+    color:#c6d0da;
+    text-align:center;
+}
+
+.sales-number,
+.commission-number{
+    text-align:center;
+    font-weight:800;
+}
+
+.commission-number{
+    color:#70df39;
+}
+
+/* ESTADO VAZIO */
+.empty-state{
+    text-align:center;
+    padding:45px 15px;
+}
+
+.empty-icon{
+    width:55px;
+    height:55px;
+    margin:0 auto 15px;
+    fill:none;
+    stroke:#596777;
+    stroke-width:1.5;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+}
+
+.empty-state h4{
+    font-size:14px;
+    margin-bottom:8px;
+}
+
+.empty-state p{
+    color:#969eaa;
+    font-size:11px;
+    line-height:1.7;
+    max-width:300px;
+    margin:auto;
+}
+
+.empty-state.hidden{
+    display:none;
+}
+
+.loading-text{
+    text-align:center;
+    padding:25px 10px;
+    color:#969eaa;
+    font-size:12px;
+}
+
+/* MOBILE */
+@media(max-width:480px){
+
+    .top-toolbar{
+        height:85px;
+        padding:0 7.5%;
+    }
+
+    .toolbar-button svg{
+        width:23px;
+        height:35px;
+    }
+
+    main{
+        width:calc(100% - 26px);
+        margin:18px auto 30px;
+    }
+
+    .page-heading{
+        padding:16px;
+    }
+
+    .page-heading h2{
+        font-size:19px;
+    }
+
+    .stats-section{
+        padding:22px 12px;
+    }
+
+    .stats-grid{
+        gap:27px 8px;
+    }
+
+    .stat-item{
+        gap:9px;
+    }
+
+    .stat-icon{
+        width:30px;
+        height:30px;
+        min-width:30px;
+    }
+
+    .stat-label{
+        font-size:9px;
+        margin-bottom:6px;
+    }
+
+    .stat-value{
+        font-size:16px;
+    }
+
+    .affiliates-section{
+        padding:16px 10px;
+    }
+
+    .section-heading h3{
+        font-size:15px;
+    }
+
+    .filters{
+        grid-template-columns:1fr;
+        gap:8px;
+    }
+
+    .search-box,
+    .filter-select{
+        height:43px;
+    }
+
+    .table-header{
+        grid-template-columns:1.35fr .9fr .65fr .85fr;
+        gap:4px;
+        padding:10px 3px;
+        font-size:9px;
+    }
+
+    .affiliate-row{
+        grid-template-columns:1.35fr .9fr .65fr .85fr;
+        gap:4px;
+        padding:14px 3px;
+        font-size:10px;
+    }
+
+    .affiliate-user{
+        gap:6px;
+    }
+
+    .avatar{
+        width:28px;
+        height:28px;
+        min-width:28px;
+        font-size:11px;
+    }
+
+    .affiliate-name{
+        font-size:9px;
+    }
+
+    .affiliate-email{
+        font-size:8px;
+    }
+}
+
+@media(max-width:350px){
+    .stat-value{font-size:14px;}
+    .stat-label{font-size:8px;}
+    .stats-section{padding:18px 8px;}
+    .affiliates-section{padding:13px 7px;}
+}
+</style>
+</head>
+
+<body>
+
+<!-- BARRA SUPERIOR -->
+<nav class="top-toolbar">
+    <button class="toolbar-button"
+            id="menuButton"
+            aria-label="Abrir menu"
+            aria-expanded="false"
+            aria-controls="sideMenu"
+            type="button">
+        <svg viewBox="0 0 24 24">
+            <path d="M3 5h18"/>
+            <path d="M3 12h18"/>
+            <path d="M3 19h18"/>
+        </svg>
+    </button>
+</nav>
+
+<div class="menu-overlay" id="menuOverlay"></div>
+
+<!-- MENU LATERAL -->
+<aside class="side-menu" id="sideMenu">
+
+    <div class="menu-header">
+        <img src="assets/lowticketpay.png"
+             alt="LOWTICKETPAY"
+             class="menu-logo">
+
+        <button class="menu-close" id="menuClose" type="button">
+            &times;
+        </button>
+    </div>
+
+    <nav class="menu-links">
+
+        <a href="dashboard.html">
+            <svg viewBox="0 0 24 24">
+                <rect x="3" y="3" width="8" height="8" rx="1"/>
+                <rect x="13" y="3" width="8" height="5" rx="1"/>
+                <rect x="13" y="10" width="8" height="11" rx="1"/>
+                <rect x="3" y="13" width="8" height="8" rx="1"/>
+            </svg>
+            Dashboard
+        </a>
+
+        <a href="produtos.html">
+            <svg viewBox="0 0 24 24">
+                <path d="m3 7 9-4 9 4-9 4-9-4Z"/>
+                <path d="M3 7v10l9 4 9-4V7"/>
+                <path d="M12 11v10"/>
+            </svg>
+            Produtos
+        </a>
+
+        <a href="afiliados.html" class="active">
+            <svg viewBox="0 0 24 24">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                <circle cx="10" cy="7" r="4"/>
+                <path d="M20 8v6"/>
+                <path d="M23 11h-6"/>
+            </svg>
+            Afiliados
+        </a>
+
+        <a href="vitrine.html">
+            <svg viewBox="0 0 24 24">
+                <path d="M3 10h18l-2-6H5l-2 6Z"/>
+                <path d="M4 10v10h16V10"/>
+                <path d="M9 20v-6h6v6"/>
+            </svg>
+            Vitrine
+        </a>
+
+        <a href="financeiro.html">
+            <svg viewBox="0 0 24 24">
+                <rect x="3" y="5" width="18" height="15" rx="2"/>
+                <path d="M3 10h18"/>
+                <path d="M16 15h2"/>
+            </svg>
+            Financeiro
+        </a>
+
+        <a href="#" id="logoutButton">
+            <svg viewBox="0 0 24 24">
+                <path d="M10 17l5-5-5-5"/>
+                <path d="M15 12H3"/>
+                <path d="M12 3h7a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-7"/>
+            </svg>
+            Sair
+        </a>
+
+    </nav>
+</aside>
+
+<!-- CONTEÚDO -->
+<main>
+
+    <header class="page-heading">
+        <h2>Afiliados</h2>
+        <p>Acompanha quem promove os teus produtos.</p>
+    </header>
+
+    <!-- INDICADORES -->
+    <section class="stats-section">
+
+        <div class="stats-grid">
+
+            <div class="stat-item">
+                <svg class="stat-icon" viewBox="0 0 24 24">
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                    <circle cx="10" cy="7" r="4"/>
+                    <path d="M20 8v6M23 11h-6"/>
+                </svg>
+
+                <div>
+                    <div class="stat-label">Total de afiliados</div>
+                    <div class="stat-value blue" id="totalAfiliados">0</div>
+                </div>
+            </div>
+
+            <div class="stat-item">
+                <svg class="stat-icon" viewBox="0 0 24 24">
+                    <path d="M3 3v18h18"/>
+                    <path d="m7 14 4-4 4 4 6-7"/>
+                </svg>
+
+                <div>
+                    <div class="stat-label">Vendas realizadas</div>
+                    <div class="stat-value green" id="totalVendas">0</div>
+                </div>
+            </div>
+
+            <div class="stat-item">
+                <svg class="stat-icon" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="9"/>
+                    <path d="M12 7v10M15 9.5c0-1.1-1.3-2-3-2s-3 .9-3 2 1.3 2 3 2 3 .9 3 2-1.3 2-3 2-3-.9-3-2"/>
+                </svg>
+
+                <div>
+                    <div class="stat-label">Comissões geradas</div>
+                    <div class="stat-value green" id="comissoesGeradas">0,00 MT</div>
+                </div>
+            </div>
+
+            <div class="stat-item">
+                <svg class="stat-icon" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="9"/>
+                    <path d="M12 7v5l3 2"/>
+                </svg>
+
+                <div>
+                    <div class="stat-label">Comissões pendentes</div>
+                    <div class="stat-value orange" id="comissoesPendentes">0,00 MT</div>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- LISTA DE AFILIADOS -->
+    <section class="affiliates-section">
+
+        <div class="section-heading">
+            <h3>Lista de afiliados</h3>
+            <span class="total-count" id="contadorLista">0 afiliados</span>
+        </div>
+
+        <div class="filters">
+
+            <input
+                type="search"
+                class="search-box"
+                id="searchInput"
+                placeholder="Pesquisar afiliado..."
+            >
+
+            <select class="filter-select" id="productFilter">
+                <option value="">Todos os produtos</option>
+            </select>
+
+        </div>
+
+        <div class="table-header">
+            <div>Afiliado</div>
+            <div>Produto</div>
+            <div>Vendas</div>
+            <div>Comissão</div>
+        </div>
+
+        <div class="affiliate-list" id="affiliateList"></div>
+
+        <div class="empty-state" id="emptyState">
+            <svg class="empty-icon" viewBox="0 0 24 24">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                <circle cx="10" cy="7" r="4"/>
+                <path d="M18 8v6M21 11h-6"/>
+            </svg>
+
+            <h4 id="emptyTitle">Ainda não tens afiliados</h4>
+
+            <p id="emptyDescription">
+                Quando alguém se afiliar aos teus produtos,
+                os dados aparecerão aqui automaticamente.
+            </p>
+        </div>
+
+    </section>
+
+</main>
+
+<!-- FIREBASE -->
+<script type="module">
+
+import { auth, db } from "./js/firebase.js";
+
+import {
+    onAuthStateChanged,
+    signOut
+} from "https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js";
+
+const logoutButton = document.getElementById("logoutButton");
+
+/*
+  A página está preparada para receber os dados reais.
+  O registo dos afiliados e o rastreamento das vendas
+  serão integrados posteriormente.
+*/
+
+let afiliados = [];
+
+const searchInput = document.getElementById("searchInput");
+const productFilter = document.getElementById("productFilter");
+const affiliateList = document.getElementById("affiliateList");
+const emptyState = document.getElementById("emptyState");
+
+function formatarMoeda(valor){
+
+    return Number(valor || 0).toLocaleString("pt-MZ",{
+        minimumFractionDigits:2,
+        maximumFractionDigits:2
+    }) + " MT";
+
+}
+
+function atualizarIndicadores(){
+
+    const totalVendas = afiliados.reduce(
+        (total,item)=>total + Number(item.vendas || 0),0
+    );
+
+    const totalComissoes = afiliados.reduce(
+        (total,item)=>total + Number(item.comissao || 0),0
+    );
+
+    const pendentes = afiliados.reduce(
+        (total,item)=>total + Number(item.pendente || 0),0
+    );
+
+    document.getElementById("totalAfiliados").textContent =
+        afiliados.length;
+
+    document.getElementById("totalVendas").textContent =
+        totalVendas;
+
+    document.getElementById("comissoesGeradas").textContent =
+        formatarMoeda(totalComissoes);
+
+    document.getElementById("comissoesPendentes").textContent =
+        formatarMoeda(pendentes);
+
+    document.getElementById("contadorLista").textContent =
+        afiliados.length + (afiliados.length === 1 ? " afiliado" : " afiliados");
+
+}
+
+function atualizarLista(){
+
+    const pesquisa = searchInput.value.toLowerCase().trim();
+    const produtoSelecionado = productFilter.value;
+
+    const filtrados = afiliados.filter(item=>{
+
+        const correspondePesquisa =
+            (item.nome || "").toLowerCase().includes(pesquisa) ||
+            (item.email || "").toLowerCase().includes(pesquisa) ||
+            (item.produto || "").toLowerCase().includes(pesquisa);
+
+        const correspondeProduto =
+            !produtoSelecionado || item.produto === produtoSelecionado;
+
+        return correspondePesquisa && correspondeProduto;
+
+    });
+
+    affiliateList.innerHTML = "";
+
+    if(filtrados.length === 0){
+
+        emptyState.classList.remove("hidden");
+
+        document.getElementById("emptyTitle").textContent =
+            afiliados.length === 0
+            ? "Ainda não tens afiliados"
+            : "Nenhum resultado encontrado";
+
+        document.getElementById("emptyDescription").textContent =
+            afiliados.length === 0
+            ? "Quando alguém se afiliar aos teus produtos, os dados aparecerão aqui automaticamente."
+            : "Experimenta alterar a pesquisa ou selecionar outro produto.";
+
+        return;
+
+    }
+
+    emptyState.classList.add("hidden");
+
+    filtrados.forEach(item=>{
+
+        const iniciais = (item.nome || "A")
+            .trim()
+            .charAt(0)
+            .toUpperCase();
+
+        const row = document.createElement("div");
+        row.className = "affiliate-row";
+
+        const user = document.createElement("div");
+        user.className = "affiliate-user";
+
+        const avatar = document.createElement("div");
+        avatar.className = "avatar";
+        avatar.textContent = iniciais;
+
+        const info = document.createElement("div");
+        info.style.minWidth = "0";
+
+        const name = document.createElement("div");
+        name.className = "affiliate-name";
+        name.textContent = item.nome || "Afiliado";
+
+        const email = document.createElement("div");
+        email.className = "affiliate-email";
+        email.textContent = item.email || "";
+
+        info.append(name,email);
+        user.append(avatar,info);
+
+        const product = document.createElement("div");
+        product.className = "product-name";
+        product.textContent = item.produto || "-";
+
+        const sales = document.createElement("div");
+        sales.className = "sales-number";
+        sales.textContent = Number(item.vendas || 0);
+
+        const commission = document.createElement("div");
+        commission.className = "commission-number";
+        commission.textContent = formatarMoeda(item.comissao);
+
+        row.append(user,product,sales,commission);
+        affiliateList.appendChild(row);
+
+    });
+
+}
+
+function atualizarFiltro(){
+
+    const produtos = [...new Set(
+        afiliados.map(item=>item.produto).filter(Boolean)
+    )];
+
+    productFilter.innerHTML =
+        '<option value="">Todos os produtos</option>';
+
+    produtos.forEach(produto=>{
+
+        const option = document.createElement("option");
+        option.value = produto;
+        option.textContent = produto;
+
+        productFilter.appendChild(option);
+
+    });
+
+}
+
+searchInput.addEventListener("input",atualizarLista);
+productFilter.addEventListener("change",atualizarLista);
+
+/* AUTENTICAÇÃO */
+onAuthStateChanged(auth,(user)=>{
+
+    if(!user){
+        window.location.replace("index.html");
+        return;
+    }
+
+    atualizarIndicadores();
+    atualizarFiltro();
+    atualizarLista();
+
+});
+
+/* TERMINAR SESSÃO */
+logoutButton.addEventListener("click",async(event)=>{
+
+    event.preventDefault();
+
+    try{
+
+        await signOut(auth);
+        window.location.replace("index.html");
+
+    }catch(error){
+
+        console.error("Erro ao terminar sessão:",error);
+        alert("Não foi possível terminar a sessão. Tente novamente.");
+
+    }
+
+});
+
+/* MENU LATERAL */
+const menuButton = document.getElementById("menuButton");
+const menuClose = document.getElementById("menuClose");
+const sideMenu = document.getElementById("sideMenu");
+const menuOverlay = document.getElementById("menuOverlay");
+
+function abrirMenu(){
+
+    sideMenu.classList.add("active");
+    menuOverlay.classList.add("active");
+    menuButton.setAttribute("aria-expanded","true");
+    document.body.style.overflow="hidden";
+
+}
+
+function fecharMenu(){
+
+    sideMenu.classList.remove("active");
+    menuOverlay.classList.remove("active");
+    menuButton.setAttribute("aria-expanded","false");
+    document.body.style.overflow="";
+
+}
+
+menuButton.addEventListener("click",abrirMenu);
+menuClose.addEventListener("click",fecharMenu);
+menuOverlay.addEventListener("click",fecharMenu);
+
+document.addEventListener("keydown",(event)=>{
+
+    if(event.key==="Escape") fecharMenu();
+
+});
+
+</script>
+
+</body>
+</html>
