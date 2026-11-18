@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#030a12">
-<title>KILLIKPAY - Financeiro</title>
+<title>LOWTICKETPAY - Financeiro</title>
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
@@ -107,6 +107,7 @@ body{
     color:#969eaa;
     font-size:30px;
     cursor:pointer;
+    line-height:1;
 }
 
 .menu-links{
@@ -171,7 +172,7 @@ main{
     margin-top:7px;
 }
 
-/* INDICADORES */
+/* INDICADORES - UM ÚNICO CARD */
 .stats-section{
     border:2px solid #292929;
     border-radius:11px;
@@ -180,31 +181,38 @@ main{
 }
 
 .stats-grid{
-    display:grid;
-    grid-template-columns:repeat(2,minmax(0,1fr));
-    gap:25px 15px;
+    display:flex;
+    flex-direction:column;
+    gap:22px;
 }
 
 .stat-item{
     display:flex;
     align-items:center;
-    gap:12px;
+    gap:16px;
     min-width:0;
+    width:100%;
 }
 
 .stat-icon{
     width:38px;
     height:38px;
     min-width:38px;
+    flex-shrink:0;
     fill:none;
-    stroke:#20baf0;
+    stroke:#ffffff;
     stroke-width:1.8;
     stroke-linecap:round;
     stroke-linejoin:round;
 }
 
+.stat-content{
+    flex:1;
+    min-width:0;
+}
+
 .stat-label{
-    font-size:11px;
+    font-size:12px;
     font-weight:700;
     color:#969eaa;
     margin-bottom:7px;
@@ -214,6 +222,7 @@ main{
     font-size:21px;
     font-weight:800;
     white-space:nowrap;
+    font-variant-numeric:tabular-nums;
 }
 
 .stat-value.blue{color:#20baf0}
@@ -456,6 +465,7 @@ main{
     margin-top:12px;
 }
 
+/* MOBILE */
 @media(max-width:480px){
 
     .top-toolbar{
@@ -476,22 +486,30 @@ main{
     .page-heading{padding:16px}
     .page-heading h2{font-size:19px}
 
-    .stats-section{padding:22px 12px}
-    .stats-grid{gap:27px 8px}
-    .stat-item{gap:9px}
+    .stats-section{
+        padding:20px 13px;
+    }
+
+    .stats-grid{
+        gap:20px;
+    }
+
+    .stat-item{
+        gap:12px;
+    }
 
     .stat-icon{
-        width:30px;
-        height:30px;
-        min-width:30px;
+        width:34px;
+        height:34px;
+        min-width:34px;
     }
 
     .stat-label{
-        font-size:9px;
+        font-size:11px;
         margin-bottom:6px;
     }
 
-    .stat-value{font-size:16px}
+    .stat-value{font-size:19px}
 
     .financial-section{padding:16px 10px}
     .section-heading h3{font-size:15px}
@@ -518,11 +536,21 @@ main{
     }
 }
 
+/* ECRÃS MUITO PEQUENOS */
 @media(max-width:350px){
-    .stat-value{font-size:14px}
-    .stat-label{font-size:8px}
+
+    .stat-value{font-size:16px}
+    .stat-label{font-size:10px}
     .stats-section{padding:18px 8px}
     .financial-section{padding:13px 7px}
+
+    .stat-item{gap:9px}
+
+    .stat-icon{
+        width:31px;
+        height:31px;
+        min-width:31px;
+    }
 }
 </style>
 </head>
@@ -552,7 +580,7 @@ main{
 
     <div class="menu-header">
         <img src="assets/lowticketpay.png"
-             alt="KILLIKPAY"
+             alt="LOWTICKETPAY"
              class="menu-logo">
 
         <button class="menu-close" id="menuClose" type="button">&times;</button>
@@ -627,7 +655,7 @@ main{
         <p>Acompanha os teus saldos, ganhos e levantamentos.</p>
     </header>
 
-    <!-- INDICADORES -->
+    <!-- INDICADORES: UM ÚNICO CARD -->
     <section class="stats-section">
         <div class="stats-grid">
 
@@ -637,7 +665,7 @@ main{
                     <path d="M2 10h20"/>
                     <path d="M16 15h2"/>
                 </svg>
-                <div>
+                <div class="stat-content">
                     <div class="stat-label">Saldo disponível</div>
                     <div class="stat-value blue" id="saldoDisponivel">0,00 MT</div>
                 </div>
@@ -648,7 +676,7 @@ main{
                     <circle cx="12" cy="12" r="9"/>
                     <path d="M12 7v5l3 2"/>
                 </svg>
-                <div>
+                <div class="stat-content">
                     <div class="stat-label">Saldo pendente</div>
                     <div class="stat-value orange" id="saldoPendente">0,00 MT</div>
                 </div>
@@ -659,7 +687,7 @@ main{
                     <path d="M3 3v18h18"/>
                     <path d="m7 14 4-4 4 4 6-7"/>
                 </svg>
-                <div>
+                <div class="stat-content">
                     <div class="stat-label">Total recebido</div>
                     <div class="stat-value green" id="totalRecebido">0,00 MT</div>
                 </div>
@@ -670,7 +698,7 @@ main{
                     <path d="M12 2v20"/>
                     <path d="M17 7H9.5a3.5 3.5 0 0 0 0 7H14a3.5 3.5 0 0 1 0 7H6"/>
                 </svg>
-                <div>
+                <div class="stat-content">
                     <div class="stat-label">Total levantado</div>
                     <div class="stat-value blue" id="totalLevantado">0,00 MT</div>
                 </div>
@@ -738,7 +766,7 @@ main{
 
         <div class="modal-header">
             <h3>Solicitar levantamento</h3>
-            <button class="modal-close" id="closeWithdrawal">&times;</button>
+            <button class="modal-close" id="closeWithdrawal" type="button">&times;</button>
         </div>
 
         <form id="withdrawalForm">
@@ -819,10 +847,13 @@ let utilizadorAtual = null;
 let saldoDisponivel = 0;
 
 function moeda(valor){
-    return Number(valor || 0).toLocaleString("pt-MZ",{
-        minimumFractionDigits:2,
-        maximumFractionDigits:2
-    }) + " MT";
+    const numero = Number(valor || 0);
+
+    return (Number.isFinite(numero) ? numero : 0)
+        .toLocaleString("pt-MZ",{
+            minimumFractionDigits:2,
+            maximumFractionDigits:2
+        }) + " MT";
 }
 
 function abrirModal(){
