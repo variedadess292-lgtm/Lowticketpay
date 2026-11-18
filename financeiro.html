@@ -5,507 +5,763 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#030a12">
-<title>Financeiro | KILLIKPAY</title>
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+<title>KILLIKPAY - Financeiro</title>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
 *{margin:0;padding:0;box-sizing:border-box}
-:root{
---bg:#030a12;
---card:#071321;
---input:#030d19;
---border:#172536;
---blue:#20baf0;
---text:#f2f5f9;
---muted:#969eaa;
---green:#22c55e;
-}
+
 body{
-font-family:'Plus Jakarta Sans',sans-serif;
-background:var(--bg);
-color:var(--text);
-min-height:100vh;
+    background:#030a12;
+    color:#fff;
+    font-family:'Plus Jakarta Sans',sans-serif;
+    min-height:100vh;
 }
-button,input,select{font-family:inherit}
-.sidebar{
-width:240px;
-height:100vh;
-position:fixed;
-left:0;top:0;
-background:#050d17;
-border-right:1px solid var(--border);
-padding:25px 16px;
-z-index:100;
-display:flex;
-flex-direction:column;
-transition:.3s;
+
+/* BARRA SUPERIOR */
+.top-toolbar{
+    width:100%;
+    height:100px;
+    padding:0 7.5%;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    background:#030a12;
 }
-.logo{
-display:flex;
-align-items:center;
-gap:10px;
-padding:0 10px;
-margin-bottom:40px;
-font-size:21px;
-font-weight:800;
+
+.toolbar-button{
+    background:transparent;
+    border:none;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
 }
-.logo span{color:var(--blue)}
-.logo-icon{
-width:34px;height:34px;
-background:var(--blue);
-border-radius:9px;
-display:grid;
-place-items:center;
-color:#03101a;
-font-weight:900;
+
+.toolbar-button svg{
+    width:40px;
+    height:40px;
+    fill:none;
+    stroke:#858585;
+    stroke-width:2.5;
+    stroke-linecap:round;
+    stroke-linejoin:round;
 }
-.menu-label{
-font-size:10px;
-font-weight:700;
-color:#667386;
-letter-spacing:1.5px;
-padding:0 12px;
-margin-bottom:12px;
+
+/* MENU */
+.menu-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.72);
+    opacity:0;
+    visibility:hidden;
+    transition:.3s;
+    z-index:998;
 }
-nav{display:flex;flex-direction:column;gap:6px}
-nav a{
-display:flex;
-align-items:center;
-gap:12px;
-padding:12px;
-border-radius:9px;
-color:#929eac;
-font-size:13px;
-font-weight:600;
-text-decoration:none;
-transition:.2s;
+
+.menu-overlay.active{
+    opacity:1;
+    visibility:visible;
 }
-nav a:hover,nav a.active{
-background:#102438;
-color:var(--blue);
+
+.side-menu{
+    position:fixed;
+    top:0;
+    left:0;
+    width:240px;
+    max-width:85%;
+    height:100vh;
+    height:100dvh;
+    background:#030a12;
+    border-right:1px solid #292929;
+    padding:25px 18px;
+    transform:translateX(-100%);
+    transition:transform .3s;
+    z-index:999;
+    overflow-y:auto;
 }
-nav a .material-icons-round{font-size:20px}
-.sidebar-bottom{margin-top:auto}
-.sidebar-bottom a{color:#f87171}
-.main{
-margin-left:240px;
-padding:28px 35px;
-max-width:1600px;
+
+.side-menu.active{transform:translateX(0)}
+
+.menu-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    padding:8px 0 25px;
+    margin-bottom:25px;
+    border-bottom:1px solid #242a32;
 }
-.topbar{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-bottom:35px;
+
+.menu-logo{
+    width:115px;
+    max-width:calc(100% - 35px);
+    height:auto;
+    object-fit:contain;
 }
-.top-left{display:flex;align-items:center;gap:15px}
-.menu-toggle{
-display:none;
-background:none;
-border:0;
-color:white;
-font-size:26px;
-cursor:pointer;
+
+.menu-close{
+    background:transparent;
+    border:none;
+    color:#969eaa;
+    font-size:30px;
+    cursor:pointer;
 }
-.page-title{font-size:23px;font-weight:800}
-.top-right{display:flex;align-items:center;gap:12px}
-.user-circle{
-width:38px;height:38px;
-border-radius:50%;
-background:#12304a;
-display:grid;place-items:center;
-color:var(--blue);
-font-weight:800;
+
+.menu-links{
+    display:flex;
+    flex-direction:column;
+    gap:9px;
 }
-.greeting{font-size:12px;color:var(--muted)}
-h2{font-size:19px;margin-bottom:7px}
-.subtitle{font-size:12px;color:var(--muted)}
-.balance-grid{
-display:grid;
-grid-template-columns:repeat(4,minmax(0,1fr));
-gap:15px;
-margin:25px 0;
+
+.menu-links a{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    padding:15px 13px;
+    border-radius:9px;
+    color:#969eaa;
+    text-decoration:none;
+    font-size:14px;
+    font-weight:700;
+    transition:.2s;
 }
-.card{
-background:var(--card);
-border:1px solid var(--border);
-border-radius:13px;
-padding:21px;
-min-width:0;
+
+.menu-links a svg{
+    width:21px;
+    height:21px;
+    min-width:21px;
+    fill:none;
+    stroke:currentColor;
+    stroke-width:1.8;
+    stroke-linecap:round;
+    stroke-linejoin:round;
 }
-.balance-card{
-position:relative;
-overflow:hidden;
+
+.menu-links a:hover,
+.menu-links a.active{
+    background:#102237;
+    color:#20baf0;
 }
-.balance-card.primary{
-background:linear-gradient(135deg,#092b40,#071321);
-border-color:#155071;
+
+/* CONTEÚDO */
+main{
+    width:calc(100% - 40px);
+    max-width:900px;
+    margin:20px auto 40px;
 }
-.card-top{
-display:flex;
-align-items:center;
-justify-content:space-between;
-margin-bottom:20px;
+
+/* CABEÇALHO */
+.page-heading{
+    padding:20px;
+    border:2px solid #292929;
+    border-radius:11px;
+    margin-bottom:20px;
 }
-.card-label{font-size:11px;color:var(--muted);font-weight:600}
-.card-icon{
-width:35px;height:35px;
-border-radius:9px;
-background:#10283b;
-display:grid;place-items:center;
-color:var(--blue);
+
+.page-heading h2{
+    font-size:22px;
+    font-weight:800;
 }
-.card-icon.green{color:var(--green);background:#102b22}
-.card-icon.orange{color:#f59e0b;background:#302416}
-.card-icon.purple{color:#b794f4;background:#251c38}
-.amount{
-font-size:23px;
-font-weight:800;
-letter-spacing:-.7px;
+
+.page-heading p{
+    color:#969eaa;
+    font-size:12px;
+    margin-top:7px;
 }
-.amount small{font-size:12px;color:var(--muted);font-weight:600}
-.card-description{font-size:10px;color:var(--muted);margin-top:8px}
-.section{
-margin-top:25px;
+
+/* INDICADORES */
+.stats-section{
+    border:2px solid #292929;
+    border-radius:11px;
+    padding:22px 18px;
+    margin-bottom:20px;
 }
+
+.stats-grid{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:25px 15px;
+}
+
+.stat-item{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    min-width:0;
+}
+
+.stat-icon{
+    width:38px;
+    height:38px;
+    min-width:38px;
+    fill:none;
+    stroke:#20baf0;
+    stroke-width:1.8;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+}
+
+.stat-label{
+    font-size:11px;
+    font-weight:700;
+    color:#969eaa;
+    margin-bottom:7px;
+}
+
+.stat-value{
+    font-size:21px;
+    font-weight:800;
+    white-space:nowrap;
+}
+
+.stat-value.blue{color:#20baf0}
+.stat-value.green{color:#70df39}
+.stat-value.orange{color:#ffad42}
+
+/* SECÇÕES */
+.financial-section{
+    border:2px solid #292929;
+    border-radius:11px;
+    padding:20px;
+    margin-bottom:20px;
+}
+
 .section-heading{
-display:flex;
-align-items:center;
-justify-content:space-between;
-margin-bottom:15px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    margin-bottom:18px;
 }
-.section-heading h3{font-size:15px}
-.primary-btn{
-background:var(--blue);
-color:#03101a;
-border:0;
-border-radius:9px;
-padding:12px 17px;
-font-size:12px;
-font-weight:800;
-cursor:pointer;
-display:inline-flex;
-align-items:center;
-justify-content:center;
-gap:8px;
+
+.section-heading h3{
+    font-size:18px;
+    font-weight:800;
 }
-.primary-btn:disabled{opacity:.5;cursor:not-allowed}
-.secondary-btn{
-background:#102438;
-color:var(--blue);
-border:1px solid #183b52;
-border-radius:8px;
-padding:9px 13px;
-font-size:11px;
-font-weight:700;
-cursor:pointer;
+
+.section-description{
+    color:#969eaa;
+    font-size:11px;
+    line-height:1.7;
+    margin-top:6px;
 }
-.table-wrap{overflow-x:auto}
-table{width:100%;border-collapse:collapse;min-width:550px}
-th{
-text-align:left;
-font-size:10px;
-color:#77879a;
-padding:13px 10px;
-border-bottom:1px solid var(--border);
+
+.total-count{
+    background:#102237;
+    color:#20baf0;
+    padding:6px 11px;
+    border-radius:20px;
+    font-size:11px;
+    font-weight:800;
+    white-space:nowrap;
 }
-td{
-font-size:11px;
-padding:16px 10px;
-border-bottom:1px solid #142233;
-color:#cbd5e1;
+
+/* BOTÕES */
+.primary-button{
+    background:#20baf0;
+    color:#030a12;
+    border:none;
+    border-radius:8px;
+    padding:12px 16px;
+    font-family:inherit;
+    font-size:11px;
+    font-weight:800;
+    cursor:pointer;
 }
-.empty{
-text-align:center;
-padding:35px 10px;
-color:var(--muted);
-font-size:12px;
+
+.primary-button:disabled{
+    opacity:.5;
+    cursor:not-allowed;
 }
-.empty .material-icons-round{
-display:block;
-font-size:32px;
-margin-bottom:10px;
-color:#536477;
+
+.secondary-button{
+    background:#071321;
+    color:#969eaa;
+    border:1px solid #292929;
+    border-radius:8px;
+    padding:11px 15px;
+    font-family:inherit;
+    font-size:11px;
+    font-weight:700;
+    cursor:pointer;
 }
+
+/* HISTÓRICO */
+.table-header{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr 1fr;
+    gap:8px;
+    padding:12px 8px;
+    color:#969eaa;
+    font-size:10px;
+    font-weight:800;
+    border-bottom:1px solid #292929;
+}
+
+.table-header div:not(:first-child){text-align:center}
+
+.history-list{
+    display:flex;
+    flex-direction:column;
+}
+
+.history-row{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr 1fr;
+    gap:8px;
+    align-items:center;
+    padding:16px 8px;
+    border-bottom:1px solid #202832;
+    font-size:11px;
+}
+
+.history-row div:not(:first-child){text-align:center}
+
+.history-amount{font-weight:800}
+.history-method{color:#c6d0da}
+
 .status{
-display:inline-block;
-padding:5px 9px;
-border-radius:20px;
-font-size:9px;
-font-weight:800;
+    display:inline-block;
+    padding:6px 9px;
+    border-radius:20px;
+    font-size:9px;
+    font-weight:800;
 }
-.status.pending{background:#332819;color:#f6bb62}
-.status.paid{background:#103123;color:#4ade80}
-.status.rejected{background:#351d24;color:#fb7185}
+
+.status.pending{background:#332819;color:#ffad42}
+.status.paid{background:#102b20;color:#70df39}
+.status.rejected{background:#351d24;color:#ff7788}
+
+/* ESTADO VAZIO */
+.empty-state{
+    text-align:center;
+    padding:40px 15px;
+}
+
+.empty-icon{
+    width:55px;
+    height:55px;
+    margin:0 auto 15px;
+    fill:none;
+    stroke:#596777;
+    stroke-width:1.5;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+}
+
+.empty-state h4{
+    font-size:14px;
+    margin-bottom:8px;
+}
+
+.empty-state p{
+    color:#969eaa;
+    font-size:11px;
+    line-height:1.7;
+    max-width:300px;
+    margin:auto;
+}
+
+/* MODAL */
+.modal-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.75);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:15px;
+    z-index:1000;
+}
+
+.modal-overlay.active{display:flex}
+
 .modal{
-display:none;
-position:fixed;
-inset:0;
-background:#000b;
-z-index:200;
-align-items:center;
-justify-content:center;
-padding:15px;
+    width:100%;
+    max-width:430px;
+    background:#030a12;
+    border:2px solid #292929;
+    border-radius:11px;
+    padding:22px;
 }
-.modal.show{display:flex}
-.modal-content{
-width:100%;
-max-width:430px;
-background:#071321;
-border:1px solid var(--border);
-border-radius:15px;
-padding:24px;
-}
+
 .modal-header{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-bottom:22px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:20px;
 }
-.modal-header h3{font-size:17px}
-.close-btn{
-background:none;border:0;color:#9aa7b7;
-font-size:25px;cursor:pointer;
+
+.modal-header h3{
+    font-size:17px;
+    font-weight:800;
 }
-.form-group{margin-bottom:17px}
+
+.modal-close{
+    background:transparent;
+    border:none;
+    color:#969eaa;
+    font-size:26px;
+    cursor:pointer;
+}
+
+.form-group{margin-bottom:16px}
+
 .form-group label{
-display:block;
-font-size:11px;
-color:#aab5c3;
-font-weight:700;
-margin-bottom:8px;
+    display:block;
+    color:#969eaa;
+    font-size:11px;
+    font-weight:700;
+    margin-bottom:8px;
 }
-.form-group input,.form-group select{
-width:100%;
-background:var(--input);
-border:1px solid var(--border);
-border-radius:8px;
-padding:13px;
-outline:none;
-color:white;
-font-size:12px;
+
+.form-group input,
+.form-group select{
+    width:100%;
+    height:45px;
+    background:#071321;
+    border:1px solid #292929;
+    border-radius:8px;
+    padding:0 12px;
+    color:#fff;
+    outline:none;
+    font-family:inherit;
+    font-size:12px;
 }
-.form-group input:focus,.form-group select:focus{border-color:var(--blue)}
+
+.form-group input:focus,
+.form-group select:focus{border-color:#20baf0}
+
 .form-group select option{background:#071321}
-.help{
-font-size:10px;
-color:var(--muted);
-margin-top:7px;
+
+.form-help{
+    color:#969eaa;
+    font-size:10px;
+    margin-top:7px;
 }
-.modal-actions{display:flex;gap:10px;margin-top:22px}
-.modal-actions button{flex:1}
-.message{
-font-size:11px;
-margin-top:12px;
-line-height:1.6;
+
+.modal-buttons{
+    display:flex;
+    gap:10px;
+    margin-top:20px;
 }
-#overlay{
-display:none;
-position:fixed;inset:0;
-background:#0009;
-z-index:90;
+
+.modal-buttons button{flex:1}
+
+.form-message{
+    font-size:11px;
+    line-height:1.6;
+    margin-top:12px;
 }
-#overlay.show{display:block}
-@media(max-width:1100px){
-.balance-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+
+@media(max-width:480px){
+
+    .top-toolbar{
+        height:85px;
+        padding:0 7.5%;
+    }
+
+    .toolbar-button svg{
+        width:23px;
+        height:35px;
+    }
+
+    main{
+        width:calc(100% - 26px);
+        margin:18px auto 30px;
+    }
+
+    .page-heading{padding:16px}
+    .page-heading h2{font-size:19px}
+
+    .stats-section{padding:22px 12px}
+    .stats-grid{gap:27px 8px}
+    .stat-item{gap:9px}
+
+    .stat-icon{
+        width:30px;
+        height:30px;
+        min-width:30px;
+    }
+
+    .stat-label{
+        font-size:9px;
+        margin-bottom:6px;
+    }
+
+    .stat-value{font-size:16px}
+
+    .financial-section{padding:16px 10px}
+    .section-heading h3{font-size:15px}
+
+    .table-header{
+        grid-template-columns:.9fr .9fr .9fr 1fr;
+        gap:4px;
+        padding:10px 3px;
+        font-size:8px;
+    }
+
+    .history-row{
+        grid-template-columns:.9fr .9fr .9fr 1fr;
+        gap:4px;
+        padding:14px 3px;
+        font-size:9px;
+    }
+
+    .status{font-size:8px;padding:5px 6px}
+
+    .section-heading .primary-button{
+        padding:10px 11px;
+        font-size:10px;
+    }
 }
-@media(max-width:700px){
-.sidebar{transform:translateX(-100%)}
-.sidebar.open{transform:translateX(0)}
-.main{margin-left:0;padding:20px 15px}
-.menu-toggle{display:block}
-.page-title{font-size:18px}
-.topbar{margin-bottom:28px}
-.balance-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-.card{padding:15px}
-.amount{font-size:19px}
-.card-label{font-size:10px}
-.section-heading{align-items:flex-start;gap:10px}
+
+@media(max-width:350px){
+    .stat-value{font-size:14px}
+    .stat-label{font-size:8px}
+    .stats-section{padding:18px 8px}
+    .financial-section{padding:13px 7px}
 }
 </style>
 </head>
 
 <body>
 
-<div id="overlay" onclick="toggleMenu()"></div>
+<!-- BARRA SUPERIOR -->
+<nav class="top-toolbar">
+    <button class="toolbar-button"
+            id="menuButton"
+            aria-label="Abrir menu"
+            aria-expanded="false"
+            aria-controls="sideMenu"
+            type="button">
+        <svg viewBox="0 0 24 24">
+            <path d="M3 5h18"/>
+            <path d="M3 12h18"/>
+            <path d="M3 19h18"/>
+        </svg>
+    </button>
+</nav>
 
-<aside class="sidebar" id="sidebar">
-    <div class="logo">
-        <div class="logo-icon">K</div>
-        <div>KILLIK<span>PAY</span></div>
+<div class="menu-overlay" id="menuOverlay"></div>
+
+<!-- MENU LATERAL -->
+<aside class="side-menu" id="sideMenu">
+
+    <div class="menu-header">
+        <img src="assets/lowticketpay.png"
+             alt="KILLIKPAY"
+             class="menu-logo">
+
+        <button class="menu-close" id="menuClose" type="button">&times;</button>
     </div>
 
-    <div class="menu-label">MENU PRINCIPAL</div>
+    <nav class="menu-links">
 
-    <nav>
         <a href="dashboard.html">
-            <span class="material-icons-round">dashboard</span>
+            <svg viewBox="0 0 24 24">
+                <rect x="3" y="3" width="8" height="8" rx="1"/>
+                <rect x="13" y="3" width="8" height="5" rx="1"/>
+                <rect x="13" y="10" width="8" height="11" rx="1"/>
+                <rect x="3" y="13" width="8" height="8" rx="1"/>
+            </svg>
             Dashboard
         </a>
+
         <a href="produtos.html">
-            <span class="material-icons-round">inventory_2</span>
+            <svg viewBox="0 0 24 24">
+                <path d="m3 7 9-4 9 4-9 4-9-4Z"/>
+                <path d="M3 7v10l9 4 9-4V7"/>
+                <path d="M12 11v10"/>
+            </svg>
             Produtos
         </a>
+
         <a href="afiliados.html">
-            <span class="material-icons-round">groups</span>
+            <svg viewBox="0 0 24 24">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                <circle cx="10" cy="7" r="4"/>
+                <path d="M20 8v6"/>
+                <path d="M23 11h-6"/>
+            </svg>
             Afiliados
         </a>
+
         <a href="vitrine.html">
-            <span class="material-icons-round">storefront</span>
+            <svg viewBox="0 0 24 24">
+                <path d="M3 10h18l-2-6H5l-2 6Z"/>
+                <path d="M4 10v10h16V10"/>
+                <path d="M9 20v-6h6v6"/>
+            </svg>
             Vitrine
         </a>
+
         <a href="financeiro.html" class="active">
-            <span class="material-icons-round">account_balance_wallet</span>
+            <svg viewBox="0 0 24 24">
+                <rect x="3" y="5" width="18" height="15" rx="2"/>
+                <path d="M3 10h18"/>
+                <path d="M16 15h2"/>
+            </svg>
             Financeiro
         </a>
-    </nav>
 
-    <div class="sidebar-bottom">
-        <nav>
-            <a href="#" id="logoutBtn">
-                <span class="material-icons-round">logout</span>
-                Sair
-            </a>
-        </nav>
-    </div>
+        <a href="#" id="logoutButton">
+            <svg viewBox="0 0 24 24">
+                <path d="M10 17l5-5-5-5"/>
+                <path d="M15 12H3"/>
+                <path d="M12 3h7a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-7"/>
+            </svg>
+            Sair
+        </a>
+
+    </nav>
 </aside>
 
-<main class="main">
-    <header class="topbar">
-        <div class="top-left">
-            <button class="menu-toggle" onclick="toggleMenu()">☰</button>
-            <div class="page-title">Financeiro</div>
-        </div>
-        <div class="top-right">
-            <div>
-                <div class="greeting">Bem-vindo,</div>
-                <strong id="userName" style="font-size:12px">Utilizador</strong>
-            </div>
-            <div class="user-circle" id="userInitial">U</div>
-        </div>
+<!-- CONTEÚDO -->
+<main>
+
+    <header class="page-heading">
+        <h2>Financeiro</h2>
+        <p>Acompanha os teus saldos, ganhos e levantamentos.</p>
     </header>
 
-    <section>
-        <h2>Visão geral financeira</h2>
-        <p class="subtitle">Acompanha os teus ganhos e levantamentos.</p>
-    </section>
+    <!-- INDICADORES -->
+    <section class="stats-section">
+        <div class="stats-grid">
 
-    <section class="balance-grid">
-        <div class="card balance-card primary">
-            <div class="card-top">
-                <span class="card-label">Saldo disponível</span>
-                <div class="card-icon green">
-                    <span class="material-icons-round">account_balance_wallet</span>
-                </div>
-            </div>
-            <div class="amount" id="availableBalance">0,00 <small>MT</small></div>
-            <div class="card-description">Disponível para levantamento</div>
-        </div>
-
-        <div class="card">
-            <div class="card-top">
-                <span class="card-label">Saldo pendente</span>
-                <div class="card-icon orange">
-                    <span class="material-icons-round">schedule</span>
-                </div>
-            </div>
-            <div class="amount" id="pendingBalance">0,00 <small>MT</small></div>
-            <div class="card-description">Valores ainda não liberados</div>
-        </div>
-
-        <div class="card">
-            <div class="card-top">
-                <span class="card-label">Total recebido</span>
-                <div class="card-icon">
-                    <span class="material-icons-round">trending_up</span>
-                </div>
-            </div>
-            <div class="amount" id="totalReceived">0,00 <small>MT</small></div>
-            <div class="card-description">Total líquido recebido</div>
-        </div>
-
-        <div class="card">
-            <div class="card-top">
-                <span class="card-label">Total levantado</span>
-                <div class="card-icon purple">
-                    <span class="material-icons-round">payments</span>
-                </div>
-            </div>
-            <div class="amount" id="totalWithdrawn">0,00 <small>MT</small></div>
-            <div class="card-description">Levantamentos concluídos</div>
-        </div>
-    </section>
-
-    <section class="section">
-        <div class="card">
-            <div class="section-heading">
+            <div class="stat-item">
+                <svg class="stat-icon" viewBox="0 0 24 24">
+                    <rect x="2" y="5" width="20" height="15" rx="2"/>
+                    <path d="M2 10h20"/>
+                    <path d="M16 15h2"/>
+                </svg>
                 <div>
-                    <h3>Levantar dinheiro</h3>
-                    <p class="subtitle" style="margin-top:6px">Mínimo para levantamento: 100 MT</p>
+                    <div class="stat-label">Saldo disponível</div>
+                    <div class="stat-value blue" id="saldoDisponivel">0,00 MT</div>
                 </div>
-                <button class="primary-btn" id="openModal">
-                    <span class="material-icons-round" style="font-size:17px">add</span>
-                    Solicitar
-                </button>
             </div>
-            <p class="subtitle">Solicita o teu saldo disponível. Depois, o administrador fará o envio pelo método escolhido.</p>
+
+            <div class="stat-item">
+                <svg class="stat-icon" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="9"/>
+                    <path d="M12 7v5l3 2"/>
+                </svg>
+                <div>
+                    <div class="stat-label">Saldo pendente</div>
+                    <div class="stat-value orange" id="saldoPendente">0,00 MT</div>
+                </div>
+            </div>
+
+            <div class="stat-item">
+                <svg class="stat-icon" viewBox="0 0 24 24">
+                    <path d="M3 3v18h18"/>
+                    <path d="m7 14 4-4 4 4 6-7"/>
+                </svg>
+                <div>
+                    <div class="stat-label">Total recebido</div>
+                    <div class="stat-value green" id="totalRecebido">0,00 MT</div>
+                </div>
+            </div>
+
+            <div class="stat-item">
+                <svg class="stat-icon" viewBox="0 0 24 24">
+                    <path d="M12 2v20"/>
+                    <path d="M17 7H9.5a3.5 3.5 0 0 0 0 7H14a3.5 3.5 0 0 1 0 7H6"/>
+                </svg>
+                <div>
+                    <div class="stat-label">Total levantado</div>
+                    <div class="stat-value blue" id="totalLevantado">0,00 MT</div>
+                </div>
+            </div>
+
         </div>
     </section>
 
-    <section class="section">
-        <div class="card">
-            <div class="section-heading">
-                <h3>Histórico de levantamentos</h3>
-            </div>
-            <div class="table-wrap">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>DATA</th>
-                            <th>VALOR</th>
-                            <th>MÉTODO</th>
-                            <th>ESTADO</th>
-                        </tr>
-                    </thead>
-                    <tbody id="withdrawalHistory">
-                        <tr>
-                            <td colspan="4">
-                                <div class="empty">
-                                    <span class="material-icons-round">receipt_long</span>
-                                    Ainda não existem levantamentos.
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+    <!-- LEVANTAMENTO -->
+    <section class="financial-section">
+
+        <div class="section-heading">
+            <div>
+                <h3>Levantar saldo</h3>
+                <p class="section-description">
+                    Solicita o envio do teu dinheiro para M-Pesa ou e-Mola.
+                    O valor mínimo é de 100 MT.
+                </p>
             </div>
         </div>
+
+        <button class="primary-button" id="openWithdrawal">
+            Solicitar levantamento
+        </button>
+
+    </section>
+
+    <!-- HISTÓRICO -->
+    <section class="financial-section">
+
+        <div class="section-heading">
+            <h3>Histórico de levantamentos</h3>
+            <span class="total-count" id="totalPedidos">0 pedidos</span>
+        </div>
+
+        <div class="table-header">
+            <div>DATA</div>
+            <div>VALOR</div>
+            <div>MÉTODO</div>
+            <div>ESTADO</div>
+        </div>
+
+        <div class="history-list" id="historyList"></div>
+
+        <div class="empty-state" id="emptyState">
+            <svg class="empty-icon" viewBox="0 0 24 24">
+                <rect x="3" y="4" width="18" height="17" rx="2"/>
+                <path d="M16 2v4M8 2v4M3 10h18"/>
+                <path d="M8 15h3"/>
+            </svg>
+            <h4>Ainda não tens levantamentos</h4>
+            <p>
+                Quando fizeres um pedido de levantamento,
+                o histórico aparecerá aqui.
+            </p>
+        </div>
+
     </section>
 
 </main>
 
-<!-- MODAL DE LEVANTAMENTO -->
-<div class="modal" id="withdrawModal">
-    <div class="modal-content">
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+
         <div class="modal-header">
             <h3>Solicitar levantamento</h3>
-            <button class="close-btn" id="closeModal">&times;</button>
+            <button class="modal-close" id="closeWithdrawal">&times;</button>
         </div>
 
-        <form id="withdrawForm">
+        <form id="withdrawalForm">
+
             <div class="form-group">
-                <label>Valor do levantamento (MT)</label>
-                <input type="number" id="withdrawAmount" min="100" step="1" placeholder="Ex: 500" required>
-                <p class="help">O valor mínimo é 100 MT.</p>
+                <label>Valor que pretendes levantar (MT)</label>
+                <input
+                    type="number"
+                    id="withdrawalAmount"
+                    min="100"
+                    step="1"
+                    placeholder="Ex: 500"
+                    required
+                >
+                <p class="form-help">
+                    Valor mínimo: 100 MT.
+                </p>
             </div>
 
             <div class="form-group">
                 <label>Método de pagamento</label>
-                <select id="paymentMethod" required>
-                    <option value="">Seleciona o método</option>
+                <select id="withdrawalMethod" required>
+                    <option value="">Selecionar método</option>
                     <option value="M-Pesa">M-Pesa</option>
                     <option value="e-Mola">e-Mola</option>
                 </select>
@@ -513,225 +769,280 @@ z-index:90;
 
             <div class="form-group">
                 <label>Número para receber</label>
-                <input type="tel" id="paymentNumber" placeholder="Ex: 84xxxxxxx" required>
+                <input
+                    type="tel"
+                    id="withdrawalNumber"
+                    placeholder="Ex: 84xxxxxxx"
+                    required
+                >
             </div>
 
-            <div id="formMessage" class="message"></div>
+            <div class="form-message" id="formMessage"></div>
 
-            <div class="modal-actions">
-                <button type="button" class="secondary-btn" id="cancelModal">Cancelar</button>
-                <button type="submit" class="primary-btn" id="submitWithdrawal">Enviar pedido</button>
+            <div class="modal-buttons">
+                <button type="button" class="secondary-button" id="cancelWithdrawal">
+                    Cancelar
+                </button>
+
+                <button type="submit" class="primary-button" id="submitWithdrawal">
+                    Enviar pedido
+                </button>
             </div>
+
         </form>
     </div>
 </div>
 
+<!-- FIREBASE -->
 <script type="module">
+
 import { auth, db } from "./js/firebase.js";
-import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js";
+
 import {
-    doc, getDoc, collection, query, where, getDocs,
+    onAuthStateChanged,
+    signOut
+} from "https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js";
+
+import {
+    doc,
+    getDoc,
+    collection,
+    query,
+    where,
+    getDocs,
     orderBy
 } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-firestore.js";
 
 const $ = id => document.getElementById(id);
 
-let currentUser = null;
-let available = 0;
+let utilizadorAtual = null;
+let saldoDisponivel = 0;
 
-const formatMoney = value =>
-    Number(value || 0).toLocaleString("pt-MZ", {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-    });
-
-function setAmount(id, value) {
-    $(id).innerHTML = `${formatMoney(value)} <small>MT</small>`;
+function moeda(valor){
+    return Number(valor || 0).toLocaleString("pt-MZ",{
+        minimumFractionDigits:2,
+        maximumFractionDigits:2
+    }) + " MT";
 }
 
-function showMessage(message, color = "#f87171") {
-    $("formMessage").textContent = message;
-    $("formMessage").style.color = color;
-}
-
-window.toggleMenu = function() {
-    $("sidebar").classList.toggle("open");
-    $("overlay").classList.toggle("show");
-};
-
-function openModal() {
+function abrirModal(){
     $("formMessage").textContent = "";
-    $("withdrawModal").classList.add("show");
+    $("modalOverlay").classList.add("active");
 }
 
-function closeModal() {
-    $("withdrawModal").classList.remove("show");
+function fecharModal(){
+    $("modalOverlay").classList.remove("active");
 }
 
-$("openModal").addEventListener("click", openModal);
-$("closeModal").addEventListener("click", closeModal);
-$("cancelModal").addEventListener("click", closeModal);
+$("openWithdrawal").addEventListener("click",abrirModal);
+$("closeWithdrawal").addEventListener("click",fecharModal);
+$("cancelWithdrawal").addEventListener("click",fecharModal);
 
-$("logoutBtn").addEventListener("click", async e => {
-    e.preventDefault();
-    await signOut(auth);
-    location.href = "index.html";
+$("modalOverlay").addEventListener("click",event=>{
+    if(event.target === $("modalOverlay")) fecharModal();
 });
 
-onAuthStateChanged(auth, async user => {
-    if (!user) {
-        location.href = "index.html";
-        return;
-    }
+function mostrarMensagem(texto,cor="#ffad42"){
+    $("formMessage").textContent = texto;
+    $("formMessage").style.color = cor;
+}
 
-    currentUser = user;
+/* CARREGAR SALDOS */
+async function carregarFinanceiro(user){
 
-    try {
-        const userRef = doc(db, "usuarios", user.uid);
-        const userSnap = await getDoc(userRef);
+    const ref = doc(db,"usuarios",user.uid);
+    const snap = await getDoc(ref);
 
-        if (userSnap.exists()) {
-            const data = userSnap.data();
+    if(!snap.exists()) return;
 
-            const name = data.nome || data.name || user.displayName || "Utilizador";
-            $("userName").textContent = name;
-            $("userInitial").textContent = name.charAt(0).toUpperCase();
+    const dados = snap.data();
 
-            /*
-             * Estrutura esperada para o documento usuarios/{uid}:
-             * saldoDisponivel
-             * saldoPendente
-             * totalRecebido
-             * totalLevantado
-             *
-             * Estes valores serão futuramente calculados e
-             * atualizados exclusivamente pelo servidor.
-             */
+    saldoDisponivel = Number(dados.saldoDisponivel || 0);
 
-            available = Number(data.saldoDisponivel || 0);
+    $("saldoDisponivel").textContent = moeda(saldoDisponivel);
+    $("saldoPendente").textContent = moeda(dados.saldoPendente);
+    $("totalRecebido").textContent = moeda(dados.totalRecebido);
+    $("totalLevantado").textContent = moeda(dados.totalLevantado);
+}
 
-            setAmount("availableBalance", available);
-            setAmount("pendingBalance", data.saldoPendente || 0);
-            setAmount("totalReceived", data.totalRecebido || 0);
-            setAmount("totalWithdrawn", data.totalLevantado || 0);
-        }
+/* CARREGAR HISTÓRICO */
+async function carregarHistorico(uid){
 
-        await loadWithdrawals(user.uid);
+    try{
 
-    } catch (error) {
-        console.error("Erro ao carregar financeiro:", error);
-    }
-});
-
-async function loadWithdrawals(uid) {
-    try {
         const q = query(
-            collection(db, "levantamentos"),
-            where("userId", "==", uid),
-            orderBy("createdAt", "desc")
+            collection(db,"levantamentos"),
+            where("userId","==",uid),
+            orderBy("createdAt","desc")
         );
 
-        const snapshot = await getDocs(q);
-        const tbody = $("withdrawalHistory");
+        const snap = await getDocs(q);
 
-        if (snapshot.empty) {
-            tbody.innerHTML = `
-                <tr><td colspan="4">
-                    <div class="empty">
-                        <span class="material-icons-round">receipt_long</span>
-                        Ainda não existem levantamentos.
-                    </div>
-                </td></tr>`;
-            return;
-        }
+        $("historyList").innerHTML = "";
+        $("totalPedidos").textContent =
+            snap.size + (snap.size === 1 ? " pedido" : " pedidos");
 
-        tbody.innerHTML = "";
+        $("emptyState").style.display = snap.empty ? "block" : "none";
 
-        snapshot.forEach(item => {
-            const data = item.data();
-            const date = data.createdAt?.toDate
-                ? data.createdAt.toDate().toLocaleDateString("pt-MZ")
+        snap.forEach(item=>{
+
+            const dados = item.data();
+
+            const data = dados.createdAt?.toDate
+                ? dados.createdAt.toDate().toLocaleDateString("pt-MZ")
                 : "--";
 
-            const status = data.status || "pendente";
-            const statusLabel = {
-                pendente: "Pendente",
-                pago: "Pago",
-                rejeitado: "Rejeitado"
-            }[status] || status;
+            const estado = dados.status || "pendente";
 
-            const tr = document.createElement("tr");
+            const labels = {
+                pendente:"Pendente",
+                pago:"Pago",
+                rejeitado:"Rejeitado"
+            };
 
-            const tdDate = document.createElement("td");
-            tdDate.textContent = date;
+            const linha = document.createElement("div");
+            linha.className = "history-row";
 
-            const tdAmount = document.createElement("td");
-            tdAmount.textContent = `${formatMoney(data.valor)} MT`;
+            const colunaData = document.createElement("div");
+            colunaData.textContent = data;
 
-            const tdMethod = document.createElement("td");
-            tdMethod.textContent = data.metodo || "--";
+            const colunaValor = document.createElement("div");
+            colunaValor.className = "history-amount";
+            colunaValor.textContent = moeda(dados.valor);
 
-            const tdStatus = document.createElement("td");
+            const colunaMetodo = document.createElement("div");
+            colunaMetodo.className = "history-method";
+            colunaMetodo.textContent = dados.metodo || "--";
+
+            const colunaEstado = document.createElement("div");
             const badge = document.createElement("span");
-            badge.className = "status " + (
-                status === "pago" ? "paid" :
-                status === "rejeitado" ? "rejected" : "pending"
-            );
-            badge.textContent = statusLabel;
-            tdStatus.appendChild(badge);
 
-            tr.append(tdDate, tdAmount, tdMethod, tdStatus);
-            tbody.appendChild(tr);
+            badge.className = "status " + (
+                estado === "pago" ? "paid" :
+                estado === "rejeitado" ? "rejected" : "pending"
+            );
+
+            badge.textContent = labels[estado] || estado;
+
+            colunaEstado.appendChild(badge);
+            linha.append(colunaData,colunaValor,colunaMetodo,colunaEstado);
+
+            $("historyList").appendChild(linha);
+
         });
 
-    } catch (error) {
-        console.error("Erro ao carregar levantamentos:", error);
+    }catch(error){
+        console.error("Erro ao carregar histórico:",error);
     }
 }
 
+/* AUTENTICAÇÃO */
+onAuthStateChanged(auth,async user=>{
+
+    if(!user){
+        window.location.replace("index.html");
+        return;
+    }
+
+    utilizadorAtual = user;
+
+    try{
+        await carregarFinanceiro(user);
+        await carregarHistorico(user.uid);
+    }catch(error){
+        console.error("Erro ao carregar financeiro:",error);
+    }
+
+});
+
 /*
- * IMPORTANTE:
- * O formulário ainda não grava diretamente no Firestore.
- * A próxima etapa será criar uma API segura que:
- * 1. Valida o utilizador autenticado.
- * 2. Confere o saldo disponível no servidor.
- * 3. Reserva o valor atomicamente.
- * 4. Regista o pedido na coleção levantamentos.
+ * A solicitação real será ligada à API segura.
+ * Não gravamos pedidos diretamente pelo navegador,
+ * pois o servidor precisa validar e reservar o saldo.
  */
+$("withdrawalForm").addEventListener("submit",async event=>{
 
-$("withdrawForm").addEventListener("submit", async e => {
-    e.preventDefault();
+    event.preventDefault();
 
-    const amount = Number($("withdrawAmount").value);
-    const method = $("paymentMethod").value;
-    const number = $("paymentNumber").value.trim();
+    const valor = Number($("withdrawalAmount").value);
+    const metodo = $("withdrawalMethod").value;
+    const numero = $("withdrawalNumber").value.trim();
 
-    if (!currentUser) {
-        showMessage("Sessão não encontrada.");
+    if(!utilizadorAtual){
+        mostrarMensagem("A tua sessão expirou.");
         return;
     }
 
-    if (!Number.isFinite(amount) || amount < 100) {
-        showMessage("O levantamento mínimo é de 100 MT.");
+    if(!Number.isFinite(valor) || valor < 100){
+        mostrarMensagem("O valor mínimo para levantamento é 100 MT.");
         return;
     }
 
-    if (amount > available) {
-        showMessage("O valor solicitado é superior ao teu saldo disponível.");
+    if(valor > saldoDisponivel){
+        mostrarMensagem("Não tens saldo disponível suficiente.");
         return;
     }
 
-    if (!method || !number) {
-        showMessage("Preenche todos os campos.");
+    if(!metodo || !numero){
+        mostrarMensagem("Preenche todos os campos.");
         return;
     }
 
-    showMessage(
-        "O formulário está preparado. Falta ligar a API segura de levantamentos.",
-        "#f6bb62"
+    mostrarMensagem(
+        "A ligação à API de levantamentos ainda será implementada.",
+        "#20baf0"
     );
+
+});
+
+/* TERMINAR SESSÃO */
+$("logoutButton").addEventListener("click",async event=>{
+
+    event.preventDefault();
+
+    try{
+        await signOut(auth);
+        window.location.replace("index.html");
+    }catch(error){
+        console.error(error);
+        alert("Não foi possível terminar a sessão.");
+    }
+
+});
+
+/* MENU LATERAL */
+const menuButton = $("menuButton");
+const menuClose = $("menuClose");
+const sideMenu = $("sideMenu");
+const menuOverlay = $("menuOverlay");
+
+function abrirMenu(){
+
+    sideMenu.classList.add("active");
+    menuOverlay.classList.add("active");
+    menuButton.setAttribute("aria-expanded","true");
+    document.body.style.overflow="hidden";
+
+}
+
+function fecharMenu(){
+
+    sideMenu.classList.remove("active");
+    menuOverlay.classList.remove("active");
+    menuButton.setAttribute("aria-expanded","false");
+    document.body.style.overflow="";
+
+}
+
+menuButton.addEventListener("click",abrirMenu);
+menuClose.addEventListener("click",fecharMenu);
+menuOverlay.addEventListener("click",fecharMenu);
+
+document.addEventListener("keydown",event=>{
+    if(event.key==="Escape") fecharMenu();
 });
 
 </script>
+
 </body>
 </html>
