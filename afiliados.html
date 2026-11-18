@@ -177,7 +177,7 @@ main{
     margin-top:7px;
 }
 
-/* INDICADORES */
+/* INDICADORES - UM ÚNICO CARD */
 .stats-section{
     border:2px solid #292929;
     border-radius:11px;
@@ -186,31 +186,38 @@ main{
 }
 
 .stats-grid{
-    display:grid;
-    grid-template-columns:repeat(2,minmax(0,1fr));
-    gap:25px 15px;
+    display:flex;
+    flex-direction:column;
+    gap:22px;
 }
 
 .stat-item{
     display:flex;
     align-items:center;
-    gap:12px;
+    gap:16px;
     min-width:0;
+    width:100%;
 }
 
 .stat-icon{
     width:38px;
     height:38px;
     min-width:38px;
+    flex-shrink:0;
     fill:none;
-    stroke:#20baf0;
+    stroke:#ffffff;
     stroke-width:1.8;
     stroke-linecap:round;
     stroke-linejoin:round;
 }
 
+.stat-content{
+    flex:1;
+    min-width:0;
+}
+
 .stat-label{
-    font-size:11px;
+    font-size:12px;
     font-weight:700;
     color:#969eaa;
     margin-bottom:7px;
@@ -220,6 +227,7 @@ main{
     font-size:21px;
     font-weight:800;
     white-space:nowrap;
+    font-variant-numeric:tabular-nums;
 }
 
 .stat-value.blue{color:#20baf0;}
@@ -356,6 +364,9 @@ main{
 .product-name{
     color:#c6d0da;
     text-align:center;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
 }
 
 .sales-number,
@@ -436,30 +447,30 @@ main{
     }
 
     .stats-section{
-        padding:22px 12px;
+        padding:20px 13px;
     }
 
     .stats-grid{
-        gap:27px 8px;
+        gap:20px;
     }
 
     .stat-item{
-        gap:9px;
+        gap:12px;
     }
 
     .stat-icon{
-        width:30px;
-        height:30px;
-        min-width:30px;
+        width:34px;
+        height:34px;
+        min-width:34px;
     }
 
     .stat-label{
-        font-size:9px;
+        font-size:11px;
         margin-bottom:6px;
     }
 
     .stat-value{
-        font-size:16px;
+        font-size:19px;
     }
 
     .affiliates-section{
@@ -515,10 +526,18 @@ main{
 }
 
 @media(max-width:350px){
-    .stat-value{font-size:14px;}
-    .stat-label{font-size:8px;}
+
+    .stat-value{font-size:16px;}
+    .stat-label{font-size:10px;}
     .stats-section{padding:18px 8px;}
     .affiliates-section{padding:13px 7px;}
+    .stat-item{gap:9px;}
+
+    .stat-icon{
+        width:31px;
+        height:31px;
+        min-width:31px;
+    }
 }
 </style>
 </head>
@@ -625,7 +644,7 @@ main{
         <p>Acompanha quem promove os teus produtos.</p>
     </header>
 
-    <!-- INDICADORES -->
+    <!-- INDICADORES: UM ÚNICO CARD -->
     <section class="stats-section">
 
         <div class="stats-grid">
@@ -637,7 +656,7 @@ main{
                     <path d="M20 8v6M23 11h-6"/>
                 </svg>
 
-                <div>
+                <div class="stat-content">
                     <div class="stat-label">Total de afiliados</div>
                     <div class="stat-value blue" id="totalAfiliados">0</div>
                 </div>
@@ -649,7 +668,7 @@ main{
                     <path d="m7 14 4-4 4 4 6-7"/>
                 </svg>
 
-                <div>
+                <div class="stat-content">
                     <div class="stat-label">Vendas realizadas</div>
                     <div class="stat-value green" id="totalVendas">0</div>
                 </div>
@@ -661,7 +680,7 @@ main{
                     <path d="M12 7v10M15 9.5c0-1.1-1.3-2-3-2s-3 .9-3 2 1.3 2 3 2 3 .9 3 2-1.3 2-3 2-3-.9-3-2"/>
                 </svg>
 
-                <div>
+                <div class="stat-content">
                     <div class="stat-label">Comissões geradas</div>
                     <div class="stat-value green" id="comissoesGeradas">0,00 MT</div>
                 </div>
@@ -673,7 +692,7 @@ main{
                     <path d="M12 7v5l3 2"/>
                 </svg>
 
-                <div>
+                <div class="stat-content">
                     <div class="stat-label">Comissões pendentes</div>
                     <div class="stat-value orange" id="comissoesPendentes">0,00 MT</div>
                 </div>
@@ -746,12 +765,6 @@ import {
 
 const logoutButton = document.getElementById("logoutButton");
 
-/*
-  A página está preparada para receber os dados reais.
-  O registo dos afiliados e o rastreamento das vendas
-  serão integrados posteriormente.
-*/
-
 let afiliados = [];
 
 const searchInput = document.getElementById("searchInput");
@@ -759,15 +772,20 @@ const productFilter = document.getElementById("productFilter");
 const affiliateList = document.getElementById("affiliateList");
 const emptyState = document.getElementById("emptyState");
 
+/* FORMATAÇÃO */
 function formatarMoeda(valor){
 
-    return Number(valor || 0).toLocaleString("pt-MZ",{
-        minimumFractionDigits:2,
-        maximumFractionDigits:2
-    }) + " MT";
+    const numero = Number(valor || 0);
+
+    return (Number.isFinite(numero) ? numero : 0)
+        .toLocaleString("pt-MZ",{
+            minimumFractionDigits:2,
+            maximumFractionDigits:2
+        }) + " MT";
 
 }
 
+/* INDICADORES */
 function atualizarIndicadores(){
 
     const totalVendas = afiliados.reduce(
@@ -795,10 +813,12 @@ function atualizarIndicadores(){
         formatarMoeda(pendentes);
 
     document.getElementById("contadorLista").textContent =
-        afiliados.length + (afiliados.length === 1 ? " afiliado" : " afiliados");
+        afiliados.length +
+        (afiliados.length === 1 ? " afiliado" : " afiliados");
 
 }
 
+/* LISTA */
 function atualizarLista(){
 
     const pesquisa = searchInput.value.toLowerCase().trim();
@@ -884,12 +904,14 @@ function atualizarLista(){
         commission.textContent = formatarMoeda(item.comissao);
 
         row.append(user,product,sales,commission);
+
         affiliateList.appendChild(row);
 
     });
 
 }
 
+/* FILTRO DE PRODUTOS */
 function atualizarFiltro(){
 
     const produtos = [...new Set(
@@ -902,6 +924,7 @@ function atualizarFiltro(){
     produtos.forEach(produto=>{
 
         const option = document.createElement("option");
+
         option.value = produto;
         option.textContent = produto;
 
@@ -957,7 +980,9 @@ function abrirMenu(){
 
     sideMenu.classList.add("active");
     menuOverlay.classList.add("active");
+
     menuButton.setAttribute("aria-expanded","true");
+
     document.body.style.overflow="hidden";
 
 }
@@ -966,7 +991,9 @@ function fecharMenu(){
 
     sideMenu.classList.remove("active");
     menuOverlay.classList.remove("active");
+
     menuButton.setAttribute("aria-expanded","false");
+
     document.body.style.overflow="";
 
 }
