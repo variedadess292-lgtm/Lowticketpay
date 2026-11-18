@@ -1,0 +1,737 @@
+
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#030a12">
+<title>Financeiro | KILLIKPAY</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+--bg:#030a12;
+--card:#071321;
+--input:#030d19;
+--border:#172536;
+--blue:#20baf0;
+--text:#f2f5f9;
+--muted:#969eaa;
+--green:#22c55e;
+}
+body{
+font-family:'Plus Jakarta Sans',sans-serif;
+background:var(--bg);
+color:var(--text);
+min-height:100vh;
+}
+button,input,select{font-family:inherit}
+.sidebar{
+width:240px;
+height:100vh;
+position:fixed;
+left:0;top:0;
+background:#050d17;
+border-right:1px solid var(--border);
+padding:25px 16px;
+z-index:100;
+display:flex;
+flex-direction:column;
+transition:.3s;
+}
+.logo{
+display:flex;
+align-items:center;
+gap:10px;
+padding:0 10px;
+margin-bottom:40px;
+font-size:21px;
+font-weight:800;
+}
+.logo span{color:var(--blue)}
+.logo-icon{
+width:34px;height:34px;
+background:var(--blue);
+border-radius:9px;
+display:grid;
+place-items:center;
+color:#03101a;
+font-weight:900;
+}
+.menu-label{
+font-size:10px;
+font-weight:700;
+color:#667386;
+letter-spacing:1.5px;
+padding:0 12px;
+margin-bottom:12px;
+}
+nav{display:flex;flex-direction:column;gap:6px}
+nav a{
+display:flex;
+align-items:center;
+gap:12px;
+padding:12px;
+border-radius:9px;
+color:#929eac;
+font-size:13px;
+font-weight:600;
+text-decoration:none;
+transition:.2s;
+}
+nav a:hover,nav a.active{
+background:#102438;
+color:var(--blue);
+}
+nav a .material-icons-round{font-size:20px}
+.sidebar-bottom{margin-top:auto}
+.sidebar-bottom a{color:#f87171}
+.main{
+margin-left:240px;
+padding:28px 35px;
+max-width:1600px;
+}
+.topbar{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:35px;
+}
+.top-left{display:flex;align-items:center;gap:15px}
+.menu-toggle{
+display:none;
+background:none;
+border:0;
+color:white;
+font-size:26px;
+cursor:pointer;
+}
+.page-title{font-size:23px;font-weight:800}
+.top-right{display:flex;align-items:center;gap:12px}
+.user-circle{
+width:38px;height:38px;
+border-radius:50%;
+background:#12304a;
+display:grid;place-items:center;
+color:var(--blue);
+font-weight:800;
+}
+.greeting{font-size:12px;color:var(--muted)}
+h2{font-size:19px;margin-bottom:7px}
+.subtitle{font-size:12px;color:var(--muted)}
+.balance-grid{
+display:grid;
+grid-template-columns:repeat(4,minmax(0,1fr));
+gap:15px;
+margin:25px 0;
+}
+.card{
+background:var(--card);
+border:1px solid var(--border);
+border-radius:13px;
+padding:21px;
+min-width:0;
+}
+.balance-card{
+position:relative;
+overflow:hidden;
+}
+.balance-card.primary{
+background:linear-gradient(135deg,#092b40,#071321);
+border-color:#155071;
+}
+.card-top{
+display:flex;
+align-items:center;
+justify-content:space-between;
+margin-bottom:20px;
+}
+.card-label{font-size:11px;color:var(--muted);font-weight:600}
+.card-icon{
+width:35px;height:35px;
+border-radius:9px;
+background:#10283b;
+display:grid;place-items:center;
+color:var(--blue);
+}
+.card-icon.green{color:var(--green);background:#102b22}
+.card-icon.orange{color:#f59e0b;background:#302416}
+.card-icon.purple{color:#b794f4;background:#251c38}
+.amount{
+font-size:23px;
+font-weight:800;
+letter-spacing:-.7px;
+}
+.amount small{font-size:12px;color:var(--muted);font-weight:600}
+.card-description{font-size:10px;color:var(--muted);margin-top:8px}
+.section{
+margin-top:25px;
+}
+.section-heading{
+display:flex;
+align-items:center;
+justify-content:space-between;
+margin-bottom:15px;
+}
+.section-heading h3{font-size:15px}
+.primary-btn{
+background:var(--blue);
+color:#03101a;
+border:0;
+border-radius:9px;
+padding:12px 17px;
+font-size:12px;
+font-weight:800;
+cursor:pointer;
+display:inline-flex;
+align-items:center;
+justify-content:center;
+gap:8px;
+}
+.primary-btn:disabled{opacity:.5;cursor:not-allowed}
+.secondary-btn{
+background:#102438;
+color:var(--blue);
+border:1px solid #183b52;
+border-radius:8px;
+padding:9px 13px;
+font-size:11px;
+font-weight:700;
+cursor:pointer;
+}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:550px}
+th{
+text-align:left;
+font-size:10px;
+color:#77879a;
+padding:13px 10px;
+border-bottom:1px solid var(--border);
+}
+td{
+font-size:11px;
+padding:16px 10px;
+border-bottom:1px solid #142233;
+color:#cbd5e1;
+}
+.empty{
+text-align:center;
+padding:35px 10px;
+color:var(--muted);
+font-size:12px;
+}
+.empty .material-icons-round{
+display:block;
+font-size:32px;
+margin-bottom:10px;
+color:#536477;
+}
+.status{
+display:inline-block;
+padding:5px 9px;
+border-radius:20px;
+font-size:9px;
+font-weight:800;
+}
+.status.pending{background:#332819;color:#f6bb62}
+.status.paid{background:#103123;color:#4ade80}
+.status.rejected{background:#351d24;color:#fb7185}
+.modal{
+display:none;
+position:fixed;
+inset:0;
+background:#000b;
+z-index:200;
+align-items:center;
+justify-content:center;
+padding:15px;
+}
+.modal.show{display:flex}
+.modal-content{
+width:100%;
+max-width:430px;
+background:#071321;
+border:1px solid var(--border);
+border-radius:15px;
+padding:24px;
+}
+.modal-header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:22px;
+}
+.modal-header h3{font-size:17px}
+.close-btn{
+background:none;border:0;color:#9aa7b7;
+font-size:25px;cursor:pointer;
+}
+.form-group{margin-bottom:17px}
+.form-group label{
+display:block;
+font-size:11px;
+color:#aab5c3;
+font-weight:700;
+margin-bottom:8px;
+}
+.form-group input,.form-group select{
+width:100%;
+background:var(--input);
+border:1px solid var(--border);
+border-radius:8px;
+padding:13px;
+outline:none;
+color:white;
+font-size:12px;
+}
+.form-group input:focus,.form-group select:focus{border-color:var(--blue)}
+.form-group select option{background:#071321}
+.help{
+font-size:10px;
+color:var(--muted);
+margin-top:7px;
+}
+.modal-actions{display:flex;gap:10px;margin-top:22px}
+.modal-actions button{flex:1}
+.message{
+font-size:11px;
+margin-top:12px;
+line-height:1.6;
+}
+#overlay{
+display:none;
+position:fixed;inset:0;
+background:#0009;
+z-index:90;
+}
+#overlay.show{display:block}
+@media(max-width:1100px){
+.balance-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:700px){
+.sidebar{transform:translateX(-100%)}
+.sidebar.open{transform:translateX(0)}
+.main{margin-left:0;padding:20px 15px}
+.menu-toggle{display:block}
+.page-title{font-size:18px}
+.topbar{margin-bottom:28px}
+.balance-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.card{padding:15px}
+.amount{font-size:19px}
+.card-label{font-size:10px}
+.section-heading{align-items:flex-start;gap:10px}
+}
+</style>
+</head>
+
+<body>
+
+<div id="overlay" onclick="toggleMenu()"></div>
+
+<aside class="sidebar" id="sidebar">
+    <div class="logo">
+        <div class="logo-icon">K</div>
+        <div>KILLIK<span>PAY</span></div>
+    </div>
+
+    <div class="menu-label">MENU PRINCIPAL</div>
+
+    <nav>
+        <a href="dashboard.html">
+            <span class="material-icons-round">dashboard</span>
+            Dashboard
+        </a>
+        <a href="produtos.html">
+            <span class="material-icons-round">inventory_2</span>
+            Produtos
+        </a>
+        <a href="afiliados.html">
+            <span class="material-icons-round">groups</span>
+            Afiliados
+        </a>
+        <a href="vitrine.html">
+            <span class="material-icons-round">storefront</span>
+            Vitrine
+        </a>
+        <a href="financeiro.html" class="active">
+            <span class="material-icons-round">account_balance_wallet</span>
+            Financeiro
+        </a>
+    </nav>
+
+    <div class="sidebar-bottom">
+        <nav>
+            <a href="#" id="logoutBtn">
+                <span class="material-icons-round">logout</span>
+                Sair
+            </a>
+        </nav>
+    </div>
+</aside>
+
+<main class="main">
+    <header class="topbar">
+        <div class="top-left">
+            <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+            <div class="page-title">Financeiro</div>
+        </div>
+        <div class="top-right">
+            <div>
+                <div class="greeting">Bem-vindo,</div>
+                <strong id="userName" style="font-size:12px">Utilizador</strong>
+            </div>
+            <div class="user-circle" id="userInitial">U</div>
+        </div>
+    </header>
+
+    <section>
+        <h2>Visão geral financeira</h2>
+        <p class="subtitle">Acompanha os teus ganhos e levantamentos.</p>
+    </section>
+
+    <section class="balance-grid">
+        <div class="card balance-card primary">
+            <div class="card-top">
+                <span class="card-label">Saldo disponível</span>
+                <div class="card-icon green">
+                    <span class="material-icons-round">account_balance_wallet</span>
+                </div>
+            </div>
+            <div class="amount" id="availableBalance">0,00 <small>MT</small></div>
+            <div class="card-description">Disponível para levantamento</div>
+        </div>
+
+        <div class="card">
+            <div class="card-top">
+                <span class="card-label">Saldo pendente</span>
+                <div class="card-icon orange">
+                    <span class="material-icons-round">schedule</span>
+                </div>
+            </div>
+            <div class="amount" id="pendingBalance">0,00 <small>MT</small></div>
+            <div class="card-description">Valores ainda não liberados</div>
+        </div>
+
+        <div class="card">
+            <div class="card-top">
+                <span class="card-label">Total recebido</span>
+                <div class="card-icon">
+                    <span class="material-icons-round">trending_up</span>
+                </div>
+            </div>
+            <div class="amount" id="totalReceived">0,00 <small>MT</small></div>
+            <div class="card-description">Total líquido recebido</div>
+        </div>
+
+        <div class="card">
+            <div class="card-top">
+                <span class="card-label">Total levantado</span>
+                <div class="card-icon purple">
+                    <span class="material-icons-round">payments</span>
+                </div>
+            </div>
+            <div class="amount" id="totalWithdrawn">0,00 <small>MT</small></div>
+            <div class="card-description">Levantamentos concluídos</div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="card">
+            <div class="section-heading">
+                <div>
+                    <h3>Levantar dinheiro</h3>
+                    <p class="subtitle" style="margin-top:6px">Mínimo para levantamento: 100 MT</p>
+                </div>
+                <button class="primary-btn" id="openModal">
+                    <span class="material-icons-round" style="font-size:17px">add</span>
+                    Solicitar
+                </button>
+            </div>
+            <p class="subtitle">Solicita o teu saldo disponível. Depois, o administrador fará o envio pelo método escolhido.</p>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="card">
+            <div class="section-heading">
+                <h3>Histórico de levantamentos</h3>
+            </div>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>DATA</th>
+                            <th>VALOR</th>
+                            <th>MÉTODO</th>
+                            <th>ESTADO</th>
+                        </tr>
+                    </thead>
+                    <tbody id="withdrawalHistory">
+                        <tr>
+                            <td colspan="4">
+                                <div class="empty">
+                                    <span class="material-icons-round">receipt_long</span>
+                                    Ainda não existem levantamentos.
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<!-- MODAL DE LEVANTAMENTO -->
+<div class="modal" id="withdrawModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Solicitar levantamento</h3>
+            <button class="close-btn" id="closeModal">&times;</button>
+        </div>
+
+        <form id="withdrawForm">
+            <div class="form-group">
+                <label>Valor do levantamento (MT)</label>
+                <input type="number" id="withdrawAmount" min="100" step="1" placeholder="Ex: 500" required>
+                <p class="help">O valor mínimo é 100 MT.</p>
+            </div>
+
+            <div class="form-group">
+                <label>Método de pagamento</label>
+                <select id="paymentMethod" required>
+                    <option value="">Seleciona o método</option>
+                    <option value="M-Pesa">M-Pesa</option>
+                    <option value="e-Mola">e-Mola</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Número para receber</label>
+                <input type="tel" id="paymentNumber" placeholder="Ex: 84xxxxxxx" required>
+            </div>
+
+            <div id="formMessage" class="message"></div>
+
+            <div class="modal-actions">
+                <button type="button" class="secondary-btn" id="cancelModal">Cancelar</button>
+                <button type="submit" class="primary-btn" id="submitWithdrawal">Enviar pedido</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script type="module">
+import { auth, db } from "./js/firebase.js";
+import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js";
+import {
+    doc, getDoc, collection, query, where, getDocs,
+    orderBy
+} from "https://www.gstatic.com/firebasejs/13.0.0/firebase-firestore.js";
+
+const $ = id => document.getElementById(id);
+
+let currentUser = null;
+let available = 0;
+
+const formatMoney = value =>
+    Number(value || 0).toLocaleString("pt-MZ", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    });
+
+function setAmount(id, value) {
+    $(id).innerHTML = `${formatMoney(value)} <small>MT</small>`;
+}
+
+function showMessage(message, color = "#f87171") {
+    $("formMessage").textContent = message;
+    $("formMessage").style.color = color;
+}
+
+window.toggleMenu = function() {
+    $("sidebar").classList.toggle("open");
+    $("overlay").classList.toggle("show");
+};
+
+function openModal() {
+    $("formMessage").textContent = "";
+    $("withdrawModal").classList.add("show");
+}
+
+function closeModal() {
+    $("withdrawModal").classList.remove("show");
+}
+
+$("openModal").addEventListener("click", openModal);
+$("closeModal").addEventListener("click", closeModal);
+$("cancelModal").addEventListener("click", closeModal);
+
+$("logoutBtn").addEventListener("click", async e => {
+    e.preventDefault();
+    await signOut(auth);
+    location.href = "index.html";
+});
+
+onAuthStateChanged(auth, async user => {
+    if (!user) {
+        location.href = "index.html";
+        return;
+    }
+
+    currentUser = user;
+
+    try {
+        const userRef = doc(db, "usuarios", user.uid);
+        const userSnap = await getDoc(userRef);
+
+        if (userSnap.exists()) {
+            const data = userSnap.data();
+
+            const name = data.nome || data.name || user.displayName || "Utilizador";
+            $("userName").textContent = name;
+            $("userInitial").textContent = name.charAt(0).toUpperCase();
+
+            /*
+             * Estrutura esperada para o documento usuarios/{uid}:
+             * saldoDisponivel
+             * saldoPendente
+             * totalRecebido
+             * totalLevantado
+             *
+             * Estes valores serão futuramente calculados e
+             * atualizados exclusivamente pelo servidor.
+             */
+
+            available = Number(data.saldoDisponivel || 0);
+
+            setAmount("availableBalance", available);
+            setAmount("pendingBalance", data.saldoPendente || 0);
+            setAmount("totalReceived", data.totalRecebido || 0);
+            setAmount("totalWithdrawn", data.totalLevantado || 0);
+        }
+
+        await loadWithdrawals(user.uid);
+
+    } catch (error) {
+        console.error("Erro ao carregar financeiro:", error);
+    }
+});
+
+async function loadWithdrawals(uid) {
+    try {
+        const q = query(
+            collection(db, "levantamentos"),
+            where("userId", "==", uid),
+            orderBy("createdAt", "desc")
+        );
+
+        const snapshot = await getDocs(q);
+        const tbody = $("withdrawalHistory");
+
+        if (snapshot.empty) {
+            tbody.innerHTML = `
+                <tr><td colspan="4">
+                    <div class="empty">
+                        <span class="material-icons-round">receipt_long</span>
+                        Ainda não existem levantamentos.
+                    </div>
+                </td></tr>`;
+            return;
+        }
+
+        tbody.innerHTML = "";
+
+        snapshot.forEach(item => {
+            const data = item.data();
+            const date = data.createdAt?.toDate
+                ? data.createdAt.toDate().toLocaleDateString("pt-MZ")
+                : "--";
+
+            const status = data.status || "pendente";
+            const statusLabel = {
+                pendente: "Pendente",
+                pago: "Pago",
+                rejeitado: "Rejeitado"
+            }[status] || status;
+
+            const tr = document.createElement("tr");
+
+            const tdDate = document.createElement("td");
+            tdDate.textContent = date;
+
+            const tdAmount = document.createElement("td");
+            tdAmount.textContent = `${formatMoney(data.valor)} MT`;
+
+            const tdMethod = document.createElement("td");
+            tdMethod.textContent = data.metodo || "--";
+
+            const tdStatus = document.createElement("td");
+            const badge = document.createElement("span");
+            badge.className = "status " + (
+                status === "pago" ? "paid" :
+                status === "rejeitado" ? "rejected" : "pending"
+            );
+            badge.textContent = statusLabel;
+            tdStatus.appendChild(badge);
+
+            tr.append(tdDate, tdAmount, tdMethod, tdStatus);
+            tbody.appendChild(tr);
+        });
+
+    } catch (error) {
+        console.error("Erro ao carregar levantamentos:", error);
+    }
+}
+
+/*
+ * IMPORTANTE:
+ * O formulário ainda não grava diretamente no Firestore.
+ * A próxima etapa será criar uma API segura que:
+ * 1. Valida o utilizador autenticado.
+ * 2. Confere o saldo disponível no servidor.
+ * 3. Reserva o valor atomicamente.
+ * 4. Regista o pedido na coleção levantamentos.
+ */
+
+$("withdrawForm").addEventListener("submit", async e => {
+    e.preventDefault();
+
+    const amount = Number($("withdrawAmount").value);
+    const method = $("paymentMethod").value;
+    const number = $("paymentNumber").value.trim();
+
+    if (!currentUser) {
+        showMessage("Sessão não encontrada.");
+        return;
+    }
+
+    if (!Number.isFinite(amount) || amount < 100) {
+        showMessage("O levantamento mínimo é de 100 MT.");
+        return;
+    }
+
+    if (amount > available) {
+        showMessage("O valor solicitado é superior ao teu saldo disponível.");
+        return;
+    }
+
+    if (!method || !number) {
+        showMessage("Preenche todos os campos.");
+        return;
+    }
+
+    showMessage(
+        "O formulário está preparado. Falta ligar a API segura de levantamentos.",
+        "#f6bb62"
+    );
+});
+
+</script>
+</body>
+</html>
