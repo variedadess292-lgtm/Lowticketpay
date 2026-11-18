@@ -20,22 +20,21 @@
 
 body{
     min-height:100vh;
-    background:#e9edf2;
+    background:#030a12;
+    color:#fff;
     font-family:'Plus Jakarta Sans',sans-serif;
     display:flex;
     align-items:center;
     justify-content:center;
     padding:25px 16px;
-    color:#111;
 }
 
 .container{
     width:100%;
     max-width:360px;
-    background:#fff;
-    border-radius:28px;
+    background:#030a12;
+    border-radius:20px;
     overflow:hidden;
-    box-shadow:0 20px 55px rgba(3,10,18,.13);
 }
 
 /* TOPO DA LOGO */
@@ -49,8 +48,6 @@ body{
     position:relative;
     overflow:hidden;
 }
-
-/* Decoração do fundo */
 
 .brand-cover::before,
 .brand-cover::after{
@@ -74,17 +71,18 @@ body{
     bottom:-130px;
 }
 
+/* LOGOTIPO */
+
 .logo-box{
-    width:82px;
-    height:82px;
-    background:#fff;
-    border-radius:17px;
+    width:150px;
+    height:90px;
+    background:transparent;
     display:flex;
     align-items:center;
     justify-content:center;
     position:relative;
     z-index:2;
-    padding:12px;
+    padding:0;
 }
 
 .logo-box img{
@@ -93,34 +91,37 @@ body{
     object-fit:contain;
 }
 
-/* ÁREA BRANCA */
+/* CARTÃO */
 
 .content{
-    background:#fff;
+    background:#071321;
     margin-top:-27px;
     position:relative;
     z-index:3;
-    border-radius:35px 0 0;
+    border-radius:35px 0 0 0;
     padding:34px 22px 29px;
+    border:1px solid #172638;
+    border-right:0;
+    border-bottom:0;
 }
 
 .title{
     text-align:center;
     font-size:21px;
-    font-weight:600;
+    font-weight:800;
     margin-bottom:8px;
-    color:#111;
+    color:#fff;
 }
 
 .subtitle{
     text-align:center;
     font-size:11px;
-    color:#888;
-    line-height:1.6;
+    color:#969eaa;
+    line-height:1.7;
     margin-bottom:27px;
 }
 
-/* MENSAGEM */
+/* MENSAGENS */
 
 .message{
     display:none;
@@ -133,14 +134,16 @@ body{
 
 .message.error{
     display:block;
-    background:#fff0f0;
-    color:#c83232;
+    background:#351616;
+    color:#ff8585;
+    border:1px solid #572323;
 }
 
 .message.success{
     display:block;
-    background:#eaf9ef;
-    color:#188343;
+    background:#102b20;
+    color:#70df39;
+    border:1px solid #205338;
 }
 
 /* CAMPOS */
@@ -153,7 +156,7 @@ label{
     display:block;
     font-size:10px;
     font-weight:700;
-    color:#333;
+    color:#c6d0da;
     margin:0 0 7px 2px;
 }
 
@@ -164,24 +167,23 @@ label{
 input{
     width:100%;
     height:48px;
-    background:#fafafa;
-    border:1px solid #eeeeee;
-    border-radius:10px;
+    background:#030a12;
+    border:1px solid #292929;
+    border-radius:9px;
     padding:0 13px;
     font-family:inherit;
     font-size:11px;
-    color:#111;
+    color:#fff;
     outline:none;
     transition:.2s;
 }
 
 input::placeholder{
-    color:#aaa;
+    color:#687482;
 }
 
 input:focus{
     border-color:#20baf0;
-    background:#fff;
     box-shadow:0 0 0 3px rgba(32,186,240,.08);
 }
 
@@ -196,19 +198,19 @@ input:focus{
     transform:translateY(-50%);
     border:0;
     background:none;
-    color:#168fbd;
+    color:#20baf0;
     font-family:inherit;
     font-size:10px;
     font-weight:700;
     cursor:pointer;
 }
 
-/* RECUPERAÇÃO */
+/* RECUPERAR SENHA */
 
 .forgot{
     display:block;
     text-align:right;
-    color:#168fbd;
+    color:#20baf0;
     font-size:10px;
     font-weight:700;
     text-decoration:none;
@@ -223,18 +225,17 @@ input:focus{
     height:47px;
     border:0;
     border-radius:9px;
-    background:#030a12;
-    color:#fff;
+    background:#20baf0;
+    color:#030a12;
     font-family:inherit;
     font-size:11px;
-    font-weight:700;
+    font-weight:800;
     cursor:pointer;
     transition:.2s;
-    box-shadow:0 5px 12px rgba(3,10,18,.12);
 }
 
 .login-btn:hover{
-    background:#102237;
+    background:#55cbf5;
 }
 
 .login-btn:disabled{
@@ -247,12 +248,12 @@ input:focus{
 .register{
     text-align:center;
     font-size:10px;
-    color:#777;
+    color:#969eaa;
     margin-top:28px;
 }
 
 .register a{
-    color:#168fbd;
+    color:#20baf0;
     font-weight:800;
     text-decoration:none;
 }
@@ -261,10 +262,10 @@ input:focus{
 
 .footer{
     text-align:center;
-    color:#aaa;
+    color:#657080;
     font-size:9px;
-    padding:0 15px 20px;
-    background:#fff;
+    padding:18px 15px 20px;
+    background:#030a12;
 }
 
 @media(max-width:380px){
@@ -288,14 +289,19 @@ input:focus{
 
 <div class="container">
 
+    <!-- LOGOTIPO -->
     <div class="brand-cover">
 
         <div class="logo-box">
-            <img src="assets/lowticketpay.png" alt="KILLIKPAY">
+            <img
+                src="assets/lowticketpay.png"
+                alt="KILLIKPAY"
+            >
         </div>
 
     </div>
 
+    <!-- FORMULÁRIO -->
     <div class="content">
 
         <h1 class="title">Entrar</h1>
@@ -379,6 +385,7 @@ input:focus{
 
 </div>
 
+<!-- FIREBASE -->
 <script type="module">
 
 import { auth } from "./js/firebase.js";
@@ -386,6 +393,8 @@ import { auth } from "./js/firebase.js";
 import {
     signInWithEmailAndPassword
 } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js";
+
+/* ELEMENTOS */
 
 const form = document.getElementById("loginForm");
 const emailInput = document.getElementById("email");
@@ -396,14 +405,19 @@ const togglePassword = document.getElementById("togglePassword");
 
 let submitting = false;
 
+/* MENSAGENS */
+
 function showMessage(text,type="error"){
+
     message.textContent = text;
     message.className = "message " + type;
+
 }
 
 function translateError(error){
 
     const errors = {
+
         "auth/invalid-email":
             "O endereço de e-mail é inválido.",
 
@@ -427,10 +441,12 @@ function translateError(error){
 
         "auth/operation-not-allowed":
             "O acesso por e-mail não está activado no Firebase."
+
     };
 
     return errors[error.code] ||
         "Não foi possível entrar. Tente novamente.";
+
 }
 
 /* MOSTRAR / OCULTAR SENHA */
@@ -446,7 +462,7 @@ togglePassword.addEventListener("click",()=>{
 
 });
 
-/* LOGIN FIREBASE */
+/* LOGIN */
 
 form.addEventListener("submit",async event=>{
 
@@ -458,8 +474,10 @@ form.addEventListener("submit",async event=>{
     const password = passwordInput.value;
 
     if(!email || !password){
+
         showMessage("Preencha todos os campos.");
         return;
+
     }
 
     submitting = true;
