@@ -4,220 +4,228 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#080808">
+<meta name="theme-color" content="#030a12">
 
-<title>Entrar | LowticketPay</title>
+<title>Entrar | KILLIKPAY</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
 }
 
-body {
-    min-height: 100vh;
-    background: #080808;
-    color: #fff;
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
+body{
+    min-height:100vh;
+    background:#030a12;
+    color:#fff;
+    font-family:'Plus Jakarta Sans',sans-serif;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
 }
 
-.container {
-    width: 100%;
-    max-width: 420px;
+.container{
+    width:100%;
+    max-width:420px;
 }
 
-.logo {
-    text-align: center;
-    margin-bottom: 35px;
+/* LOGOTIPO */
+.logo{
+    text-align:center;
+    margin-bottom:30px;
 }
 
-.logo-icon {
-    width: 48px;
-    height: 48px;
-    background: #f5c400;
-    color: #080808;
-    border-radius: 13px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 27px;
-    font-weight: 800;
-    margin-bottom: 12px;
+.logo img{
+    width:155px;
+    max-width:70%;
+    height:auto;
+    object-fit:contain;
+    margin-bottom:17px;
 }
 
-.logo h1 {
-    font-size: 25px;
-    font-weight: 800;
-    letter-spacing: -1px;
+.logo p{
+    color:#969eaa;
+    font-size:12px;
+    margin-top:5px;
 }
 
-.logo h1 span {
-    color: #f5c400;
+/* CARTÃO */
+.card{
+    background:#071321;
+    border:2px solid #292929;
+    border-radius:11px;
+    padding:30px 24px;
 }
 
-.logo p {
-    color: #777;
-    font-size: 12px;
-    margin-top: 8px;
+.card h2{
+    font-size:21px;
+    font-weight:800;
+    margin-bottom:8px;
 }
 
-.card {
-    background: #111;
-    border: 1px solid #252525;
-    border-radius: 18px;
-    padding: 30px 24px;
+.subtitle{
+    color:#969eaa;
+    font-size:12px;
+    margin-bottom:27px;
+    line-height:1.7;
 }
 
-.card h2 {
-    font-size: 22px;
-    margin-bottom: 8px;
+/* CAMPOS */
+.field{
+    margin-bottom:19px;
 }
 
-.subtitle {
-    color: #888;
-    font-size: 13px;
-    margin-bottom: 28px;
-    line-height: 1.6;
+label{
+    display:block;
+    font-size:11px;
+    color:#c6d0da;
+    margin-bottom:9px;
+    font-weight:700;
 }
 
-.field {
-    margin-bottom: 19px;
+.input-wrap{
+    position:relative;
 }
 
-label {
-    display: block;
-    font-size: 12px;
-    color: #ccc;
-    margin-bottom: 9px;
-    font-weight: 600;
+input{
+    width:100%;
+    height:47px;
+    border:1px solid #292929;
+    background:#030a12;
+    border-radius:8px;
+    padding:0 13px;
+    color:#fff;
+    font-family:inherit;
+    font-size:12px;
+    outline:none;
+    transition:.2s;
 }
 
-.input-wrap {
-    position: relative;
+input:focus{
+    border-color:#20baf0;
 }
 
-input {
-    width: 100%;
-    height: 49px;
-    border: 1px solid #303030;
-    background: #090909;
-    border-radius: 9px;
-    padding: 0 14px;
-    color: #fff;
-    font-family: inherit;
-    font-size: 13px;
-    outline: none;
+input::placeholder{
+    color:#687482;
 }
 
-input:focus {
-    border-color: #f5c400;
+.password-input{
+    padding-right:75px;
 }
 
-input::placeholder {
-    color: #555;
+.toggle{
+    position:absolute;
+    right:13px;
+    top:50%;
+    transform:translateY(-50%);
+    background:none;
+    border:none;
+    color:#20baf0;
+    cursor:pointer;
+    font-family:inherit;
+    font-size:10px;
+    font-weight:700;
 }
 
-.password-input {
-    padding-right: 75px;
+.forgot{
+    display:block;
+    text-align:right;
+    color:#20baf0;
+    font-size:10px;
+    text-decoration:none;
+    margin-top:-5px;
+    margin-bottom:22px;
+    font-weight:700;
 }
 
-.toggle {
-    position: absolute;
-    right: 13px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    color: #999;
-    cursor: pointer;
-    font-size: 11px;
+.forgot:hover,
+.register a:hover{
+    text-decoration:underline;
 }
 
-.forgot {
-    display: block;
-    text-align: right;
-    color: #f5c400;
-    font-size: 11px;
-    text-decoration: none;
-    margin-top: -5px;
-    margin-bottom: 22px;
+/* BOTÃO */
+.login-btn{
+    width:100%;
+    height:47px;
+    background:#20baf0;
+    color:#030a12;
+    border:none;
+    border-radius:8px;
+    font-family:inherit;
+    font-weight:800;
+    font-size:12px;
+    cursor:pointer;
+    transition:.2s;
 }
 
-.login-btn {
-    width: 100%;
-    height: 49px;
-    background: #f5c400;
-    color: #080808;
-    border: none;
-    border-radius: 9px;
-    font-family: inherit;
-    font-weight: 800;
-    font-size: 13px;
-    cursor: pointer;
-    transition: .2s;
+.login-btn:hover{
+    background:#55cbf5;
 }
 
-.login-btn:hover {
-    background: #ffda35;
+.login-btn:disabled{
+    opacity:.6;
+    cursor:wait;
 }
 
-.login-btn:disabled {
-    opacity: .6;
-    cursor: wait;
+/* MENSAGENS */
+.message{
+    display:none;
+    padding:12px;
+    border-radius:8px;
+    font-size:11px;
+    margin-bottom:17px;
+    line-height:1.6;
 }
 
-.message {
-    display: none;
-    padding: 12px;
-    border-radius: 8px;
-    font-size: 12px;
-    margin-bottom: 17px;
-    line-height: 1.5;
+.message.error{
+    display:block;
+    background:#351616;
+    color:#ff8585;
+    border:1px solid #572323;
 }
 
-.message.error {
-    display: block;
-    background: #351616;
-    color: #ff8585;
+.message.success{
+    display:block;
+    background:#102b20;
+    color:#70df39;
+    border:1px solid #205338;
 }
 
-.message.success {
-    display: block;
-    background: #16351f;
-    color: #80e69b;
+/* REGISTO */
+.register{
+    text-align:center;
+    margin-top:24px;
+    color:#969eaa;
+    font-size:11px;
 }
 
-.register {
-    text-align: center;
-    margin-top: 25px;
-    color: #888;
-    font-size: 12px;
+.register a{
+    color:#20baf0;
+    text-decoration:none;
+    font-weight:800;
 }
 
-.register a {
-    color: #f5c400;
-    text-decoration: none;
-    font-weight: 700;
+/* RODAPÉ */
+.footer{
+    text-align:center;
+    color:#657080;
+    font-size:10px;
+    margin-top:25px;
 }
 
-.footer {
-    text-align: center;
-    color: #555;
-    font-size: 10px;
-    margin-top: 28px;
-}
+@media(max-width:380px){
 
-@media(max-width: 380px) {
-    .card {
-        padding: 25px 18px;
+    .card{
+        padding:25px 18px;
+    }
+
+    .logo img{
+        width:140px;
     }
 }
 </style>
@@ -227,12 +235,19 @@ input::placeholder {
 
 <div class="container">
 
+    <!-- LOGOTIPO -->
     <div class="logo">
-        <div class="logo-icon">L</div>
-        <h1>Lowticket<span>Pay</span></h1>
-        <p>Plataforma de pagamentos e produtos digitais</p>
+
+        <img
+            src="assets/lowticketpay.png"
+            alt="KILLIKPAY"
+        >
+
+      
+
     </div>
 
+    <!-- LOGIN -->
     <div class="card">
 
         <h2>Bem-vindo de volta</h2>
@@ -241,11 +256,17 @@ input::placeholder {
             Introduza os seus dados para aceder à sua conta.
         </p>
 
-        <div id="message" class="message" role="alert" aria-live="polite"></div>
+        <div
+            id="message"
+            class="message"
+            role="alert"
+            aria-live="polite">
+        </div>
 
         <form id="loginForm">
 
             <div class="field">
+
                 <label for="email">E-mail</label>
 
                 <input
@@ -255,9 +276,11 @@ input::placeholder {
                     autocomplete="username"
                     required
                 >
+
             </div>
 
             <div class="field">
+
                 <label for="password">Palavra-passe</label>
 
                 <div class="input-wrap">
@@ -274,19 +297,22 @@ input::placeholder {
                     <button
                         type="button"
                         class="toggle"
-                        id="togglePassword"
-                    >
+                        id="togglePassword">
                         Mostrar
                     </button>
 
                 </div>
+
             </div>
 
             <a href="esqueceu-senha.html" class="forgot">
                 Esqueceu a palavra-passe?
             </a>
 
-            <button type="submit" class="login-btn" id="loginBtn">
+            <button
+                type="submit"
+                class="login-btn"
+                id="loginBtn">
                 Entrar na conta
             </button>
 
@@ -300,11 +326,12 @@ input::placeholder {
     </div>
 
     <div class="footer">
-        © 2026 LowticketPay. Todos os direitos reservados.
+        © 2026 KILLIKPAY. Todos os direitos reservados.
     </div>
 
 </div>
 
+<!-- FIREBASE -->
 <script type="module">
 
 import { auth } from "./js/firebase.js";
@@ -324,14 +351,17 @@ let submitting = false;
 
 /* MENSAGENS */
 
-function showMessage(text, type = "error") {
+function showMessage(text,type="error"){
+
     message.textContent = text;
     message.className = "message " + type;
+
 }
 
-function translateError(error) {
+function translateError(error){
 
     const errors = {
+
         "auth/invalid-email":
             "O endereço de e-mail é inválido.",
 
@@ -355,15 +385,17 @@ function translateError(error) {
 
         "auth/operation-not-allowed":
             "O acesso por e-mail não está activado no Firebase."
+
     };
 
     return errors[error.code] ||
         "Não foi possível entrar. Tente novamente.";
+
 }
 
 /* MOSTRAR / OCULTAR PALAVRA-PASSE */
 
-togglePassword.addEventListener("click", () => {
+togglePassword.addEventListener("click",()=>{
 
     const visible = passwordInput.type === "text";
 
@@ -374,20 +406,22 @@ togglePassword.addEventListener("click", () => {
 
 });
 
-/* EFECTUAR LOGIN */
+/* LOGIN */
 
-form.addEventListener("submit", async (event) => {
+form.addEventListener("submit",async event=>{
 
     event.preventDefault();
 
-    if (submitting) return;
+    if(submitting) return;
 
     const email = emailInput.value.trim().toLowerCase();
     const password = passwordInput.value;
 
-    if (!email || !password) {
+    if(!email || !password){
+
         showMessage("Preencha todos os campos.");
         return;
+
     }
 
     submitting = true;
@@ -397,7 +431,7 @@ form.addEventListener("submit", async (event) => {
 
     message.className = "message";
 
-    try {
+    try{
 
         await signInWithEmailAndPassword(
             auth,
@@ -412,9 +446,9 @@ form.addEventListener("submit", async (event) => {
 
         window.location.replace("dashboard.html");
 
-    } catch (error) {
+    }catch(error){
 
-        console.error("Erro de login:", error);
+        console.error("Erro de login:",error);
 
         showMessage(translateError(error));
 
