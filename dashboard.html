@@ -64,14 +64,14 @@ body {
     stroke-linejoin: round;
 }
 
-/* FUNDO DO MENU */
+/* MENU */
 .menu-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.72);
+    background: rgba(0,0,0,.72);
     opacity: 0;
     visibility: hidden;
-    transition: 0.3s ease;
+    transition: .3s ease;
     z-index: 998;
 }
 
@@ -80,7 +80,6 @@ body {
     visibility: visible;
 }
 
-/* MENU LATERAL */
 .side-menu {
     position: fixed;
     top: 0;
@@ -93,7 +92,7 @@ body {
     border-right: 1px solid #292929;
     padding: 25px 18px;
     transform: translateX(-100%);
-    transition: transform 0.3s ease;
+    transition: transform .3s ease;
     z-index: 999;
     overflow-y: auto;
 }
@@ -102,7 +101,6 @@ body {
     transform: translateX(0);
 }
 
-/* CABEÇALHO E LOGO */
 .menu-header {
     display: flex;
     align-items: center;
@@ -130,7 +128,6 @@ body {
     line-height: 1;
 }
 
-/* LINKS DO MENU */
 .menu-links {
     display: flex;
     flex-direction: column;
@@ -147,7 +144,7 @@ body {
     text-decoration: none;
     font-size: 14px;
     font-weight: 700;
-    transition: 0.2s ease;
+    transition: .2s ease;
 }
 
 .menu-links a svg {
@@ -167,7 +164,7 @@ body {
     color: #20baf0;
 }
 
-/* CABEÇALHO DO DASHBOARD */
+/* CABEÇALHO */
 .dashboard-heading {
     width: calc(100% - 40px);
     max-width: 900px;
@@ -200,7 +197,7 @@ body {
     margin-top: 5px;
 }
 
-/* SELETOR DE PERÍODO */
+/* PERÍODO */
 .period-selector {
     display: flex;
     align-items: center;
@@ -249,37 +246,35 @@ body {
     stroke-linejoin: round;
 }
 
-/* CARDS DOS INDICADORES */
+/* INDICADORES */
 .dashboard-stats {
     width: calc(100% - 40px);
     max-width: 900px;
     margin: 20px auto;
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 13px;
 }
 
-/* CARD INDIVIDUAL */
+/* APENAS DOIS CARDS PRINCIPAIS */
 .stats-card {
     width: 100%;
-    padding: 25px 20px;
+    padding: 20px;
     background: #030a12;
     border: 2px solid #292929;
     border-radius: 11px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 22px;
 }
 
-/* GRELHA DOS INDICADORES */
-.stats-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 32px 20px;
-    width: 100%;
-}
-
+/* INDICADORES DENTRO DOS CARDS */
 .stat-item {
     display: flex;
     align-items: center;
-    gap: 13px;
+    gap: 16px;
+    width: 100%;
     min-width: 0;
 }
 
@@ -287,57 +282,66 @@ body {
     width: 43px;
     height: 43px;
     min-width: 43px;
+    flex-shrink: 0;
     fill: none;
     stroke: currentColor;
     stroke-width: 1.9;
     stroke-linecap: round;
     stroke-linejoin: round;
+    color: #ffffff !important;
 }
 
 .stat-content {
+    flex: 1;
     min-width: 0;
+    width: 0;
+    overflow: hidden;
+    text-align: left;
 }
 
 .stat-label {
     color: #969eaa;
     font-size: 14px;
     font-weight: 800;
-    margin-bottom: 9px;
+    margin-bottom: 7px;
+    white-space: nowrap;
+    text-align: left;
 }
 
 .stat-value {
+    display: block;
+    width: 100%;
+    min-width: 0;
     font-size: 25px;
     font-weight: 800;
     white-space: nowrap;
+    line-height: 1.25;
+    letter-spacing: -0.7px;
+    font-variant-numeric: tabular-nums;
+    text-align: left;
 }
 
-/* CORES */
-.faturamento .stat-icon,
+/* CORES DOS VALORES */
 .faturamento .stat-value {
     color: #35aaff;
 }
 
-.lucro .stat-icon,
 .lucro .stat-value {
     color: #70df39;
 }
 
-.falhas .stat-icon,
 .falhas .stat-value {
     color: #ff6262;
 }
 
-.realizadas .stat-icon,
 .realizadas .stat-value {
     color: #35aaff;
 }
 
-.conversao .stat-icon,
 .conversao .stat-value {
     color: #70df39;
 }
 
-.ticket .stat-icon,
 .ticket .stat-value {
     color: #ffad42;
 }
@@ -375,7 +379,7 @@ body {
 
 .payment-table-header {
     display: grid;
-    grid-template-columns: 1.5fr 0.85fr 1fr;
+    grid-template-columns: 1.5fr .85fr 1fr;
     align-items: center;
     gap: 10px;
     padding: 0 5px 10px;
@@ -394,7 +398,7 @@ body {
 
 .payment-row {
     display: grid;
-    grid-template-columns: 1.5fr 0.85fr 1fr;
+    grid-template-columns: 1.5fr .85fr 1fr;
     align-items: center;
     gap: 10px;
     min-height: 75px;
@@ -428,12 +432,14 @@ body {
     flex-direction: column;
     align-items: center;
     gap: 6px;
+    min-width: 0;
 }
 
 .approval-value {
     font-size: 17px;
     font-weight: 600;
     color: #fff;
+    white-space: nowrap;
 }
 
 .approval-bar {
@@ -449,15 +455,19 @@ body {
     height: 100%;
     background: #70df39;
     border-radius: 20px;
-    transition: width 0.3s ease;
+    transition: width .3s ease;
 }
 
 .payment-amount {
+    width: 100%;
+    min-width: 0;
     font-size: 15px;
     font-weight: 600;
     color: #fff;
     text-align: right;
     white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -.4px;
 }
 
 /* MOBILE */
@@ -520,19 +530,16 @@ body {
 
     .dashboard-stats {
         width: calc(100% - 26px);
-        gap: 14px;
+        gap: 12px;
     }
 
     .stats-card {
-        padding: 23px 13px;
-    }
-
-    .stats-grid {
-        gap: 30px 12px;
+        padding: 18px 13px;
+        gap: 20px;
     }
 
     .stat-item {
-        gap: 10px;
+        gap: 12px;
     }
 
     .stat-icon {
@@ -542,12 +549,13 @@ body {
     }
 
     .stat-label {
-        font-size: 11px;
-        margin-bottom: 8px;
+        font-size: 12px;
+        margin-bottom: 6px;
     }
 
     .stat-value {
-        font-size: 17px;
+        font-size: 20px;
+        letter-spacing: -.5px;
     }
 
     .payment-section {
@@ -569,13 +577,13 @@ body {
 
     .payment-table-header {
         font-size: 11px;
-        grid-template-columns: 1.4fr 0.8fr 1fr;
+        grid-template-columns: 1.4fr .8fr 1fr;
         padding-bottom: 8px;
         gap: 5px;
     }
 
     .payment-row {
-        grid-template-columns: 1.4fr 0.8fr 1fr;
+        grid-template-columns: 1.4fr .8fr 1fr;
         min-height: 65px;
         padding: 7px 3px;
         gap: 5px;
@@ -645,29 +653,26 @@ body {
     }
 
     .stats-card {
-        padding: 20px 8px;
-    }
-
-    .stats-grid {
-        gap: 27px 8px;
+        padding: 17px 9px;
+        gap: 18px;
     }
 
     .stat-item {
-        gap: 7px;
+        gap: 9px;
     }
 
     .stat-icon {
-        width: 30px;
-        height: 30px;
-        min-width: 30px;
+        width: 32px;
+        height: 32px;
+        min-width: 32px;
     }
 
     .stat-label {
-        font-size: 10px;
+        font-size: 11px;
     }
 
     .stat-value {
-        font-size: 15px;
+        font-size: 17px;
     }
 
     .payment-section {
@@ -706,9 +711,7 @@ body {
 
 <body>
 
-<!-- BARRA SUPERIOR -->
 <nav class="top-toolbar">
-
     <div class="toolbar-left">
         <button class="toolbar-button"
                 id="menuButton"
@@ -716,33 +719,23 @@ body {
                 aria-expanded="false"
                 aria-controls="sideMenu"
                 type="button">
-
             <svg viewBox="0 0 24 24">
                 <path d="M3 5h18"/>
                 <path d="M3 12h18"/>
                 <path d="M3 19h18"/>
             </svg>
-
         </button>
     </div>
 
     <div class="toolbar-right">
-
-        <button class="toolbar-button"
-                aria-label="Notificações"
-                type="button">
-
+        <button class="toolbar-button" aria-label="Notificações" type="button">
             <svg viewBox="0 0 24 24">
                 <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/>
                 <path d="M10 21h4"/>
             </svg>
-
         </button>
 
-        <button class="toolbar-button"
-                aria-label="Tema"
-                type="button">
-
+        <button class="toolbar-button" aria-label="Tema" type="button">
             <svg viewBox="0 0 24 24">
                 <circle cx="12" cy="12" r="4"/>
                 <path d="M12 2v2"/>
@@ -754,37 +747,22 @@ body {
                 <path d="m4.93 19.07 1.42-1.42"/>
                 <path d="m17.65 6.35 1.42-1.42"/>
             </svg>
-
         </button>
-
     </div>
 </nav>
 
-<!-- FUNDO DO MENU -->
 <div class="menu-overlay" id="menuOverlay"></div>
 
-<!-- MENU LATERAL -->
 <aside class="side-menu" id="sideMenu" aria-label="Menu principal">
-
     <div class="menu-header">
+        <img src="assets/lowticketpay.png" alt="LowticketPay" class="menu-logo">
 
-        <img
-            src="assets/lowticketpay.png"
-            alt="LowticketPay"
-            class="menu-logo"
-        >
-
-        <button class="menu-close"
-                id="menuClose"
-                aria-label="Fechar menu"
-                type="button">
+        <button class="menu-close" id="menuClose" aria-label="Fechar menu" type="button">
             &times;
         </button>
-
     </div>
 
     <nav class="menu-links">
-
         <a href="dashboard.html" class="active">
             <svg viewBox="0 0 24 24">
                 <rect x="3" y="3" width="8" height="8" rx="1"/>
@@ -839,154 +817,118 @@ body {
             </svg>
             Sair
         </a>
-
     </nav>
 </aside>
 
-<!-- CABEÇALHO DO DASHBOARD -->
 <header class="dashboard-heading">
-
     <div class="heading-content">
-
         <div>
             <h2>Dashboard</h2>
-            <p class="user-greeting" id="userName">
-                A carregar utilizador...
-            </p>
+            <p class="user-greeting" id="userName">A carregar utilizador...</p>
         </div>
 
         <div class="period-selector">
-
             <div class="period-left">
-
                 <svg class="calendar-icon" viewBox="0 0 24 24">
                     <rect x="3" y="5" width="18" height="16" rx="2"/>
                     <path d="M16 3v4M8 3v4M3 10h18"/>
                     <path d="M8 14h.01M12 14h.01M16 14h.01"/>
                     <path d="M8 17h.01M12 17h.01M16 17h.01"/>
                 </svg>
-
                 <span class="period-text">Últimos 7 dias</span>
-
             </div>
 
             <svg class="arrow-icon" viewBox="0 0 24 24">
                 <path d="m6 9 6 6 6-6"/>
             </svg>
-
         </div>
-
     </div>
 </header>
 
-<!-- CARDS DOS INDICADORES -->
+<!-- DOIS CARDS PRINCIPAIS -->
 <main class="dashboard-stats">
 
-    <!-- PRIMEIRO CARD: FATURAMENTO E LUCRO -->
+    <!-- CARD FINANCEIRO -->
     <section class="stats-card">
 
-        <div class="stats-grid">
+        <div class="stat-item faturamento">
+            <svg class="stat-icon" viewBox="0 0 24 24">
+                <rect x="2" y="5" width="20" height="15" rx="2"/>
+                <path d="M2 10h20"/>
+                <path d="M16 15h2"/>
+            </svg>
 
-            <div class="stat-item faturamento">
-
-                <svg class="stat-icon" viewBox="0 0 24 24">
-                    <rect x="2" y="5" width="20" height="15" rx="2"/>
-                    <path d="M2 10h20"/>
-                    <path d="M16 15h2"/>
-                </svg>
-
-                <div class="stat-content">
-                    <div class="stat-label">Faturamento</div>
-                    <div class="stat-value" id="faturamento">0,00 MT</div>
-                </div>
-
+            <div class="stat-content">
+                <div class="stat-label">Faturamento</div>
+                <div class="stat-value" id="faturamento">0,00 MT</div>
             </div>
+        </div>
 
-            <div class="stat-item lucro">
+        <div class="stat-item lucro">
+            <svg class="stat-icon" viewBox="0 0 24 24">
+                <path d="M12 2v20"/>
+                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+            </svg>
 
-                <svg class="stat-icon" viewBox="0 0 24 24">
-                    <path d="M12 2v20"/>
-                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
-                </svg>
-
-                <div class="stat-content">
-                    <div class="stat-label">Lucro</div>
-                    <div class="stat-value" id="lucro">0,00 MT</div>
-                </div>
-
+            <div class="stat-content">
+                <div class="stat-label">Lucro</div>
+                <div class="stat-value" id="lucro">0,00 MT</div>
             </div>
-
         </div>
 
     </section>
 
-    <!-- SEGUNDO CARD: DESEMPENHO DAS VENDAS -->
+    <!-- CARD DESEMPENHO -->
     <section class="stats-card">
 
-        <div class="stats-grid">
+        <div class="stat-item falhas">
+            <svg class="stat-icon" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="9"/>
+                <path d="m9 9 6 6"/>
+                <path d="m15 9-6 6"/>
+            </svg>
 
-            <!-- VENDAS FALHADAS -->
-            <div class="stat-item falhas">
-
-                <svg class="stat-icon" viewBox="0 0 24 24">
-                    <circle cx="12" cy="12" r="9"/>
-                    <path d="m9 9 6 6"/>
-                    <path d="m15 9-6 6"/>
-                </svg>
-
-                <div class="stat-content">
-                    <div class="stat-label">Vendas falhadas</div>
-                    <div class="stat-value" id="vendasFalhadas">0</div>
-                </div>
-
+            <div class="stat-content">
+                <div class="stat-label">Vendas falhadas</div>
+                <div class="stat-value" id="vendasFalhadas">0</div>
             </div>
+        </div>
 
-            <!-- VENDAS REALIZADAS -->
-            <div class="stat-item realizadas">
+        <div class="stat-item realizadas">
+            <svg class="stat-icon" viewBox="0 0 24 24">
+                <path d="M3 12h4l3 8 4-16 3 8h4"/>
+            </svg>
 
-                <svg class="stat-icon" viewBox="0 0 24 24">
-                    <path d="M3 12h4l3 8 4-16 3 8h4"/>
-                </svg>
-
-                <div class="stat-content">
-                    <div class="stat-label">Vendas realizadas</div>
-                    <div class="stat-value" id="vendasRealizadas">0</div>
-                </div>
-
+            <div class="stat-content">
+                <div class="stat-label">Vendas realizadas</div>
+                <div class="stat-value" id="vendasRealizadas">0</div>
             </div>
+        </div>
 
-            <!-- TAXA DE CONVERSÃO -->
-            <div class="stat-item conversao">
+        <div class="stat-item conversao">
+            <svg class="stat-icon" viewBox="0 0 24 24">
+                <path d="M3 17l6-6 4 4 8-9"/>
+                <path d="M15 6h6v6"/>
+            </svg>
 
-                <svg class="stat-icon" viewBox="0 0 24 24">
-                    <path d="M3 17l6-6 4 4 8-9"/>
-                    <path d="M15 6h6v6"/>
-                </svg>
-
-                <div class="stat-content">
-                    <div class="stat-label">Taxa de conversão</div>
-                    <div class="stat-value" id="taxaConversao">0%</div>
-                </div>
-
+            <div class="stat-content">
+                <div class="stat-label">Taxa de conversão</div>
+                <div class="stat-value" id="taxaConversao">0%</div>
             </div>
+        </div>
 
-            <!-- TICKET MÉDIO -->
-            <div class="stat-item ticket">
+        <div class="stat-item ticket">
+            <svg class="stat-icon" viewBox="0 0 24 24">
+                <path d="M4 4h16v16H4z"/>
+                <path d="M8 9h8"/>
+                <path d="M8 13h8"/>
+                <path d="M8 17h4"/>
+            </svg>
 
-                <svg class="stat-icon" viewBox="0 0 24 24">
-                    <path d="M4 4h16v16H4z"/>
-                    <path d="M8 9h8"/>
-                    <path d="M8 13h8"/>
-                    <path d="M8 17h4"/>
-                </svg>
-
-                <div class="stat-content">
-                    <div class="stat-label">Ticket médio</div>
-                    <div class="stat-value" id="ticketMedio">0,00 MT</div>
-                </div>
-
+            <div class="stat-content">
+                <div class="stat-label">Ticket médio</div>
+                <div class="stat-value" id="ticketMedio">0,00 MT</div>
             </div>
-
         </div>
 
     </section>
@@ -995,7 +937,6 @@ body {
 
 <!-- MEIOS DE PAGAMENTO -->
 <section class="payment-section">
-
     <div class="payment-heading">
         <h3>Meios de pagamento</h3>
         <span class="payment-period">Últimos 7 dias</span>
@@ -1007,9 +948,7 @@ body {
         <div>Valor</div>
     </div>
 
-    <!-- M-PESA -->
     <div class="payment-row">
-
         <div class="payment-method">
             <img src="assets/mpesa.png" alt="M-Pesa">
             <span>M-Pesa</span>
@@ -1022,15 +961,10 @@ body {
             </div>
         </div>
 
-        <div class="payment-amount" id="mpesaAmount">
-            0,00 MT
-        </div>
-
+        <div class="payment-amount" id="mpesaAmount">0,00 MT</div>
     </div>
 
-    <!-- E-MOLA -->
     <div class="payment-row">
-
         <div class="payment-method">
             <img src="assets/emola.png" alt="e-Mola">
             <span>e-Mola</span>
@@ -1043,15 +977,10 @@ body {
             </div>
         </div>
 
-        <div class="payment-amount" id="emolaAmount">
-            0,00 MT
-        </div>
-
+        <div class="payment-amount" id="emolaAmount">0,00 MT</div>
     </div>
-
 </section>
 
-<!-- FIREBASE E FUNCIONALIDADES -->
 <script type="module">
 
 import { auth, db } from "./js/firebase.js";
@@ -1070,33 +999,96 @@ import {
 const userName = document.getElementById("userName");
 const logoutButton = document.getElementById("logoutButton");
 
-/* FORMATAÇÃO DE MOEDA */
+/* MOEDA */
 function formatarMoeda(valor) {
+    const numero = Number(valor);
 
-    return Number(valor || 0).toLocaleString("pt-MZ", {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-    }) + " MT";
-
+    return (Number.isFinite(numero) ? numero : 0)
+        .toLocaleString("pt-MZ", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        }) + " MT";
 }
 
-/* ATUALIZAR INDICADORES */
+/* QUANTIDADES */
+function formatarQuantidade(valor) {
+    const numero = Number(valor);
+
+    return (Number.isFinite(numero) ? numero : 0)
+        .toLocaleString("pt-MZ", {
+            maximumFractionDigits: 0
+        });
+}
+
+/* AJUSTAR TAMANHO DOS VALORES */
+function ajustarTamanhoValor(elemento, tamanhoMaximo, tamanhoMinimo = 8) {
+    if (!elemento) return;
+
+    elemento.style.fontSize = tamanhoMaximo + "px";
+
+    let tamanho = tamanhoMaximo;
+
+    while (
+        elemento.scrollWidth > elemento.clientWidth &&
+        tamanho > tamanhoMinimo
+    ) {
+        tamanho -= 0.5;
+        elemento.style.fontSize = tamanho + "px";
+    }
+}
+
+/* AJUSTAR TODOS OS VALORES */
+function ajustarTodosValores() {
+
+    document.querySelectorAll(".stat-value").forEach(elemento => {
+
+        const tamanhoOriginal = window.innerWidth <= 350
+            ? 17
+            : window.innerWidth <= 480
+                ? 20
+                : 25;
+
+        ajustarTamanhoValor(elemento, tamanhoOriginal, 8);
+    });
+
+    document.querySelectorAll(".payment-amount").forEach(elemento => {
+
+        const tamanhoOriginal = window.innerWidth <= 350
+            ? 11
+            : window.innerWidth <= 480
+                ? 12
+                : 15;
+
+        ajustarTamanhoValor(elemento, tamanhoOriginal, 8);
+    });
+
+    document.querySelectorAll(".approval-value").forEach(elemento => {
+
+        const tamanhoOriginal = window.innerWidth <= 350
+            ? 14
+            : window.innerWidth <= 480
+                ? 15
+                : 17;
+
+        ajustarTamanhoValor(elemento, tamanhoOriginal, 9);
+    });
+}
+
+/* ATUALIZAR DASHBOARD */
 function atualizarDashboard(dados) {
 
-    const faturamento = Number(dados.faturamento || 0);
-    const lucro = Number(dados.lucro || 0);
+    const faturamento = Number(dados.faturamento) || 0;
+    const lucro = Number(dados.lucro) || 0;
 
-    const vendasFalhadas = Number(dados.vendasFalhadas || 0);
-    const vendasRealizadas = Number(dados.vendasRealizadas || 0);
+    const vendasFalhadas = Number(dados.vendasFalhadas) || 0;
+    const vendasRealizadas = Number(dados.vendasRealizadas) || 0;
 
-    const visitasCheckout = Number(dados.visitasCheckout || 0);
+    const visitasCheckout = Number(dados.visitasCheckout) || 0;
 
-    // TAXA DE CONVERSÃO
     const taxaConversao = visitasCheckout > 0
         ? (vendasRealizadas / visitasCheckout) * 100
         : 0;
 
-    // TICKET MÉDIO
     const ticketMedio = vendasRealizadas > 0
         ? faturamento / vendasRealizadas
         : 0;
@@ -1108,10 +1100,10 @@ function atualizarDashboard(dados) {
         formatarMoeda(lucro);
 
     document.getElementById("vendasFalhadas").textContent =
-        vendasFalhadas;
+        formatarQuantidade(vendasFalhadas);
 
     document.getElementById("vendasRealizadas").textContent =
-        vendasRealizadas;
+        formatarQuantidade(vendasRealizadas);
 
     document.getElementById("taxaConversao").textContent =
         taxaConversao.toLocaleString("pt-MZ", {
@@ -1122,6 +1114,7 @@ function atualizarDashboard(dados) {
     document.getElementById("ticketMedio").textContent =
         formatarMoeda(ticketMedio);
 
+    ajustarTodosValores();
 }
 
 /* ATUALIZAR PAGAMENTOS */
@@ -1138,7 +1131,9 @@ function atualizarPagamentos(dados) {
     );
 
     document.getElementById("mpesaApproval").textContent =
-        mpesa + "%";
+        mpesa.toLocaleString("pt-MZ", {
+            maximumFractionDigits: 2
+        }) + "%";
 
     document.getElementById("mpesaAmount").textContent =
         formatarMoeda(dados.mpesa.valor);
@@ -1147,7 +1142,9 @@ function atualizarPagamentos(dados) {
         mpesa + "%";
 
     document.getElementById("emolaApproval").textContent =
-        emola + "%";
+        emola.toLocaleString("pt-MZ", {
+            maximumFractionDigits: 2
+        }) + "%";
 
     document.getElementById("emolaAmount").textContent =
         formatarMoeda(dados.emola.valor);
@@ -1155,6 +1152,7 @@ function atualizarPagamentos(dados) {
     document.getElementById("emolaBar").style.width =
         emola + "%";
 
+    ajustarTodosValores();
 }
 
 /* DADOS INICIAIS */
@@ -1176,6 +1174,9 @@ atualizarPagamentos({
         valor: 0
     }
 });
+
+/* REDIMENSIONAR */
+window.addEventListener("resize", ajustarTodosValores);
 
 /* PROTEGER DASHBOARD E CARREGAR UTILIZADOR */
 onAuthStateChanged(auth, async (user) => {
@@ -1203,7 +1204,6 @@ onAuthStateChanged(auth, async (user) => {
 
             userName.textContent =
                 "Olá, " + (user.displayName || "Utilizador");
-
         }
 
     } catch (error) {
@@ -1212,9 +1212,7 @@ onAuthStateChanged(auth, async (user) => {
 
         userName.textContent =
             "Olá, " + (user.displayName || "Utilizador");
-
     }
-
 });
 
 /* TERMINAR SESSÃO */
@@ -1238,9 +1236,7 @@ logoutButton.addEventListener("click", async (event) => {
 
         logoutButton.style.opacity = "1";
         logoutButton.style.pointerEvents = "auto";
-
     }
-
 });
 
 /* MENU LATERAL */
@@ -1257,7 +1253,6 @@ function abrirMenu() {
     menuButton.setAttribute("aria-expanded", "true");
 
     document.body.style.overflow = "hidden";
-
 }
 
 function fecharMenu() {
@@ -1268,7 +1263,6 @@ function fecharMenu() {
     menuButton.setAttribute("aria-expanded", "false");
 
     document.body.style.overflow = "";
-
 }
 
 menuButton.addEventListener("click", abrirMenu);
@@ -1276,11 +1270,9 @@ menuClose.addEventListener("click", fecharMenu);
 menuOverlay.addEventListener("click", fecharMenu);
 
 document.addEventListener("keydown", (event) => {
-
     if (event.key === "Escape") {
         fecharMenu();
     }
-
 });
 
 </script>
