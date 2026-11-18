@@ -29,162 +29,110 @@ body{
     padding:25px 16px;
 }
 
+/* ESTRUTURA PRINCIPAL */
+
 .container{
     width:100%;
-    max-width:360px;
-    background:#030a12;
-    border-radius:20px;
+    max-width:340px;
+    min-height:630px;
+    background:#071321;
+    border:9px solid #000;
+    border-radius:30px;
     overflow:hidden;
-}
-
-/* TOPO DA LOGO */
-
-.brand-cover{
-    height:190px;
-    background:#030a12;
-    display:flex;
-    align-items:center;
-    justify-content:center;
     position:relative;
-    overflow:hidden;
+    box-shadow:0 25px 65px rgba(0,0,0,.4);
 }
 
-.brand-cover::before,
-.brand-cover::after{
-    content:"";
-    position:absolute;
-    border:1px solid rgba(32,186,240,.12);
-    border-radius:50%;
-}
+/* ÁREA SUPERIOR */
 
-.brand-cover::before{
-    width:260px;
-    height:260px;
-    top:-145px;
-    left:-100px;
-}
-
-.brand-cover::after{
-    width:220px;
-    height:220px;
-    right:-100px;
-    bottom:-130px;
-}
-
-/* LOGOTIPO */
-
-.logo-box{
-    width:150px;
-    height:90px;
-    background:transparent;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    position:relative;
-    z-index:2;
-    padding:0;
-}
-
-.logo-box img{
-    width:100%;
+.login-screen{
+    min-height:612px;
     height:100%;
+    padding:55px 25px 30px;
+    background:#071321;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+}
+
+/* LOGO */
+
+.logo-area{
+    width:100%;
+    min-height:235px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+}
+
+.logo{
+    width:165px;
+    max-height:110px;
     object-fit:contain;
 }
 
-/* CARTÃO */
+.brand-caption{
+    color:#969eaa;
+    font-size:9px;
+    letter-spacing:1.3px;
+    margin-top:13px;
+    text-transform:uppercase;
+}
 
-.content{
-    background:#071321;
-    margin-top:-27px;
-    position:relative;
-    z-index:3;
-    border-radius:35px 0 0 0;
-    padding:34px 22px 29px;
-    border:1px solid #172638;
-    border-right:0;
-    border-bottom:0;
+/* FORMULÁRIO */
+
+.form-area{
+    width:100%;
+    margin-top:10px;
 }
 
 .title{
     text-align:center;
-    font-size:21px;
+    font-size:18px;
     font-weight:800;
-    margin-bottom:8px;
+    margin-bottom:27px;
     color:#fff;
 }
 
-.subtitle{
-    text-align:center;
-    font-size:11px;
-    color:#969eaa;
-    line-height:1.7;
-    margin-bottom:27px;
-}
-
-/* MENSAGENS */
-
-.message{
-    display:none;
-    padding:11px 12px;
-    border-radius:9px;
-    font-size:11px;
-    line-height:1.5;
-    margin-bottom:17px;
-}
-
-.message.error{
-    display:block;
-    background:#351616;
-    color:#ff8585;
-    border:1px solid #572323;
-}
-
-.message.success{
-    display:block;
-    background:#102b20;
-    color:#70df39;
-    border:1px solid #205338;
-}
-
-/* CAMPOS */
-
 .field{
-    margin-bottom:17px;
-}
-
-label{
-    display:block;
-    font-size:10px;
-    font-weight:700;
-    color:#c6d0da;
-    margin:0 0 7px 2px;
-}
-
-.input-wrap{
+    width:100%;
+    margin-bottom:13px;
     position:relative;
+}
+
+.input-icon{
+    position:absolute;
+    left:16px;
+    top:50%;
+    transform:translateY(-50%);
+    color:#969eaa;
+    width:15px;
+    height:15px;
+    pointer-events:none;
 }
 
 input{
     width:100%;
-    height:48px;
-    background:#030a12;
+    height:47px;
     border:1px solid #292929;
-    border-radius:9px;
-    padding:0 13px;
-    font-family:inherit;
-    font-size:11px;
-    color:#fff;
     outline:none;
+    border-radius:15px;
+    background:#030a12;
+    color:#fff;
+    padding:0 17px 0 43px;
+    font-family:inherit;
+    font-size:10px;
     transition:.2s;
 }
 
 input::placeholder{
-    color:#687482;
+    color:#969eaa;
 }
 
 input:focus{
     border-color:#20baf0;
-    box-shadow:0 0 0 3px rgba(32,186,240,.08);
+    box-shadow:0 0 0 3px rgba(32,186,240,.1);
 }
 
 .password-input{
@@ -193,29 +141,32 @@ input:focus{
 
 .toggle{
     position:absolute;
-    right:13px;
+    right:17px;
     top:50%;
     transform:translateY(-50%);
-    border:0;
+    border:none;
     background:none;
     color:#20baf0;
     font-family:inherit;
-    font-size:10px;
+    font-size:9px;
     font-weight:700;
     cursor:pointer;
 }
 
-/* RECUPERAR SENHA */
+/* RECUPERAÇÃO */
 
 .forgot{
     display:block;
     text-align:right;
-    color:#20baf0;
-    font-size:10px;
-    font-weight:700;
+    color:#969eaa;
+    font-size:9px;
     text-decoration:none;
-    margin-top:-4px;
-    margin-bottom:21px;
+    margin:17px 5px 23px;
+}
+
+.forgot span{
+    color:#20baf0;
+    font-weight:700;
 }
 
 /* BOTÃO */
@@ -223,13 +174,14 @@ input:focus{
 .login-btn{
     width:100%;
     height:47px;
-    border:0;
-    border-radius:9px;
+    border:none;
+    border-radius:30px;
     background:#20baf0;
     color:#030a12;
     font-family:inherit;
-    font-size:11px;
+    font-size:10px;
     font-weight:800;
+    letter-spacing:.5px;
     cursor:pointer;
     transition:.2s;
 }
@@ -243,13 +195,39 @@ input:focus{
     cursor:wait;
 }
 
-/* REGISTO */
+/* MENSAGENS */
+
+.message{
+    display:none;
+    width:100%;
+    padding:11px 13px;
+    border-radius:10px;
+    font-size:10px;
+    line-height:1.5;
+    margin-bottom:15px;
+}
+
+.message.error{
+    display:block;
+    background:#351616;
+    color:#ffb0b0;
+    border:1px solid #572323;
+}
+
+.message.success{
+    display:block;
+    background:#102b20;
+    color:#a5f3c0;
+    border:1px solid #205338;
+}
+
+/* CRIAR CONTA */
 
 .register{
     text-align:center;
-    font-size:10px;
     color:#969eaa;
-    margin-top:28px;
+    font-size:9px;
+    margin-top:34px;
 }
 
 .register a{
@@ -263,23 +241,38 @@ input:focus{
 .footer{
     text-align:center;
     color:#657080;
-    font-size:9px;
-    padding:18px 15px 20px;
-    background:#030a12;
+    font-size:8px;
+    margin-top:auto;
+    padding-top:25px;
 }
 
-@media(max-width:380px){
+/* RESPONSIVIDADE */
+
+@media(max-height:700px){
 
     .container{
-        max-width:340px;
+        min-height:570px;
     }
 
-    .brand-cover{
-        height:180px;
+    .login-screen{
+        min-height:552px;
+        padding-top:35px;
     }
 
-    .content{
-        padding:31px 20px 27px;
+    .logo-area{
+        min-height:190px;
+    }
+}
+
+@media(max-width:360px){
+
+    .container{
+        max-width:320px;
+    }
+
+    .login-screen{
+        padding-left:20px;
+        padding-right:20px;
     }
 }
 </style>
@@ -289,61 +282,70 @@ input:focus{
 
 <div class="container">
 
-    <!-- LOGOTIPO -->
-    <div class="brand-cover">
+    <main class="login-screen">
 
-        <div class="logo-box">
+        <!-- LOGOTIPO -->
+        <div class="logo-area">
+
             <img
                 src="assets/lowticketpay.png"
                 alt="KILLIKPAY"
+                class="logo"
             >
+
+            <p class="brand-caption">
+                Bem vindo de volta! 
+            </p>
+
         </div>
 
-    </div>
+        <!-- FORMULÁRIO -->
+        <div class="form-area">
 
-    <!-- FORMULÁRIO -->
-    <div class="content">
+            <h1 class="title">Entrar na sua conta</h1>
 
-        <h1 class="title">Entrar</h1>
-
-        <p class="subtitle">
-            Aceda à sua conta KILLIKPAY
-        </p>
-
-        <div
-            id="message"
-            class="message"
-            role="alert"
-            aria-live="polite">
-        </div>
-
-        <form id="loginForm">
-
-            <div class="field">
-
-                <label for="email">E-mail</label>
-
-                <input
-                    type="email"
-                    id="email"
-                    placeholder="seuemail@exemplo.com"
-                    autocomplete="username"
-                    required
-                >
-
+            <div
+                id="message"
+                class="message"
+                role="alert"
+                aria-live="polite">
             </div>
 
-            <div class="field">
+            <form id="loginForm">
 
-                <label for="password">Palavra-passe</label>
+                <!-- EMAIL -->
+                <div class="field">
 
-                <div class="input-wrap">
+                    <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+                        <circle cx="12" cy="12" r="9"/>
+                        <path d="M16 12v1.5a2 2 0 0 0 4 0V12"/>
+                        <circle cx="12" cy="12" r="3"/>
+                    </svg>
+
+                    <input
+                        type="email"
+                        id="email"
+                        placeholder="E-mail"
+                        autocomplete="username"
+                        required
+                    >
+
+                </div>
+
+                <!-- PALAVRA-PASSE -->
+                <div class="field">
+
+                    <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+                        <rect x="5" y="10" width="14" height="11" rx="2"/>
+                        <path d="M8 10V7a4 4 0 0 1 8 0v3"/>
+                        <circle cx="12" cy="15" r="1"/>
+                    </svg>
 
                     <input
                         type="password"
                         id="password"
                         class="password-input"
-                        placeholder="Introduza a sua palavra-passe"
+                        placeholder="Palavra-passe"
                         autocomplete="current-password"
                         required
                     >
@@ -357,31 +359,32 @@ input:focus{
 
                 </div>
 
+                <a href="esqueceu-senha.html" class="forgot">
+                    Esqueceu a palavra-passe?
+                    <span>Recuperar</span>
+                </a>
+
+                <button
+                    type="submit"
+                    class="login-btn"
+                    id="loginBtn">
+                    ENTRAR 
+                </button>
+
+            </form>
+
+            <div class="register">
+                Ainda não tem conta?
+                <a href="criar-conta.html">Criar conta</a>
             </div>
 
-            <a href="esqueceu-senha.html" class="forgot">
-                Esqueceu a palavra-passe?
-            </a>
-
-            <button
-                type="submit"
-                class="login-btn"
-                id="loginBtn">
-                Entrar na conta
-            </button>
-
-        </form>
-
-        <div class="register">
-            Ainda não tem conta?
-            <a href="criar-conta.html">Criar conta</a>
         </div>
 
-    </div>
+        <div class="footer">
+            © 2026 KILLIKPAY. Todos os direitos reservados.
+        </div>
 
-    <div class="footer">
-        © 2026 KILLIKPAY. Todos os direitos reservados.
-    </div>
+    </main>
 
 </div>
 
@@ -393,8 +396,6 @@ import { auth } from "./js/firebase.js";
 import {
     signInWithEmailAndPassword
 } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js";
-
-/* ELEMENTOS */
 
 const form = document.getElementById("loginForm");
 const emailInput = document.getElementById("email");
@@ -483,7 +484,7 @@ form.addEventListener("submit",async event=>{
     submitting = true;
 
     loginBtn.disabled = true;
-    loginBtn.textContent = "A entrar...";
+    loginBtn.textContent = "A ENTRAR...";
 
     message.className = "message";
 
@@ -511,7 +512,7 @@ form.addEventListener("submit",async event=>{
         submitting = false;
 
         loginBtn.disabled = false;
-        loginBtn.textContent = "Entrar na conta";
+        loginBtn.textContent = "ENTRAR NA CONTA";
 
     }
 
