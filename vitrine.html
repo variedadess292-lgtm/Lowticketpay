@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#030a12">
-<title>LOWTICKETPAY - Vitrine</title>
+<title>KLIKPay - Vitrine</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -341,7 +341,7 @@ h1 {
     overflow: hidden;
 }
 
-/* ETIQUETAS ORDER BUMP E UPSELL */
+/* ORDER BUMP E UPSELL */
 
 .product-offers {
     display: flex;
@@ -457,7 +457,7 @@ h1 {
     font-size: 12px;
 }
 
-/* RESPONSIVIDADE */
+/* TABLET */
 
 @media(max-width: 900px) {
     .grid {
@@ -465,7 +465,10 @@ h1 {
     }
 }
 
+/* CELULAR: UM PRODUTO POR LINHA */
+
 @media(max-width: 700px) {
+
     .top-toolbar {
         height: 75px;
         padding: 0 20px;
@@ -480,26 +483,8 @@ h1 {
         padding: 22px 15px;
     }
 
-    .grid {
-        grid-template-columns: repeat(2,minmax(0,1fr));
-        gap: 10px;
-    }
-
-    .product-info {
-        padding: 11px;
-    }
-
-    .product-info h4 {
-        font-size: 11px;
-    }
-
-    .price {
-        font-size: 12px;
-    }
-
-    .buy {
-        padding: 8px;
-        font-size: 9px;
+    .topbar {
+        margin-bottom: 24px;
     }
 
     h1 {
@@ -513,11 +498,104 @@ h1 {
     .category {
         padding: 9px 14px;
     }
+
+    /* UM CARTÃO OCUPA TODA A LINHA */
+
+    .grid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 17px;
+    }
+
+    .product {
+        width: 100%;
+        border-radius: 11px;
+    }
+
+    /* IMAGEM GRANDE NA PARTE SUPERIOR */
+
+    .product-image {
+        width: 100%;
+        aspect-ratio: 4 / 3;
+    }
+
+    .product-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    /* INFORMAÇÕES */
+
+    .product-info {
+        padding: 18px;
+    }
+
+    .product-info h4 {
+        font-size: 16px;
+        line-height: 1.45;
+        margin-bottom: 9px;
+    }
+
+    .description {
+        font-size: 13px;
+        line-height: 1.7;
+        margin-bottom: 17px;
+        -webkit-line-clamp: 3;
+    }
+
+    .product-offers {
+        gap: 8px;
+        margin-bottom: 16px;
+    }
+
+    .offer-tag {
+        font-size: 10px;
+        padding: 7px 10px;
+    }
+
+    /* PREÇO */
+
+    .product-bottom {
+        margin-top: 5px;
+    }
+
+    .price {
+        font-size: 19px;
+    }
+
+    /* BOTÕES */
+
+    .product-actions {
+        margin-top: 17px;
+        gap: 10px;
+    }
+
+    .buy {
+        min-height: 46px;
+        font-size: 13px;
+        border-radius: 7px;
+    }
+
+    .copy-affiliate {
+        min-height: 43px;
+        font-size: 12px;
+        border-radius: 7px;
+    }
 }
 
+/* ECRÃS MUITO PEQUENOS */
+
 @media(max-width: 350px) {
-    .product-bottom {
-        flex-wrap: wrap;
+    .product-info {
+        padding: 14px;
+    }
+
+    .product-info h4 {
+        font-size: 14px;
+    }
+
+    .price {
+        font-size: 17px;
     }
 }
 </style>
@@ -555,7 +633,7 @@ h1 {
     <div class="menu-header">
         <img
             src="assets/lowticketpay.png"
-            alt="LOWTICKETPAY"
+            alt="KLIKPay"
             class="menu-logo"
         >
 
