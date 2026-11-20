@@ -299,29 +299,33 @@ h1 {
     transform: translateY(-2px);
 }
 
-/* IMAGEM MAIS PEQUENA E COMPLETA NO CELULAR */
+/* ÁREA INTELIGENTE DA IMAGEM */
 
 .product-image {
     width: 100%;
-    height: 190px;
-    aspect-ratio: auto;
+    height: 220px;
     background: #ffffff;
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
+    padding: 10px;
 }
 
 .product-image img {
     width: 100%;
     height: 100%;
     object-fit: contain;
+    object-position: center;
+    display: block;
 }
 
 .product-image .material-icons-outlined {
     font-size: 40px;
     color: #526174;
 }
+
+/* INFORMAÇÕES */
 
 .product-info {
     padding: 15px;
@@ -468,7 +472,7 @@ h1 {
     }
 }
 
-/* CELULAR: UM PRODUTO POR LINHA */
+/* CELULAR */
 
 @media(max-width: 700px) {
 
@@ -502,10 +506,10 @@ h1 {
         padding: 9px 14px;
     }
 
-    /* UM CARTÃO OCUPA TODA A LINHA */
+    /* UM PRODUTO POR LINHA */
 
     .grid {
-        grid-template-columns: minmax(0, 1fr);
+        grid-template-columns: minmax(0,1fr);
         gap: 17px;
     }
 
@@ -514,41 +518,46 @@ h1 {
         border-radius: 11px;
     }
 
-    /* IMAGEM GRANDE NA PARTE SUPERIOR */
+    /* IMAGEM MAIS PEQUENA E COMPLETA */
 
     .product-image {
         width: 100%;
-        aspect-ratio: 4 / 3;
+        height: 175px;
+        padding: 8px;
+        background: #ffffff;
     }
 
     .product-image img {
         width: 100%;
         height: 100%;
-        object-fit: cover;
+        object-fit: contain;
+        object-position: center;
     }
 
     /* INFORMAÇÕES */
 
     .product-info {
-        padding: 18px;
+        padding: 16px;
     }
 
     .product-info h4 {
-        font-size: 16px;
-        line-height: 1.45;
-        margin-bottom: 9px;
+        font-size: 15px;
+        line-height: 1.5;
+        margin-bottom: 8px;
     }
 
     .description {
-        font-size: 13px;
+        font-size: 12px;
         line-height: 1.7;
-        margin-bottom: 17px;
+        margin-bottom: 15px;
         -webkit-line-clamp: 3;
     }
 
+    /* OFERTAS */
+
     .product-offers {
         gap: 8px;
-        margin-bottom: 16px;
+        margin-bottom: 14px;
     }
 
     .offer-tag {
@@ -563,25 +572,25 @@ h1 {
     }
 
     .price {
-        font-size: 19px;
+        font-size: 18px;
     }
 
     /* BOTÕES */
 
     .product-actions {
-        margin-top: 17px;
-        gap: 10px;
+        margin-top: 15px;
+        gap: 9px;
     }
 
     .buy {
-        min-height: 46px;
-        font-size: 13px;
+        min-height: 43px;
+        font-size: 12px;
         border-radius: 7px;
     }
 
     .copy-affiliate {
-        min-height: 43px;
-        font-size: 12px;
+        min-height: 40px;
+        font-size: 11px;
         border-radius: 7px;
     }
 }
@@ -590,7 +599,7 @@ h1 {
 
 @media(max-width: 350px) {
     .product-info {
-        padding: 14px;
+        padding: 13px;
     }
 
     .product-info h4 {
@@ -598,7 +607,11 @@ h1 {
     }
 
     .price {
-        font-size: 17px;
+        font-size: 16px;
+    }
+
+    .product-image {
+        height: 155px;
     }
 }
 </style>
