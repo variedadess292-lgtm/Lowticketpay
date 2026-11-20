@@ -299,10 +299,13 @@ h1 {
     transform: translateY(-2px);
 }
 
+/* IMAGEM MAIS PEQUENA E COMPLETA NO CELULAR */
+
 .product-image {
     width: 100%;
-    aspect-ratio: 1/1;
-    background: #102030;
+    height: 190px;
+    aspect-ratio: auto;
+    background: #ffffff;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -312,7 +315,7 @@ h1 {
 .product-image img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
 }
 
 .product-image .material-icons-outlined {
