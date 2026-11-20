@@ -341,6 +341,36 @@ h1 {
     overflow: hidden;
 }
 
+/* ETIQUETAS ORDER BUMP E UPSELL */
+
+.product-offers {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 0 0 13px;
+}
+
+.offer-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 9px;
+    border-radius: 5px;
+    font-size: 9px;
+    font-weight: 800;
+    background: #102237;
+    color: #20baf0;
+    border: 1px solid #19445e;
+}
+
+.offer-tag.upsell {
+    background: #17291f;
+    color: #49d18b;
+    border-color: #28583e;
+}
+
+/* PREÇO */
+
 .product-bottom {
     display: flex;
     justify-content: space-between;
@@ -354,17 +384,55 @@ h1 {
     white-space: nowrap;
 }
 
+/* AÇÕES */
+
+.product-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    margin-top: 13px;
+}
+
 .buy {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 38px;
     background: #20baf0;
     color: #030a12;
     border: 0;
     padding: 9px 12px;
     border-radius: 6px;
-    font-size: 10px;
+    font-size: 11px;
     font-weight: 800;
     cursor: pointer;
     text-decoration: none;
     white-space: nowrap;
+}
+
+.copy-affiliate {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    width: 100%;
+    min-height: 36px;
+    padding: 8px;
+    background: transparent;
+    border: 1px solid #29445a;
+    border-radius: 6px;
+    color: #20baf0;
+    font-family: inherit;
+    font-size: 10px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.copy-affiliate:hover {
+    background: #102237;
+    border-color: #20baf0;
 }
 
 /* VAZIO */
@@ -629,7 +697,7 @@ menuButton.addEventListener("click", abrirMenu);
 menuClose.addEventListener("click", fecharMenu);
 menuOverlay.addEventListener("click", fecharMenu);
 
-document.addEventListener("keydown", (event) => {
+document.addEventListener("keydown", event => {
     if (event.key === "Escape") fecharMenu();
 });
 
@@ -639,7 +707,7 @@ document.querySelectorAll(".menu-links a").forEach(link => {
 
 /* SAIR */
 
-document.getElementById("logoutButton").addEventListener("click", async (event) => {
+document.getElementById("logoutButton").addEventListener("click", async event => {
     event.preventDefault();
 
     try {
@@ -683,7 +751,6 @@ function normalizar(texto) {
 /* CATEGORIAS */
 
 function categoriaCompativel(produtoCategoria, filtro) {
-
     if (filtro === "Todos") return true;
 
     const categoria = normalizar(produtoCategoria);
@@ -711,6 +778,67 @@ function categoriaCompativel(produtoCategoria, filtro) {
     return true;
 }
 
+/* LINK DE AFILIADO */
+
+function gerarLinkAfiliado(produto, uid) {
+    const checkoutUrl =
+        produto.checkoutUrl ||
+        produto.linkCheckout ||
+        produto.checkoutLink ||
+        "";
+
+    let url;
+
+    if (checkoutUrl) {
+        url = new URL(checkoutUrl, window.location.origin);
+    } else {
+        url = new URL("vitrine.html", window.location.href);
+    }
+
+    url.searchParams.set("productId", produto.id);
+    url.searchParams.set("ref", uid);
+
+    return url.toString();
+}
+
+/* COPIAR LINK */
+
+async function copiarLinkAfiliado(produto, botao) {
+    const usuario = auth.currentUser;
+
+    if (!usuario) {
+        alert("Inicia sessão para copiar o teu link de afiliado.");
+        return;
+    }
+
+    if (produto.affiliate?.enabled !== true) {
+        alert("A afiliação não está ativada para este produto.");
+        return;
+    }
+
+    const link = gerarLinkAfiliado(produto, usuario.uid);
+
+    try {
+        await navigator.clipboard.writeText(link);
+
+        const textoOriginal = botao.innerHTML;
+
+        botao.innerHTML = `
+            <span class="material-icons-outlined"
+                  style="font-size:16px">check</span>
+            Link copiado!
+        `;
+
+        setTimeout(() => {
+            botao.innerHTML = textoOriginal;
+        }, 2000);
+
+    } catch (error) {
+        console.error("Erro ao copiar link:", error);
+        alert("Não foi possível copiar o link. Tenta novamente.");
+    }
+}
+
 /* RENDERIZAR PRODUTOS */
 
 function renderizarProdutos() {
@@ -732,7 +860,8 @@ function renderizarProdutos() {
     });
 
     contador.textContent =
-        filtrados.length + (filtrados.length === 1 ? " produto" : " produtos");
+        filtrados.length +
+        (filtrados.length === 1 ? " produto" : " produtos");
 
     produtosContainer.innerHTML = "";
 
@@ -751,14 +880,18 @@ function renderizarProdutos() {
         const card = document.createElement("article");
         card.className = "product";
 
+        /* IMAGEM */
+
         const imagem = document.createElement("div");
         imagem.className = "product-image";
 
         if (produto.imageFileId) {
 
             const img = document.createElement("img");
+
             img.src = "/api/image?fileId=" +
                 encodeURIComponent(produto.imageFileId);
+
             img.alt = produto.nome || "Produto";
             img.loading = "lazy";
 
@@ -778,6 +911,8 @@ function renderizarProdutos() {
 
         }
 
+        /* INFORMAÇÕES */
+
         const info = document.createElement("div");
         info.className = "product-info";
 
@@ -786,7 +921,33 @@ function renderizarProdutos() {
 
         const descricao = document.createElement("p");
         descricao.className = "description";
-        descricao.textContent = produto.descricao || "Sem descrição disponível.";
+        descricao.textContent =
+            produto.descricao || "Sem descrição disponível.";
+
+        /* OFERTAS */
+
+        const ofertas = document.createElement("div");
+        ofertas.className = "product-offers";
+
+        if (produto.orderBump?.enabled === true) {
+
+            const etiqueta = document.createElement("span");
+            etiqueta.className = "offer-tag";
+            etiqueta.textContent = "Order Bump";
+
+            ofertas.appendChild(etiqueta);
+        }
+
+        if (produto.upsell?.enabled === true) {
+
+            const etiqueta = document.createElement("span");
+            etiqueta.className = "offer-tag upsell";
+            etiqueta.textContent = "Upsell";
+
+            ofertas.appendChild(etiqueta);
+        }
+
+        /* PREÇO */
 
         const bottom = document.createElement("div");
         bottom.className = "product-bottom";
@@ -794,6 +955,13 @@ function renderizarProdutos() {
         const preco = document.createElement("span");
         preco.className = "price";
         preco.textContent = formatarMoeda(produto.preco);
+
+        bottom.appendChild(preco);
+
+        /* AÇÕES */
+
+        const actions = document.createElement("div");
+        actions.className = "product-actions";
 
         const comprar = document.createElement("a");
         comprar.className = "buy";
@@ -806,32 +974,69 @@ function renderizarProdutos() {
             "";
 
         if (checkoutUrl) {
+
             comprar.href = checkoutUrl;
             comprar.target = "_blank";
             comprar.rel = "noopener noreferrer";
+
         } else {
+
             comprar.href = "#";
-            comprar.addEventListener("click", (event) => {
+
+            comprar.addEventListener("click", event => {
                 event.preventDefault();
                 alert("O checkout deste produto ainda não está disponível.");
             });
         }
 
-        bottom.append(preco, comprar);
-        info.append(nome, descricao, bottom);
-        card.append(imagem, info);
+        actions.appendChild(comprar);
+
+        /* AFILIAÇÃO */
+
+        if (produto.affiliate?.enabled === true) {
+
+            const copiar = document.createElement("button");
+
+            copiar.type = "button";
+            copiar.className = "copy-affiliate";
+
+            copiar.innerHTML = `
+                <span class="material-icons-outlined"
+                      style="font-size:16px">content_copy</span>
+                Copiar link de afiliado
+            `;
+
+            copiar.addEventListener("click", () => {
+                copiarLinkAfiliado(produto, copiar);
+            });
+
+            actions.appendChild(copiar);
+        }
+
+        /* MONTAR CARTÃO */
+
+        info.appendChild(nome);
+        info.appendChild(descricao);
+
+        if (ofertas.children.length > 0) {
+            info.appendChild(ofertas);
+        }
+
+        info.appendChild(bottom);
+        info.appendChild(actions);
+
+        card.appendChild(imagem);
+        card.appendChild(info);
 
         produtosContainer.appendChild(card);
-
     });
-
 }
 
-/* FILTRO DE PESQUISA */
+/* PESQUISA */
 
 pesquisa.addEventListener("input", renderizarProdutos);
 
-/* FILTRO DE CATEGORIA */
+/* CATEGORIAS */
 
 botoesCategoria.forEach(botao => {
 
@@ -845,14 +1050,13 @@ botoesCategoria.forEach(botao => {
         categoriaAtual = botao.dataset.category;
 
         renderizarProdutos();
-
     });
 
 });
 
-/* CARREGAR PRODUTOS PÚBLICOS */
+/* CARREGAR PRODUTOS */
 
-onSnapshot(collection(db, "produtos"), (snapshot) => {
+onSnapshot(collection(db, "produtos"), snapshot => {
 
     todosProdutos = snapshot.docs
         .map(documento => ({
@@ -866,7 +1070,7 @@ onSnapshot(collection(db, "produtos"), (snapshot) => {
 
     renderizarProdutos();
 
-}, (error) => {
+}, error => {
 
     console.error("Erro ao carregar produtos:", error);
 
@@ -876,7 +1080,6 @@ onSnapshot(collection(db, "produtos"), (snapshot) => {
             <p>Não foi possível carregar os produtos.</p>
         </div>
     `;
-
 });
 
 </script>
