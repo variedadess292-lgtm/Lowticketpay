@@ -1,5 +1,6 @@
 
 import { db } from "./_lib/firebaseAdmin.js";
+import crypto from "crypto";
 
 const EPAY_URL = "https://checkout.epay.co.mz/api/v1/payments";
 
@@ -11,34 +12,35 @@ export default async function handler(req, res) {
   }
 
   try {
-    const secretKey = process.env.EPAY_SECRET_KEY;
+    const { productId, customerName, customerEmail } = req.body || {};
+
+    if (
+      typeof productId !== "string" ||
+      typeof customerName !== "string" ||
+      customerName.trim().length < 2
+    ) {
+      return res.status(400).json({
+        error: "Preencha correctamente os seus dados."
+      });
+    }
+
+    if (
+      customerEmail &&
+      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(customerEmail)
+    ) {
+      return res.status(400).json({
+        error: "E-mail inválido."
+      });
+    }
+
     const appUrl = process.env.APP_URL;
+    const secretKey = process.env.EPAY_SECRET_KEY;
 
-    if (!secretKey || !appUrl) {
-      return res.status(500).json({
-        error: "Configuração de pagamentos incompleta."
-      });
+    if (!appUrl || !secretKey) {
+      throw new Error("Configurações de pagamento incompletas.");
     }
 
-    const {
-      productId,
-      customerName,
-      customerEmail
-    } = req.body || {};
-
-    if (!productId || typeof productId !== "string") {
-      return res.status(400).json({
-        error: "Produto inválido."
-      });
-    }
-
-    if (!customerName || typeof customerName !== "string") {
-      return res.status(400).json({
-        error: "Indica o nome do comprador."
-      });
-    }
-
-    // Consultar o produto verdadeiro no Firestore
+    // Procurar produto no Firestore.
     const productRef = db.collection("produtos").doc(productId);
     const productSnap = await productRef.get();
 
@@ -51,9 +53,9 @@ export default async function handler(req, res) {
     const product = productSnap.data();
 
     if (
-      product.ativo === false ||
-      product.status === "inativo" ||
-      !product.ownerId
+      product.ativo !== true ||
+      product.status === "Desactivado" ||
+      product.status === "Desativado"
     ) {
       return res.status(400).json({
         error: "Este produto não está disponível."
@@ -62,30 +64,45 @@ export default async function handler(req, res) {
 
     const amount = Number(product.preco);
 
-    if (!Number.isFinite(amount) || amount < 1) {
+    if (!Number.isFinite(amount) || amount <= 0) {
       return res.status(400).json({
         error: "Preço do produto inválido."
       });
     }
 
-    // Criar registo pendente
-    const orderRef = db.collection("transacoes").doc();
+    if (amount > 250000) {
+      return res.status(400).json({
+        error: "O valor máximo permitido é 250.000 MT."
+      });
+    }
+
+    if (!product.ownerId) {
+      return res.status(400).json({
+        error: "O produto não tem vendedor associado."
+      });
+    }
+
+    // Criar referência única para a encomenda.
+    const orderId = crypto.randomUUID();
+
+    const orderRef = db.collection("transacoes").doc(orderId);
 
     await orderRef.set({
-      orderId: orderRef.id,
+      orderId,
       productId,
-      productName: product.nome || "Produto digital",
+      productName: product.nome || "Produto KLIKPay",
       sellerId: product.ownerId,
       customerName: customerName.trim(),
-      customerEmail: customerEmail || null,
+      customerEmail: customerEmail?.trim().toLowerCase() || null,
       amount,
       currency: "MZN",
       status: "pending",
+      paymentStatus: "pending",
       paymentProvider: "epay",
       createdAt: new Date()
     });
 
-    // Criar pagamento na ePay
+    // Criar pagamento na ePay.
     const response = await fetch(EPAY_URL, {
       method: "POST",
       headers: {
@@ -94,52 +111,52 @@ export default async function handler(req, res) {
         Accept: "application/json"
       },
       body: JSON.stringify({
-        amount,
+        amount: amount.toFixed(2),
         currency: "MZN",
-        description: product.nome || "Compra KLIKPay",
-        external_reference: orderRef.id,
+        description: product.nome || "Compra na KLIKPay",
+        external_reference: orderId,
         customer_name: customerName.trim(),
-        customer_email: customerEmail || undefined,
-        return_url: `${appUrl}/pagamento.html?pedido=${orderRef.id}`,
-        cancel_url: `${appUrl}/pagamento.html?pedido=${orderRef.id}`,
+        customer_email: customerEmail?.trim().toLowerCase() || undefined,
+        return_url: `${appUrl}/pagamento.html?pedido=${encodeURIComponent(orderId)}`,
+        cancel_url: `${appUrl}/pagamento.html?pedido=${encodeURIComponent(orderId)}`,
         callback_url: `${appUrl}/api/epay-webhook`
       })
     });
 
-    const payment = await response.json();
+    const result = await response.json();
 
-    if (!response.ok || !payment.id) {
+    if (!response.ok || !result.id) {
       await orderRef.update({
         status: "failed",
-        paymentError: payment.message || "Erro ao criar pagamento."
+        paymentStatus: "failed",
+        paymentError: result.message || "Falha ao criar pagamento."
       });
 
-      return res.status(502).json({
-        error: "Não foi possível iniciar o pagamento."
+      return res.status(response.status || 502).json({
+        error: result.message || "Não foi possível criar o pagamento."
       });
     }
 
     await orderRef.update({
-      epayPaymentId: payment.id,
-      paymentUrl: payment.payment_url,
-      paymentStatus: payment.status
+      epayPaymentId: result.id,
+      paymentUrl: result.payment_url || null,
+      paymentStatus: result.status || "pending"
     });
 
-    return res.status(201).json({
+    return res.status(200).json({
       success: true,
-      orderId: orderRef.id,
-      paymentId: payment.id,
-      paymentUrl: payment.payment_url,
+      orderId,
+      paymentId: result.id,
       amount,
       currency: "MZN",
-      status: "pending"
+      productName: product.nome || "Produto KLIKPay"
     });
 
   } catch (error) {
-    console.error("Checkout error:", error);
+    console.error("Checkout error:", error.message);
 
-    return res.status(error.status || 500).json({
-      error: "Erro interno ao iniciar checkout."
+    return res.status(500).json({
+      error: "Não foi possível iniciar a encomenda."
     });
   }
 }
