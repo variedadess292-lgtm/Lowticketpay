@@ -1,0 +1,766 @@
+
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0b0b0b">
+<title>Checkout | KLIKPay</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --green: #6EDC82;
+  --background: #0b0b0b;
+  --card: #151515;
+  --border: #292929;
+  --muted: #858585;
+}
+
+body {
+  background: var(--background);
+  color: #fff;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  min-height: 100vh;
+}
+
+header {
+  height: 68px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 7%;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo img {
+  width: 125px;
+  max-height: 40px;
+  object-fit: contain;
+  object-position: left center;
+}
+
+.secure {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.secure span {
+  color: var(--green);
+  margin-right: 5px;
+}
+
+.container {
+  width: 100%;
+  max-width: 480px;
+  margin: 45px auto;
+  padding: 0 20px;
+}
+
+.heading {
+  margin-bottom: 25px;
+}
+
+.heading h1 {
+  font-size: 25px;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.heading p {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+/* PRODUTO */
+
+.product {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 30px;
+}
+
+.product-image {
+  width: 125px;
+  height: 145px;
+  flex-shrink: 0;
+  background: #202020;
+  border-radius: 9px;
+  overflow: hidden;
+}
+
+.product-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.product-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.product-info h2 {
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1.5;
+  margin-bottom: 8px;
+}
+
+.product-info p {
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.7;
+}
+
+.price {
+  font-size: 21px;
+  font-weight: 800;
+  color: var(--green);
+  margin-top: 12px;
+}
+
+/* FORMULÁRIO */
+
+.section-title {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 17px;
+}
+
+.field {
+  margin-bottom: 17px;
+}
+
+.field label {
+  display: block;
+  font-size: 12px;
+  color: #b7b7b7;
+  margin-bottom: 8px;
+}
+
+.field input {
+  width: 100%;
+  height: 49px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0 14px;
+  color: white;
+  outline: none;
+  font-family: inherit;
+  font-size: 13px;
+  transition: .2s;
+}
+
+.field input:focus {
+  border-color: var(--green);
+}
+
+.field input::placeholder {
+  color: #626262;
+}
+
+/* MÉTODOS DE PAGAMENTO */
+
+.methods {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.method {
+  height: 83px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--card);
+  color: white;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: inherit;
+  transition: .2s;
+}
+
+.method:hover {
+  border-color: #555;
+}
+
+.method.active {
+  border-color: var(--green);
+  background: #17221a;
+}
+
+.method img {
+  width: 48px;
+  height: 32px;
+  object-fit: contain;
+  display: block;
+}
+
+.method strong {
+  font-size: 11px;
+}
+
+.pay-button {
+  width: 100%;
+  height: 52px;
+  background: var(--green);
+  color: #071009;
+  border: none;
+  border-radius: 9px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: .2s;
+}
+
+.pay-button:hover {
+  background: #83e995;
+}
+
+.pay-button:disabled {
+  opacity: .6;
+  cursor: not-allowed;
+}
+
+.security-note {
+  text-align: center;
+  font-size: 10px;
+  color: var(--muted);
+  margin-top: 17px;
+  line-height: 1.7;
+}
+
+.message {
+  display: none;
+  margin-top: 15px;
+  padding: 13px;
+  border-radius: 8px;
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+.message.error {
+  display: block;
+  color: #ffaaaa;
+  background: #35191d;
+}
+
+.message.success {
+  display: block;
+  color: #a9f28d;
+  background: #142b1b;
+}
+
+footer {
+  text-align: center;
+  color: #555;
+  font-size: 10px;
+  padding: 25px 15px;
+}
+
+@media(max-width: 500px) {
+  header {
+    padding: 0 18px;
+  }
+
+  .container {
+    margin: 32px auto;
+    padding: 0 16px;
+  }
+
+  .heading h1 {
+    font-size: 23px;
+  }
+
+  .product {
+    gap: 12px;
+    padding: 11px;
+  }
+
+  .product-image {
+    width: 115px;
+    height: 135px;
+  }
+
+  .product-info h2 {
+    font-size: 13px;
+  }
+
+  .product-info p {
+    font-size: 10px;
+  }
+
+  .price {
+    font-size: 19px;
+  }
+}
+
+@media(max-width: 350px) {
+  .product-image {
+    width: 95px;
+    height: 120px;
+  }
+
+  .product {
+    gap: 10px;
+  }
+
+  .product-info h2 {
+    font-size: 12px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">
+    <img src="assets/klikpay.png" alt="KLIKPay">
+  </div>
+
+  <div class="secure">
+    <span>🔒</span> Pagamento seguro
+  </div>
+</header>
+
+<main class="container">
+
+  <div class="heading">
+    <h1>Finaliza a tua compra.</h1>
+    <p>Preenche os teus dados para receberes o produto.</p>
+  </div>
+
+  <section class="product">
+
+    <div class="product-image">
+      <img
+        id="productImage"
+        src="assets/produto-placeholder.png"
+        alt="Imagem do produto"
+      >
+    </div>
+
+    <div class="product-info">
+      <h2 id="productName">A carregar produto...</h2>
+
+      <p id="productDescription">
+        A carregar informações...
+      </p>
+
+      <div class="price" id="productPrice">...</div>
+    </div>
+
+  </section>
+
+  <section>
+    <h3 class="section-title">Os teus dados</h3>
+
+    <div class="field">
+      <label for="name">Nome completo</label>
+      <input
+        id="name"
+        type="text"
+        placeholder="O teu nome completo"
+        autocomplete="name"
+        required
+      >
+    </div>
+
+    <div class="field">
+      <label for="email">Endereço de e-mail</label>
+      <input
+        id="email"
+        type="email"
+        placeholder="email@exemplo.com"
+        autocomplete="email"
+        required
+      >
+    </div>
+  </section>
+
+  <section>
+    <h3 class="section-title">Método de pagamento</h3>
+
+    <div class="methods">
+
+      <button type="button"
+        class="method active"
+        data-method="mpesa">
+
+        <img src="assets/mpesa.png" alt="M-Pesa">
+        <strong>M-Pesa</strong>
+
+      </button>
+
+      <button type="button"
+        class="method"
+        data-method="emola">
+
+        <img src="assets/emola.png" alt="e-Mola">
+        <strong>e-Mola</strong>
+
+      </button>
+
+      <button type="button"
+        class="method"
+        data-method="izi">
+
+        <img src="assets/izi.png" alt="IZI">
+        <strong>IZI</strong>
+
+      </button>
+
+    </div>
+
+    <div class="field">
+      <label for="phone">Número de telefone</label>
+
+      <input
+        id="phone"
+        type="tel"
+        placeholder="84 XXX XXXX"
+        maxlength="9"
+        inputmode="numeric"
+        autocomplete="tel"
+      >
+    </div>
+
+    <button class="pay-button" id="payButton" type="button" disabled>
+      A CARREGAR PRODUTO...
+    </button>
+
+    <div id="message" class="message"></div>
+
+    <p class="security-note">
+      🔒 Os teus dados são protegidos durante o pagamento.
+    </p>
+  </section>
+
+</main>
+
+<footer>
+  KLIKPay · Checkout seguro
+</footer>
+
+<script>
+const API = "/api";
+
+const params = new URLSearchParams(window.location.search);
+
+const productId =
+  params.get("produto") ||
+  params.get("productId") ||
+  params.get("id");
+
+let selectedMethod = "mpesa";
+let currentOrderId = null;
+let pollingTimer = null;
+let paymentInProgress = false;
+
+const $ = id => document.getElementById(id);
+
+const payButton = $("payButton");
+const message = $("message");
+const phone = $("phone");
+
+function formatMoney(value) {
+  return Number(value).toLocaleString("pt-MZ", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  }) + " MT";
+}
+
+function showMessage(text, type = "error") {
+  message.textContent = text;
+  message.className = "message " + type;
+}
+
+async function apiRequest(endpoint, data) {
+  const response = await fetch(`${API}/${endpoint}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(data)
+  });
+
+  const result = await response.json().catch(() => ({}));
+
+  if (!response.ok) {
+    throw new Error(
+      result.error ||
+      result.message ||
+      "Não foi possível processar o pedido."
+    );
+  }
+
+  return result;
+}
+
+/* CARREGAR PRODUTO REAL */
+
+async function loadProduct() {
+  if (!productId) {
+    $("productName").textContent = "Produto não identificado";
+    $("productDescription").textContent =
+      "Abre o checkout através do botão Comprar na Vitrine.";
+
+    showMessage("Não foi indicado o ID do produto.", "error");
+    payButton.textContent = "PRODUTO NÃO IDENTIFICADO";
+    return;
+  }
+
+  try {
+    const response = await fetch(
+      `${API}/product-info?id=${encodeURIComponent(productId)}`
+    );
+
+    const data = await response.json();
+
+    if (!response.ok || !data.product) {
+      throw new Error(data.error || "Produto não encontrado.");
+    }
+
+    const product = data.product;
+
+    $("productName").textContent = product.nome;
+    $("productDescription").textContent =
+      product.descricao || "Produto digital KLIKPay.";
+
+    $("productPrice").textContent = formatMoney(product.preco);
+
+    payButton.textContent = "PAGAR " + formatMoney(product.preco);
+    payButton.disabled = false;
+
+    if (product.imagem) {
+      $("productImage").src = product.imagem;
+    }
+
+  } catch (error) {
+    $("productName").textContent = "Não foi possível carregar o produto.";
+    $("productDescription").textContent = error.message;
+    payButton.textContent = "PRODUTO INDISPONÍVEL";
+    payButton.disabled = true;
+  }
+}
+
+/* SELECÇÃO DO MÉTODO */
+
+document.querySelectorAll(".method").forEach(button => {
+  button.addEventListener("click", () => {
+    if (paymentInProgress) return;
+
+    document.querySelectorAll(".method").forEach(item => {
+      item.classList.remove("active");
+    });
+
+    button.classList.add("active");
+    selectedMethod = button.dataset.method;
+
+    if (selectedMethod === "mpesa") {
+      phone.placeholder = "84 XXX XXXX";
+    } else if (selectedMethod === "emola") {
+      phone.placeholder = "86 XXX XXXX";
+    } else {
+      phone.placeholder = "Número de telefone";
+    }
+  });
+});
+
+/* VALIDAR TELEFONE */
+
+function validatePhone(number) {
+  if (!/^\d{9}$/.test(number)) {
+    throw new Error("Introduz um número com 9 dígitos.");
+  }
+
+  if (
+    selectedMethod === "mpesa" &&
+    !/^(84|85)\d{7}$/.test(number)
+  ) {
+    throw new Error("O M-Pesa requer um número iniciado por 84 ou 85.");
+  }
+
+  if (
+    selectedMethod === "emola" &&
+    !/^(86|87)\d{7}$/.test(number)
+  ) {
+    throw new Error("O e-Mola requer um número iniciado por 86 ou 87.");
+  }
+}
+
+/* SOLICITAR PAGAMENTO */
+
+payButton.addEventListener("click", async () => {
+  if (paymentInProgress) return;
+
+  const name = $("name").value.trim();
+  const email = $("email").value.trim();
+  const number = phone.value.replace(/[\s-]/g, "");
+
+  message.className = "message";
+
+  try {
+    if (!productId) {
+      throw new Error("Produto não identificado.");
+    }
+
+    if (name.length < 2) {
+      throw new Error("Introduz o teu nome completo.");
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      throw new Error("Introduz um endereço de e-mail válido.");
+    }
+
+    validatePhone(number);
+
+    paymentInProgress = true;
+    payButton.disabled = true;
+    payButton.textContent = "A CRIAR ENCOMENDA...";
+
+    // Criar encomenda e pagamento na ePay.
+    const order = await apiRequest("checkout", {
+      productId,
+      customerName: name,
+      customerEmail: email
+    });
+
+    currentOrderId = order.orderId;
+
+    payButton.textContent = "A SOLICITAR COBRANÇA...";
+
+    // Solicitar cobrança ao operador.
+    const charge = await apiRequest("charge", {
+      orderId: currentOrderId,
+      method: selectedMethod,
+      phone: number
+    });
+
+    showMessage(
+      charge.message ||
+      "Pedido enviado. Confirma a solicitação no teu telemóvel.",
+      "success"
+    );
+
+    payButton.textContent = "AGUARDANDO CONFIRMAÇÃO...";
+
+    // Começar a verificar o pagamento.
+    checkPaymentStatus();
+
+  } catch (error) {
+    paymentInProgress = false;
+    payButton.disabled = false;
+    payButton.textContent = "TENTAR NOVAMENTE";
+
+    showMessage(error.message, "error");
+  }
+});
+
+/* VERIFICAR ESTADO DO PAGAMENTO */
+
+async function checkPaymentStatus() {
+  if (!currentOrderId) return;
+
+  try {
+    const data = await apiRequest("payment-status", {
+      orderId: currentOrderId
+    });
+
+    if (data.status === "paid") {
+      clearTimeout(pollingTimer);
+
+      showMessage(
+        "Pagamento confirmado! A tua compra foi concluída com sucesso.",
+        "success"
+      );
+
+      payButton.textContent = "PAGAMENTO CONFIRMADO";
+      payButton.disabled = true;
+
+      return;
+    }
+
+    if (data.status === "failed") {
+      clearTimeout(pollingTimer);
+
+      paymentInProgress = false;
+      payButton.disabled = false;
+      payButton.textContent = "TENTAR NOVAMENTE";
+
+      showMessage(
+        data.rejection_message ||
+        "O pagamento não foi aprovado. Podes tentar novamente.",
+        "error"
+      );
+
+      return;
+    }
+
+    showMessage(
+      "Aguardando confirmação no telemóvel...",
+      "success"
+    );
+
+    const seconds = Math.max(
+      5,
+      Number(data.polling_interval) || 5
+    );
+
+    pollingTimer = setTimeout(
+      checkPaymentStatus,
+      seconds * 1000
+    );
+
+  } catch (error) {
+    showMessage(
+      "Não foi possível consultar o pagamento. Vamos tentar novamente.",
+      "error"
+    );
+
+    pollingTimer = setTimeout(
+      checkPaymentStatus,
+      7000
+    );
+  }
+}
+
+/* INICIAR */
+
+loadProduct();
+
+window.addEventListener("beforeunload", () => {
+  clearTimeout(pollingTimer);
+});
+</script>
+
+</body>
+</html>
