@@ -5,7 +5,9 @@ const EPAY_URL = "https://checkout.epay.co.mz/api/v1/payments";
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
-    return res.status(405).json({ error: "Método não permitido." });
+    return res.status(405).json({
+      error: "Método não permitido."
+    });
   }
 
   try {
@@ -58,9 +60,26 @@ export default async function handler(req, res) {
 
     const order = orderSnap.data();
 
-    if (order.status !== "pending" || !order.epayPaymentId) {
+    if (
+      !order.epayPaymentId ||
+      !["pending", "failed"].includes(order.status)
+    ) {
       return res.status(409).json({
-        error: "Esta encomenda não está disponível para cobrança."
+        error: "Esta encomenda não está disponível para pagamento."
+      });
+    }
+
+    const amount = Number(order.amount);
+
+    if (!Number.isFinite(amount) || amount <= 0) {
+      return res.status(400).json({
+        error: "Valor da encomenda inválido."
+      });
+    }
+
+    if (method !== "izi" && amount > 25000) {
+      return res.status(400).json({
+        error: "Para pagamentos acima de 25.000 MT, utilize IZI."
       });
     }
 
@@ -88,7 +107,13 @@ export default async function handler(req, res) {
       }
     );
 
-    const result = await response.json();
+    let result = {};
+
+    try {
+      result = await response.json();
+    } catch {
+      result = {};
+    }
 
     const allowedFields = [
       "id",
@@ -113,9 +138,13 @@ export default async function handler(req, res) {
 
     if (response.ok) {
       await orderRef.update({
+        status: "pending",
+        paymentStatus: result.status || "pending",
         paymentMethod: method,
         customerPhone: normalizedPhone,
-        chargeRequestedAt: new Date()
+        chargeState: result.state || "initiating",
+        chargeRequestedAt: new Date(),
+        paymentFailureMessage: null
       });
     }
 
