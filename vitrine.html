@@ -204,13 +204,8 @@ h1{font-size:23px;font-weight:800}
     transition:height .2s ease;
 }
 
-/* Imagem vertical */
 .product-image.portrait{height:270px}
-
-/* Imagem horizontal */
 .product-image.landscape{height:190px}
-
-/* Imagem quadrada */
 .product-image.square{height:220px}
 
 .product-image img{
@@ -407,7 +402,7 @@ h1{font-size:23px;font-weight:800}
 
 <aside class="side-menu" id="sideMenu" aria-label="Menu principal">
     <div class="menu-header">
-        <img src="assets/lowticketpay.png"
+        <img src="assets/klikpay.png"
              alt="KLIKPay" class="menu-logo">
 
         <button class="menu-close" id="menuClose"
@@ -611,23 +606,12 @@ function categoriaCompativel(produtoCategoria,filtro){
 
 /* LINK DE AFILIADO */
 function gerarLinkAfiliado(produto,uid){
-    const checkoutUrl=
-        produto.checkoutUrl||
-        produto.linkCheckout||
-        produto.checkoutLink||
-        "";
+    const url=new URL(
+        "/pagamento.html",
+        window.location.origin
+    );
 
-    let url;
-
-    try{
-        url=checkoutUrl
-            ?new URL(checkoutUrl,window.location.origin)
-            :new URL("vitrine.html",window.location.href);
-    }catch(error){
-        url=new URL("vitrine.html",window.location.href);
-    }
-
-    url.searchParams.set("productId",produto.id);
+    url.searchParams.set("produto",produto.id);
     url.searchParams.set("ref",uid);
 
     return url.toString();
@@ -759,7 +743,6 @@ function renderizarProdutos(){
 
             imagem.appendChild(img);
 
-            /* Caso a imagem já esteja carregada */
             if(img.complete&&img.naturalWidth){
                 adaptarImagem(img,imagem);
             }
@@ -815,26 +798,20 @@ function renderizarProdutos(){
         actions.className="product-actions";
 
         const comprar=document.createElement("a");
+
         comprar.className="buy";
         comprar.textContent="Comprar";
 
-        const checkoutUrl=
-            produto.checkoutUrl||
-            produto.linkCheckout||
-            produto.checkoutLink||
-            "";
+        comprar.href=
+            "/pagamento.html?produto="+
+            encodeURIComponent(produto.id);
 
-        if(checkoutUrl){
-            comprar.href=checkoutUrl;
-            comprar.target="_blank";
-            comprar.rel="noopener noreferrer";
-        }else{
-            comprar.href="#";
-            comprar.addEventListener("click",event=>{
+        comprar.addEventListener("click",event=>{
+            if(!produto.id){
                 event.preventDefault();
-                alert("O checkout deste produto ainda não está disponível.");
-            });
-        }
+                alert("Não foi possível identificar este produto.");
+            }
+        });
 
         actions.appendChild(comprar);
 
