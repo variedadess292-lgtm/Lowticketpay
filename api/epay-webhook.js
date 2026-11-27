@@ -1,6 +1,7 @@
 
 import { createHmac, timingSafeEqual } from "node:crypto";
 import { db } from "./_lib/firebaseAdmin.js";
+import { settlePaidOrder } from "./_lib/settlePaidOrder.js";
 
 export const config = {
   api: {
@@ -19,7 +20,12 @@ async function getRawBody(req) {
 }
 
 function safeCompare(expected, received) {
-  if (!received || expected.length !== received.length) {
+  if (
+    typeof expected !== "string" ||
+    typeof received !== "string" ||
+    !/^[a-f0-9]+$/i.test(received) ||
+    expected.length !== received.length
+  ) {
     return false;
   }
 
@@ -33,13 +39,13 @@ function verifySignature(rawBody, headers) {
   const apiSecret = process.env.EPAY_SECRET_KEY;
   const webhookSecret = process.env.EPAY_WEBHOOK_SECRET;
 
-  // Assinatura dos webhooks gerais do painel ePay
   const signatureHeader = headers["x-epay-signature"];
 
   if (signatureHeader && webhookSecret) {
     const parts = Object.fromEntries(
       signatureHeader.split(",").map(part => {
         const index = part.indexOf("=");
+
         return [
           part.slice(0, index).trim(),
           part.slice(index + 1).trim()
@@ -64,7 +70,6 @@ function verifySignature(rawBody, headers) {
     }
   }
 
-  // Assinatura dos callbacks individuais da API
   const callbackSignature = headers["x-educavelpay-signature"];
 
   if (callbackSignature && apiSecret) {
@@ -118,6 +123,23 @@ export default async function handler(req, res) {
       (payload.status === "paid" ? "payment.paid" : null) ||
       (payload.status === "failed" ? "payment.failed" : null);
 
+    if (eventType === "refund.approved" || eventType === "refund.rejected") {
+      console.warn("Evento de reembolso recebido; reversão financeira ainda não implementada.");
+
+      return res.status(200).json({
+        received: true,
+        ignored: true,
+        reason: "Reversão financeira ainda não implementada."
+      });
+    }
+
+    if (!["payment.paid", "payment.failed"].includes(eventType)) {
+      return res.status(200).json({
+        received: true,
+        ignored: true
+      });
+    }
+
     const data = payload.data || payload;
 
     const paymentId = data.id;
@@ -129,105 +151,104 @@ export default async function handler(req, res) {
       });
     }
 
-    const allowedEvents = [
-      "payment.paid",
-      "payment.failed",
-      "refund.approved",
-      "refund.rejected"
-    ];
-
-    if (!allowedEvents.includes(eventType)) {
-      return res.status(200).json({
-        received: true,
-        ignored: true
-      });
-    }
-
     const deliveryId =
       req.headers["x-epay-delivery"] ||
       payload.id ||
-      paymentId;
+      `${paymentId}_${eventType}`;
 
     const deliveryRef = db
       .collection("epayWebhookEvents")
       .doc(String(deliveryId));
 
-    const orderRef = db.collection("transacoes").doc(String(orderId));
+    const existingDelivery = await deliveryRef.get();
 
-    await db.runTransaction(async transaction => {
-      const deliverySnap = await transaction.get(deliveryRef);
+    if (existingDelivery.exists) {
+      return res.status(200).json({
+        received: true,
+        duplicate: true
+      });
+    }
 
-      if (deliverySnap.exists) {
-        return;
+    const orderRef = db
+      .collection("transacoes")
+      .doc(String(orderId));
+
+    const orderSnap = await orderRef.get();
+
+    if (!orderSnap.exists) {
+      throw new Error("Transação não encontrada.");
+    }
+
+    const order = orderSnap.data();
+
+    if (order.epayPaymentId !== paymentId) {
+      throw new Error("Pagamento não corresponde à transação.");
+    }
+
+    if (eventType === "payment.paid") {
+      const receivedAmount = Math.round(
+        Number(
+          data.amount_cents ??
+          Number(data.amount) * 100
+        )
+      );
+
+      const expectedAmount = Math.round(
+        Number(order.amount) * 100
+      );
+
+      if (
+        data.currency !== "MZN" ||
+        !Number.isFinite(receivedAmount) ||
+        receivedAmount !== expectedAmount
+      ) {
+        throw new Error("Valor ou moeda do pagamento não corresponde.");
       }
 
-      const orderSnap = await transaction.get(orderRef);
+      await settlePaidOrder(String(orderId), {
+        paid_at: data.paid_at || null,
+        payment_method: data.payment_method || data.payment_type || null
+      });
+    }
 
-      if (!orderSnap.exists) {
-        throw new Error("Transação não encontrada.");
-      }
+    if (eventType === "payment.failed") {
+      await db.runTransaction(async transaction => {
+        const freshDelivery = await transaction.get(deliveryRef);
+        const freshOrder = await transaction.get(orderRef);
 
-      const order = orderSnap.data();
+        if (freshDelivery.exists) return;
 
-      if (order.epayPaymentId !== paymentId) {
-        throw new Error("Pagamento não corresponde à transação.");
-      }
-
-      if (eventType === "payment.paid") {
-        const receivedAmount = Math.round(
-          Number(data.amount_cents ?? Number(data.amount) * 100)
-        );
-
-        const expectedAmount = Math.round(Number(order.amount) * 100);
-
-        if (
-          data.currency !== "MZN" ||
-          !Number.isFinite(receivedAmount) ||
-          receivedAmount !== expectedAmount
-        ) {
-          throw new Error("Valor ou moeda do pagamento não corresponde.");
+        if (!freshOrder.exists) {
+          throw new Error("Transação não encontrada.");
         }
 
-        if (order.status !== "paid") {
+        if (freshOrder.data().status !== "paid") {
           transaction.update(orderRef, {
-            status: "paid",
-            paymentStatus: "paid",
-            paymentType: data.payment_method || data.payment_type || null,
-            paidAt: data.paid_at || new Date(),
+            status: "failed",
+            paymentStatus: "failed",
             updatedAt: new Date()
           });
         }
-      }
 
-      if (eventType === "payment.failed" && order.status !== "paid") {
-        transaction.update(orderRef, {
-          status: "failed",
-          paymentStatus: "failed",
-          updatedAt: new Date()
+        transaction.create(deliveryRef, {
+          eventType,
+          paymentId,
+          orderId,
+          receivedAt: new Date()
         });
-      }
-
-      if (eventType === "refund.approved") {
-        transaction.update(orderRef, {
-          status: "refunded",
-          refundStatus: "approved",
-          updatedAt: new Date()
-        });
-      }
-
-      if (eventType === "refund.rejected") {
-        transaction.update(orderRef, {
-          refundStatus: "rejected",
-          updatedAt: new Date()
-        });
-      }
-
-      transaction.create(deliveryRef, {
-        eventType,
-        paymentId,
-        orderId,
-        receivedAt: new Date()
       });
+
+      return res.status(200).json({
+        received: true,
+        processed: true
+      });
+    }
+
+    await deliveryRef.create({
+      eventType,
+      paymentId,
+      orderId,
+      receivedAt: new Date()
     });
 
     return res.status(200).json({
@@ -243,4 +264,3 @@ export default async function handler(req, res) {
     });
   }
 }
-
