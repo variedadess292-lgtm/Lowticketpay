@@ -3,6 +3,7 @@ import { db } from "./_lib/firebaseAdmin.js";
 import crypto from "crypto";
 
 const EPAY_URL = "https://checkout.epay.co.mz/api/v1/payments";
+const KLIK_PAY_PERCENT = 10;
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
@@ -12,7 +13,12 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { productId, customerName, customerEmail } = req.body || {};
+    const {
+      productId,
+      customerName,
+      customerEmail,
+      affiliateId
+    } = req.body || {};
 
     if (
       typeof productId !== "string" ||
@@ -33,6 +39,16 @@ export default async function handler(req, res) {
       });
     }
 
+    if (
+      affiliateId !== undefined &&
+      affiliateId !== null &&
+      (typeof affiliateId !== "string" || affiliateId.length > 128)
+    ) {
+      return res.status(400).json({
+        error: "Referência de afiliado inválida."
+      });
+    }
+
     const appUrl = process.env.APP_URL;
     const secretKey = process.env.EPAY_SECRET_KEY;
 
@@ -40,7 +56,6 @@ export default async function handler(req, res) {
       throw new Error("Configurações de pagamento incompletas.");
     }
 
-    // Procurar produto no Firestore.
     const productRef = db.collection("produtos").doc(productId);
     const productSnap = await productRef.get();
 
@@ -64,15 +79,9 @@ export default async function handler(req, res) {
 
     const amount = Number(product.preco);
 
-    if (!Number.isFinite(amount) || amount <= 0) {
+    if (!Number.isFinite(amount) || amount <= 0 || amount > 250000) {
       return res.status(400).json({
         error: "Preço do produto inválido."
-      });
-    }
-
-    if (amount > 250000) {
-      return res.status(400).json({
-        error: "O valor máximo permitido é 250.000 MT."
       });
     }
 
@@ -82,27 +91,84 @@ export default async function handler(req, res) {
       });
     }
 
-    // Criar referência única para a encomenda.
+    let validAffiliateId = null;
+    let affiliateCommissionPercent = 0;
+
+    if (affiliateId) {
+      if (affiliateId === product.ownerId) {
+        return res.status(400).json({
+          error: "O vendedor não pode ser afiliado do próprio produto."
+        });
+      }
+
+      const affiliateSettings = product.affiliate || {};
+
+      if (affiliateSettings.enabled !== true) {
+        return res.status(400).json({
+          error: "Este produto não aceita afiliados."
+        });
+      }
+
+      const commission = Number(affiliateSettings.commission);
+
+      if (
+        !Number.isFinite(commission) ||
+        commission < 0 ||
+        commission > 90 ||
+        KLIK_PAY_PERCENT + commission > 100
+      ) {
+        return res.status(400).json({
+          error: "Comissão de afiliado inválida."
+        });
+      }
+
+      const affiliateRef = db
+        .collection("usuarios")
+        .doc(affiliateId);
+
+      const affiliateSnap = await affiliateRef.get();
+
+      if (!affiliateSnap.exists) {
+        return res.status(400).json({
+          error: "Afiliado não encontrado."
+        });
+      }
+
+      validAffiliateId = affiliateId;
+      affiliateCommissionPercent = commission;
+    }
+
     const orderId = crypto.randomUUID();
 
-    const orderRef = db.collection("transacoes").doc(orderId);
+    const orderRef = db
+      .collection("transacoes")
+      .doc(orderId);
 
     await orderRef.set({
       orderId,
       productId,
       productName: product.nome || "Produto KLIKPay",
       sellerId: product.ownerId,
+
+      affiliateId: validAffiliateId,
+      affiliateCommissionPercent,
+
       customerName: customerName.trim(),
       customerEmail: customerEmail?.trim().toLowerCase() || null,
+
       amount,
       currency: "MZN",
+
+      klikCommissionPercent: KLIK_PAY_PERCENT,
+
       status: "pending",
       paymentStatus: "pending",
+      settlementStatus: "pending",
+
       paymentProvider: "epay",
       createdAt: new Date()
     });
 
-    // Criar pagamento na ePay.
     const response = await fetch(EPAY_URL, {
       method: "POST",
       headers: {
@@ -147,6 +213,7 @@ export default async function handler(req, res) {
       success: true,
       orderId,
       paymentId: result.id,
+      paymentUrl: result.payment_url || null,
       amount,
       currency: "MZN",
       productName: product.nome || "Produto KLIKPay"
