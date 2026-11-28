@@ -40,11 +40,6 @@ header {
   padding: 0 7%;
 }
 
-.logo {
-  display: flex;
-  align-items: center;
-}
-
 .logo img {
   width: 125px;
   max-height: 40px;
@@ -84,8 +79,6 @@ header {
   font-size: 12px;
   line-height: 1.6;
 }
-
-/* PRODUTO */
 
 .product {
   display: flex;
@@ -139,8 +132,6 @@ header {
   margin-top: 12px;
 }
 
-/* FORMULÁRIO */
-
 .section-title {
   font-size: 14px;
   font-weight: 700;
@@ -179,8 +170,6 @@ header {
 .field input::placeholder {
   color: #626262;
 }
-
-/* MÉTODOS DE PAGAMENTO */
 
 .methods {
   display: grid;
@@ -359,7 +348,6 @@ footer {
   </div>
 
   <section class="product">
-
     <div class="product-image">
       <img
         id="productImage"
@@ -377,7 +365,6 @@ footer {
 
       <div class="price" id="productPrice">...</div>
     </div>
-
   </section>
 
   <section>
@@ -414,35 +401,28 @@ footer {
       <button type="button"
         class="method active"
         data-method="mpesa">
-
         <img src="assets/mpesa.png" alt="M-Pesa">
         <strong>M-Pesa</strong>
-
       </button>
 
       <button type="button"
         class="method"
         data-method="emola">
-
         <img src="assets/emola.png" alt="e-Mola">
         <strong>e-Mola</strong>
-
       </button>
 
       <button type="button"
         class="method"
         data-method="izi">
-
         <img src="assets/izi.png" alt="IZI">
         <strong>IZI</strong>
-
       </button>
 
     </div>
 
     <div class="field">
       <label for="phone">Número de telefone</label>
-
       <input
         id="phone"
         type="tel"
@@ -480,10 +460,14 @@ const productId =
   params.get("productId") ||
   params.get("id");
 
+/* REFERÊNCIA DO AFILIADO */
+const affiliateId = params.get("ref") || null;
+
 let selectedMethod = "mpesa";
 let currentOrderId = null;
 let pollingTimer = null;
 let paymentInProgress = false;
+let currentProduct = null;
 
 const $ = id => document.getElementById(id);
 
@@ -525,7 +509,7 @@ async function apiRequest(endpoint, data) {
   return result;
 }
 
-/* CARREGAR PRODUTO REAL */
+/* CARREGAR PRODUTO */
 
 async function loadProduct() {
   if (!productId) {
@@ -550,6 +534,7 @@ async function loadProduct() {
     }
 
     const product = data.product;
+    currentProduct = product;
 
     $("productName").textContent = product.nome;
     $("productDescription").textContent =
@@ -629,7 +614,7 @@ payButton.addEventListener("click", async () => {
   message.className = "message";
 
   try {
-    if (!productId) {
+    if (!productId || !currentProduct) {
       throw new Error("Produto não identificado.");
     }
 
@@ -645,20 +630,27 @@ payButton.addEventListener("click", async () => {
 
     paymentInProgress = true;
     payButton.disabled = true;
-    payButton.textContent = "A CRIAR ENCOMENDA...";
 
-    // Criar encomenda e pagamento na ePay.
-    const order = await apiRequest("checkout", {
-      productId,
-      customerName: name,
-      customerEmail: email
-    });
+    /* Criar encomenda apenas se ainda não existir */
+    if (!currentOrderId) {
+      payButton.textContent = "A CRIAR ENCOMENDA...";
 
-    currentOrderId = order.orderId;
+      const order = await apiRequest("checkout", {
+        productId,
+        customerName: name,
+        customerEmail: email,
+        affiliateId
+      });
+
+      currentOrderId = order.orderId;
+
+      if (!currentOrderId) {
+        throw new Error("Não foi possível identificar a encomenda.");
+      }
+    }
 
     payButton.textContent = "A SOLICITAR COBRANÇA...";
 
-    // Solicitar cobrança ao operador.
     const charge = await apiRequest("charge", {
       orderId: currentOrderId,
       method: selectedMethod,
@@ -673,7 +665,6 @@ payButton.addEventListener("click", async () => {
 
     payButton.textContent = "AGUARDANDO CONFIRMAÇÃO...";
 
-    // Começar a verificar o pagamento.
     checkPaymentStatus();
 
   } catch (error) {
@@ -685,7 +676,7 @@ payButton.addEventListener("click", async () => {
   }
 });
 
-/* VERIFICAR ESTADO DO PAGAMENTO */
+/* VERIFICAR PAGAMENTO */
 
 async function checkPaymentStatus() {
   if (!currentOrderId) return;
@@ -697,6 +688,8 @@ async function checkPaymentStatus() {
 
     if (data.status === "paid") {
       clearTimeout(pollingTimer);
+
+      paymentInProgress = false;
 
       showMessage(
         "Pagamento confirmado! A tua compra foi concluída com sucesso.",
